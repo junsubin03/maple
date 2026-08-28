@@ -57,7 +57,7 @@ label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%
 <div id="time">1:00</div>
 <div class="status" id="status">대기 중</div>
 <div class="buttons">
-<button id="start">시작</button><button id="pause" class="secondary">일시정지</button><button id="reset" class="secondary">초기화</button>
+<button id="start">시작</button><button id="pause" class="secondary">일시정지</button><button id="reset" class="secondary">초기화</button><button id="pip" class="secondary">🖼️ PIP</button>
 </div>
 
 <div class="panel">
@@ -109,7 +109,7 @@ label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%
 let intervalSeconds=60,remaining=60,running=false,timer=null;
 const timeEl=document.getElementById('time'),statusEl=document.getElementById('status'),textEl=document.getElementById('ttsText');
 
-function render(){timeEl.textContent=`${Math.floor(remaining/60)}:${String(remaining%60).padStart(2,'0')}`}
+function render(){timeEl.textContent=`${Math.floor(remaining/60)}:${String(remaining%60).padStart(2,'0')}`;updatePip()}
 
 function speak(){
   if(!document.getElementById('ttsEnabled').checked) return;
@@ -266,6 +266,74 @@ document.getElementById('soundPreview').onclick=()=>{
 
 document.getElementById('ttsVolume').oninput=e=>document.getElementById('ttsVolumeValue').textContent=e.target.value+'%';
 document.getElementById('soundVolume').oninput=e=>document.getElementById('soundVolumeValue').textContent=e.target.value+'%';
+
+
+// Picture-in-Picture
+let pipWindow=null;
+
+function updatePip(){
+  if(!pipWindow || pipWindow.closed) return;
+  const pipTime=pipWindow.document.getElementById('pipTime');
+  const pipStatus=pipWindow.document.getElementById('pipStatus');
+  const pipStart=pipWindow.document.getElementById('pipStart');
+  const pipPause=pipWindow.document.getElementById('pipPause');
+  if(pipTime) pipTime.textContent=`${Math.floor(remaining/60)}:${String(remaining%60).padStart(2,'0')}`;
+  if(pipStatus) pipStatus.textContent=statusEl.textContent;
+  if(pipStart) pipStart.disabled=running;
+  if(pipPause) pipPause.disabled=!running;
+}
+
+async function openPip(){
+  if(!('documentPictureInPicture' in window)){
+    statusEl.textContent='이 브라우저에서는 PIP를 지원하지 않습니다. Chrome 116 이상을 사용해 주세요.';
+    return;
+  }
+  if(pipWindow && !pipWindow.closed){
+    pipWindow.focus();
+    return;
+  }
+
+  try{
+    pipWindow=await documentPictureInPicture.requestWindow({width:320,height:190});
+
+    const d=pipWindow.document;
+    d.body.innerHTML=`
+      <style>
+        *{box-sizing:border-box}
+        body{margin:0;background:#0b0c0f;color:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+             display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;overflow:hidden}
+        #pipTime{font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+        #pipStatus{font-size:12px;color:#aaa;height:18px;margin:8px 0}
+        .pipBtns{display:flex;gap:6px}
+        button{border:0;border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer;background:#fff;color:#111}
+        button.secondary{background:#333;color:#fff}
+        button:disabled{opacity:.45;cursor:default}
+      </style>
+      <div id="pipTime">--:--</div>
+      <div id="pipStatus">대기 중</div>
+      <div class="pipBtns">
+        <button id="pipStart">시작</button>
+        <button id="pipPause" class="secondary">일시정지</button>
+        <button id="pipReset" class="secondary">초기화</button>
+      </div>
+    `;
+
+    d.getElementById('pipStart').onclick=()=>document.getElementById('start').click();
+    d.getElementById('pipPause').onclick=()=>document.getElementById('pause').click();
+    d.getElementById('pipReset').onclick=()=>document.getElementById('reset').click();
+
+    pipWindow.addEventListener('pagehide',()=>{
+      pipWindow=null;
+    });
+
+    updatePip();
+  }catch(e){
+    pipWindow=null;
+    statusEl.textContent='PIP 창을 열지 못했습니다.';
+  }
+}
+
+document.getElementById('pip').onclick=openPip;
 
 if('speechSynthesis' in window){
   loadVoices();
