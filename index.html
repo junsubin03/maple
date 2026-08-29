@@ -55,42 +55,42 @@ label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%
 #homeworkView{width:min(92vw,760px);margin:0 auto;text-align:left}
 .homework-header{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
-  margin-bottom:18px
+  margin-bottom:20px
 }
 .homework-title{font-size:28px;font-weight:800;margin:0}
 .homework-date{font-size:13px;color:#888;margin-top:5px}
 .add-task-btn{white-space:nowrap}
-.homework-list{display:flex;flex-direction:column;gap:14px}
+.homework-list{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;align-items:start
+}
 .homework-card{
   border:1px solid #292b31;border-radius:16px;background:#15171b;
-  overflow:hidden
+  overflow:hidden;min-width:0
 }
 .homework-card-header{
-  display:flex;align-items:center;gap:10px;padding:15px 16px;
+  display:flex;align-items:center;gap:8px;padding:13px;
   border-bottom:1px solid #292b31
 }
 .homework-card-header input{
-  flex:1;font-size:17px;font-weight:800;background:#111
+  flex:1;min-width:0;font-size:17px;font-weight:800;background:#111
 }
 .icon-btn{
-  flex:0 0 auto;width:40px;height:40px;padding:0;border-radius:10px;
-  background:#25282e;color:#ddd;font-size:18px
+  flex:0 0 auto;width:36px;height:36px;padding:0;border-radius:9px;
+  background:#25282e;color:#ddd;font-size:17px
 }
 .delete-title{color:#aaa}
-.task-list{padding:8px 12px 12px}
+.task-list{padding:8px 11px 12px}
 .task-row{
   display:grid;grid-template-columns:minmax(0,1fr) 32px;align-items:center;
-  gap:8px;padding:6px 0
+  gap:8px;padding:5px 0
 }
-.task-check{
-  width:22px;height:22px;margin:0 auto;accent-color:#fff;cursor:pointer
-}
+.task-text-wrap{position:relative;min-width:0}
 .task-input{
   min-width:0;width:100%;padding:10px 34px 10px 11px!important;font-size:14px
 }
-.task-text-wrap{position:relative;min-width:0}
 .task-text-wrap .delete-task{
-  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  position:absolute;right:5px;top:50%;transform:translateY(-50%);
   width:26px;height:26px;padding:0;border-radius:7px;
   background:transparent;color:#777;font-size:16px;
   opacity:0;pointer-events:none;transition:opacity .15s,background .15s,color .15s
@@ -100,26 +100,20 @@ label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%
   opacity:1;pointer-events:auto
 }
 .task-text-wrap .delete-task:hover{background:#25282e;color:#fff}
-.task-row.done .task-input{
-  color:#777;text-decoration:line-through
+.task-check{
+  width:21px;height:21px;margin:0 auto;accent-color:#fff;cursor:pointer
 }
-.delete-task{
-  width:34px;height:34px;padding:0;border-radius:8px;
-  background:transparent;color:#777;font-size:16px
-}
-.delete-task:hover{background:#25282e;color:#fff}
+.task-row.done .task-input{color:#777;text-decoration:line-through}
 .add-subtask{
-  margin:4px 0 2px 40px;padding:8px 12px;font-size:13px;
+  width:100%;margin-top:5px;padding:9px 12px;font-size:13px;
   background:#25282e;color:#ddd
 }
 .empty-homework{
-  padding:44px 20px;text-align:center;color:#777;
+  grid-column:1/-1;padding:55px 20px;text-align:center;color:#777;
   border:1px dashed #303238;border-radius:16px
 }
 .empty-homework strong{display:block;color:#aaa;margin-bottom:6px}
-.homework-footer{
-  margin-top:14px;font-size:12px;color:#666;text-align:center
-}
+.homework-footer{margin-top:16px;font-size:12px;color:#666;text-align:center}
 @media(max-width:600px){
   .top-tabs{top:10px;left:10px}
   .top-tab{padding:8px 12px}
@@ -301,7 +295,7 @@ body.entry-open > #homeworkView{display:none!important}
       <h1 class="homework-title">체크리스트</h1>
       <div id="homeworkDate" class="homework-date"></div>
     </div>
-    <button id="addHomework" class="add-task-btn">＋ 대제목 추가</button>
+    <button id="addHomework" class="add-task-btn">＋ 체크리스트 추가</button>
   </div>
 
   <div id="homeworkList" class="homework-list"></div>
@@ -591,8 +585,8 @@ function renderHomework(){
   if(!data.length){
     list.innerHTML = `
       <div class="empty-homework">
-        <strong>아직 등록된 숙제가 없습니다.</strong>
-        <span>＋ 대제목 추가를 눌러 오늘 할 일을 만들어 보세요.</span>
+        <strong>아직 체크리스트가 없습니다.</strong>
+        <span>＋ 체크리스트 추가를 눌러 새로운 카드를 만들어 보세요.</span>
       </div>`;
     return;
   }
@@ -601,7 +595,7 @@ function renderHomework(){
     <section class="homework-card" data-section-id="${section.id}">
       <div class="homework-card-header">
         <input class="section-input" value="${escapeHtml(section.title)}"
-               aria-label="대제목" placeholder="대제목을 입력하세요">
+               aria-label="체크리스트 제목" placeholder="체크리스트 제목을 입력하세요">
         <button class="icon-btn add-task" title="해야 할 일 추가" aria-label="해야 할 일 추가">＋</button>
         <button class="icon-btn delete-title" title="대제목 삭제" aria-label="대제목 삭제">🗑</button>
       </div>
@@ -630,7 +624,7 @@ function escapeHtml(value){
 
 function addSection(){
   const data = loadHomework();
-  data.push({id:createId(), title:'새 숙제', tasks:[{id:createId(), text:'', done:false}]});
+  data.push({id:createId(), title:'새 체크리스트', tasks:[{id:createId(), text:'', done:false}]});
   saveHomework(data);
   renderHomework();
 
