@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>반복 타이머</title>
+<title>타이머 · 숙제 체크</title>
 <style>
 select{padding:11px 14px;border:1px solid #444;border-radius:10px;background:#333;color:#fff;font-size:14px;min-width:180px}
 .choice-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
@@ -36,10 +36,109 @@ button.secondary{background:#333;color:#fff}button:active{transform:scale(.97)}
 .panel{margin-top:28px;padding:24px;border:1px solid #292b31;border-radius:20px;text-align:left;background:#15171b;box-shadow:0 12px 35px rgba(0,0,0,.25)}
 label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%;padding:12px;border:1px solid #444;border-radius:10px;background:#111;color:#fff;font-size:16px}
 .tts{margin-top:12px}.tts button{font-size:14px;padding:11px 16px}.hint{margin-top:18px;color:#777;font-size:13px}
+
+/* ===== 탭 UI ===== */
+.top-tabs{
+  position:fixed;top:18px;left:18px;z-index:50;
+  display:flex;gap:6px;padding:5px;
+  background:#15171b;border:1px solid #292b31;border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.22)
+}
+.top-tab{
+  border:0;border-radius:9px;padding:9px 15px;
+  background:transparent;color:#999;font-size:14px;font-weight:800;
+  cursor:pointer
+}
+.top-tab.active{background:#fff;color:#111}
+.view{display:none}
+.view.active{display:block}
+#homeworkView{width:min(92vw,760px);margin:0 auto;text-align:left}
+.homework-header{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:18px
+}
+.homework-title{font-size:28px;font-weight:800;margin:0}
+.homework-date{font-size:13px;color:#888;margin-top:5px}
+.add-task-btn{white-space:nowrap}
+.homework-list{display:flex;flex-direction:column;gap:14px}
+.homework-card{
+  border:1px solid #292b31;border-radius:16px;background:#15171b;
+  overflow:hidden
+}
+.homework-card-header{
+  display:flex;align-items:center;gap:10px;padding:15px 16px;
+  border-bottom:1px solid #292b31
+}
+.homework-card-header input{
+  flex:1;font-size:17px;font-weight:800;background:#111
+}
+.icon-btn{
+  flex:0 0 auto;width:40px;height:40px;padding:0;border-radius:10px;
+  background:#25282e;color:#ddd;font-size:18px
+}
+.delete-title{color:#aaa}
+.task-list{padding:8px 12px 12px}
+.task-row{
+  display:grid;grid-template-columns:minmax(0,1fr) 32px;align-items:center;
+  gap:8px;padding:6px 0
+}
+.task-check{
+  width:22px;height:22px;margin:0 auto;accent-color:#fff;cursor:pointer
+}
+.task-input{
+  min-width:0;width:100%;padding:10px 34px 10px 11px!important;font-size:14px
+}
+.task-text-wrap{position:relative;min-width:0}
+.task-text-wrap .delete-task{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;padding:0;border-radius:7px;
+  background:transparent;color:#777;font-size:16px;
+  opacity:0;pointer-events:none;transition:opacity .15s,background .15s,color .15s
+}
+.task-text-wrap:hover .delete-task,
+.task-text-wrap:focus-within .delete-task{
+  opacity:1;pointer-events:auto
+}
+.task-text-wrap .delete-task:hover{background:#25282e;color:#fff}
+.task-row.done .task-input{
+  color:#777;text-decoration:line-through
+}
+.delete-task{
+  width:34px;height:34px;padding:0;border-radius:8px;
+  background:transparent;color:#777;font-size:16px
+}
+.delete-task:hover{background:#25282e;color:#fff}
+.add-subtask{
+  margin:4px 0 2px 40px;padding:8px 12px;font-size:13px;
+  background:#25282e;color:#ddd
+}
+.empty-homework{
+  padding:44px 20px;text-align:center;color:#777;
+  border:1px dashed #303238;border-radius:16px
+}
+.empty-homework strong{display:block;color:#aaa;margin-bottom:6px}
+.homework-footer{
+  margin-top:14px;font-size:12px;color:#666;text-align:center
+}
+@media(max-width:600px){
+  .top-tabs{top:10px;left:10px}
+  .top-tab{padding:8px 12px}
+  #timerView{padding-top:45px}
+  #homeworkView{padding-top:45px}
+  .homework-header{align-items:flex-end}
+  .homework-title{font-size:24px}
+}
+
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<div class="top-tabs" role="tablist" aria-label="페이지 선택">
+  <button id="timerTab" class="top-tab active" role="tab" aria-selected="true">⏱️ 타이머</button>
+  <button id="homeworkTab" class="top-tab" role="tab" aria-selected="false">✓ 체크리스트</button>
+</div>
+
+<div id="timerView" class="view active wrap">
 <h1>반복 타이머</h1>
 <div class="interval-card">
   <div class="interval-title">⏱️ 반복 시간</div>
@@ -104,6 +203,20 @@ label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%
 </div>
 <div class="hint">설정한 시간이 끝나면 선택한 TTS와 효과음을 재생하고 자동으로 다시 반복합니다.</div>
 </div>
+
+<div id="homeworkView" class="view">
+  <div class="homework-header">
+    <div>
+      <h1 class="homework-title">체크리스트</h1>
+      <div id="homeworkDate" class="homework-date"></div>
+    </div>
+    <button id="addHomework" class="add-task-btn">＋ 대제목 추가</button>
+  </div>
+
+  <div id="homeworkList" class="homework-list"></div>
+  <div class="homework-footer">숙제 내용은 자동 저장되며, 매일 자정에 체크 상태만 초기화됩니다.</div>
+</div>
+
 
 <script>
 let intervalSeconds=60,remaining=60,running=false,timer=null;
@@ -340,6 +453,213 @@ if('speechSynthesis' in window){
   speechSynthesis.onvoiceschanged=loadVoices;
 }
 render();
+
+/* ===== 숙제 체크 ===== */
+const HW_KEY = 'simpleTimerHomeworkV1';
+const HW_DATE_KEY = 'simpleTimerHomeworkDateV1';
+
+function todayKey(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function loadHomework(){
+  try { return JSON.parse(localStorage.getItem(HW_KEY) || '[]'); }
+  catch(e){ return []; }
+}
+
+function saveHomework(data){
+  localStorage.setItem(HW_KEY, JSON.stringify(data));
+  localStorage.setItem(HW_DATE_KEY, todayKey());
+}
+
+function resetChecksIfNewDay(){
+  const savedDate = localStorage.getItem(HW_DATE_KEY);
+  const today = todayKey();
+  const data = loadHomework();
+
+  if(savedDate && savedDate !== today){
+    data.forEach(section => section.tasks.forEach(task => task.done = false));
+    localStorage.setItem(HW_KEY, JSON.stringify(data));
+  }
+  localStorage.setItem(HW_DATE_KEY, today);
+}
+
+function createId(){
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+}
+
+function renderHomework(){
+  const list = document.getElementById('homeworkList');
+  const data = loadHomework();
+  const d = new Date();
+
+  document.getElementById('homeworkDate').textContent =
+    `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 · 체크 상태는 매일 자정 초기화`;
+
+  if(!data.length){
+    list.innerHTML = `
+      <div class="empty-homework">
+        <strong>아직 등록된 숙제가 없습니다.</strong>
+        <span>＋ 대제목 추가를 눌러 오늘 할 일을 만들어 보세요.</span>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = data.map(section => `
+    <section class="homework-card" data-section-id="${section.id}">
+      <div class="homework-card-header">
+        <input class="section-input" value="${escapeHtml(section.title)}"
+               aria-label="대제목" placeholder="대제목을 입력하세요">
+        <button class="icon-btn add-task" title="해야 할 일 추가" aria-label="해야 할 일 추가">＋</button>
+        <button class="icon-btn delete-title" title="대제목 삭제" aria-label="대제목 삭제">🗑</button>
+      </div>
+      <div class="task-list">
+        ${section.tasks.map(task => `
+          <div class="task-row ${task.done ? 'done' : ''}" data-task-id="${task.id}">
+            <div class="task-text-wrap">
+              <input class="task-input" value="${escapeHtml(task.text)}"
+                     placeholder="해야 할 일을 입력하세요" aria-label="해야 할 일">
+              <button class="delete-task" title="삭제" aria-label="삭제">×</button>
+            </div>
+            <input class="task-check" type="checkbox" ${task.done ? 'checked' : ''} aria-label="완료 체크">
+          </div>
+        `).join('')}
+        <button class="add-subtask">＋ 해야 할 일 추가</button>
+      </div>
+    </section>
+  `).join('');
+}
+
+function escapeHtml(value){
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  }[ch]));
+}
+
+function addSection(){
+  const data = loadHomework();
+  data.push({id:createId(), title:'새 숙제', tasks:[{id:createId(), text:'', done:false}]});
+  saveHomework(data);
+  renderHomework();
+
+  const last = document.querySelector('.homework-card:last-child .section-input');
+  if(last){ last.focus(); last.select(); }
+}
+
+function addTask(sectionId){
+  const data = loadHomework();
+  const section = data.find(s => s.id === sectionId);
+  if(!section) return;
+  section.tasks.push({id:createId(), text:'', done:false});
+  saveHomework(data);
+  renderHomework();
+
+  const card = document.querySelector(`[data-section-id="${sectionId}"]`);
+  const input = card?.querySelector('.task-row:last-of-type .task-input');
+  if(input) input.focus();
+}
+
+function updateSection(sectionId, title){
+  const data = loadHomework();
+  const section = data.find(s => s.id === sectionId);
+  if(section){ section.title = title; saveHomework(data); }
+}
+
+function updateTask(sectionId, taskId, patch){
+  const data = loadHomework();
+  const section = data.find(s => s.id === sectionId);
+  const task = section?.tasks.find(t => t.id === taskId);
+  if(task){ Object.assign(task, patch); saveHomework(data); }
+}
+
+document.getElementById('addHomework').onclick = addSection;
+
+document.getElementById('homeworkList').addEventListener('click', e => {
+  const card = e.target.closest('.homework-card');
+  if(!card) return;
+  const sectionId = card.dataset.sectionId;
+  const data = loadHomework();
+  const section = data.find(s => s.id === sectionId);
+
+  if(e.target.closest('.add-task') || e.target.closest('.add-subtask')){
+    addTask(sectionId);
+    return;
+  }
+
+  if(e.target.closest('.delete-title')){
+    if(confirm(`"${section?.title || '이 대제목'}"을 삭제할까요?`)){
+      saveHomework(data.filter(s => s.id !== sectionId));
+      renderHomework();
+    }
+    return;
+  }
+
+  if(e.target.closest('.delete-task')){
+    const row = e.target.closest('.task-row');
+    const taskId = row.dataset.taskId;
+    if(section){
+      section.tasks = section.tasks.filter(t => t.id !== taskId);
+      saveHomework(data);
+      renderHomework();
+    }
+  }
+});
+
+document.getElementById('homeworkList').addEventListener('change', e => {
+  const card = e.target.closest('.homework-card');
+  const row = e.target.closest('.task-row');
+  if(!card || !row) return;
+
+  if(e.target.classList.contains('task-check')){
+    updateTask(card.dataset.sectionId, row.dataset.taskId, {done:e.target.checked});
+    row.classList.toggle('done', e.target.checked);
+  }
+
+  if(e.target.classList.contains('section-input')){
+    updateSection(card.dataset.sectionId, e.target.value);
+  }
+});
+
+document.getElementById('homeworkList').addEventListener('input', e => {
+  const card = e.target.closest('.homework-card');
+  const row = e.target.closest('.task-row');
+  if(!card) return;
+
+  if(e.target.classList.contains('section-input')){
+    updateSection(card.dataset.sectionId, e.target.value);
+  } else if(e.target.classList.contains('task-input') && row){
+    updateTask(card.dataset.sectionId, row.dataset.taskId, {text:e.target.value});
+  }
+});
+
+function switchView(view){
+  const timer = view === 'timer';
+  document.getElementById('timerView').classList.toggle('active', timer);
+  document.getElementById('homeworkView').classList.toggle('active', !timer);
+  document.getElementById('timerTab').classList.toggle('active', timer);
+  document.getElementById('homeworkTab').classList.toggle('active', !timer);
+  document.getElementById('timerTab').setAttribute('aria-selected', timer);
+  document.getElementById('homeworkTab').setAttribute('aria-selected', !timer);
+  if(!timer) renderHomework();
+}
+
+document.getElementById('timerTab').onclick = () => switchView('timer');
+document.getElementById('homeworkTab').onclick = () => switchView('homework');
+
+resetChecksIfNewDay();
+renderHomework();
+
+/* 자정이 지난 뒤 페이지가 열려 있더라도 체크 상태를 자동 초기화 */
+setInterval(() => {
+  const current = todayKey();
+  const saved = localStorage.getItem(HW_DATE_KEY);
+  if(saved !== current){
+    resetChecksIfNewDay();
+    renderHomework();
+  }
+}, 30000);
+
 </script>
 </body>
 </html>
