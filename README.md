@@ -5,4 +5,4 @@
 
 ## 사용하기
 
-👉 https://junsubin03.github.io/timer/
+👉 https://junsubin03.github.io/maple/
