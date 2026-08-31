@@ -232,6 +232,16 @@ body.entry-open > #homeworkView{display:none!important}
 .input-wrap .delete-input{position:absolute;right:5px;top:50%;transform:translateY(-50%);opacity:0;pointer-events:none}
 .input-wrap:hover .delete-input,.input-wrap:focus-within .delete-input{opacity:1;pointer-events:auto}
 
+/* ===== 커스텀 확인 모달 UI ===== */
+.confirm-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(2px)}
+.confirm-box{width:min(85vw,320px);background:#15171b;border:1px solid #303238;border-radius:16px;padding:24px;text-align:center;box-shadow:0 15px 45px rgba(0,0,0,.5);animation:popIn .2s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.confirm-msg{font-size:15px;color:#eee;margin-bottom:20px;line-height:1.4;word-break:keep-all}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btns button{flex:1;padding:12px;font-size:14px}
+.confirm-btns .btn-yes{background:#ff5252;color:#fff}
+.confirm-btns .btn-yes:hover{background:#ff3838}
+
 /* ===== 수익/사냥/보스 기록 ===== */
 .record-view{width:min(94vw,1000px);margin:0 auto;text-align:left;padding:88px 0 30px}
 .record-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}
@@ -245,6 +255,7 @@ body.entry-open > #homeworkView{display:none!important}
 .primary-wide{width:100%;margin-top:15px}.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
 .summary-box{padding:17px;border:1px solid #292b31;border-radius:14px;background:#15171b}.summary-label{font-size:12px;color:#888}.summary-value{font-size:22px;font-weight:800;margin-top:7px;font-variant-numeric:tabular-nums}
 .record-row{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr auto;gap:10px;padding:11px 0;border-bottom:1px solid #292b31;align-items:center;font-size:13px}.record-row:last-child{border-bottom:0}.muted{color:#888}.money{font-variant-numeric:tabular-nums;text-align:right}
+.profit-row{grid-template-columns:auto 1.2fr 1fr 1.5fr auto !important;}
 .preset-toolbar{display:flex;gap:8px;flex-wrap:wrap}.preset-toolbar select{flex:1;min-width:180px}.preset-toolbar button{padding:10px 14px;font-size:13px}.preset-chars{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:12px}.preset-char{border:1px solid #292b31;border-radius:11px;padding:10px;background:#101216}.preset-char-head{display:flex;justify-content:space-between;align-items:center;color:#aaa;font-size:12px;margin-bottom:8px}.preset-char-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.preset-char input{padding:9px;font-size:13px}.potion-name{font-size:11px;color:#777;margin-top:7px}.price-info{margin-top:13px;padding:12px;border:1px solid #292b31;border-radius:11px;background:#101216;color:#bbb;font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.price-info strong{color:#fff}.danger{color:#ff6b88}.empty-record{padding:25px;text-align:center;color:#777}.delete-record{padding:7px 9px;background:#25282e;color:#aaa;font-size:12px}
 .preset-name-wrap input{flex:1}.preset-name-wrap button{padding:10px 14px;font-size:13px}
 .preset-chars{grid-template-columns:1fr}
@@ -256,7 +267,14 @@ body.entry-open > #homeworkView{display:none!important}
 .consumable-preview{grid-column:1/-1;margin-top:-2px}.potion-row .fixed-price{background:#191b20;color:#aaa}.potion-row .custom-price{display:block}
 .potion-head{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;padding:0 8px;color:#777;font-size:10px;text-align:right}.potion-head span:first-child{text-align:left}.potion-head span:nth-child(2),.potion-head span:nth-child(3){padding-top:0}
 
-@media(max-width:700px){.form-grid,.consumable-grid,.preset-chars,.summary-grid{grid-template-columns:1fr}.record-row{grid-template-columns:1fr 1fr}.money{text-align:left}.consumable-item{grid-template-columns:minmax(0,1fr) 70px 95px;align-items:start}}
+@media(max-width:700px){
+  .form-grid,.consumable-grid,.preset-chars,.summary-grid{grid-template-columns:1fr}
+  .record-row{grid-template-columns:1fr 1fr}
+  .money{text-align:left}
+  .consumable-item{grid-template-columns:minmax(0,1fr) 70px 95px;align-items:start}
+  .profit-row{grid-template-columns:auto 1fr 1fr auto !important;}
+  .profit-row .money{text-align:right;}
+}
 
 
 .boss-selection-card{overflow:hidden}
@@ -294,7 +312,7 @@ body.entry-open > #homeworkView{display:none!important}
 .boss-count-box.monthly span{color:#a06b4f}
 /* 총 영약값 + 저장 버튼 */
 .potion-total-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:13px 16px;border:1px solid #303238;border-radius:12px;background:#101216;font-size:14px;color:#bbb}
-.potion-total-row span{font-weight:700;color:#aaa}
+.potion-total-row span{font-weight:700}
 .potion-total-row b{font-size:18px;color:#7fd3ff;font-variant-numeric:tabular-nums;font-weight:800;flex:1;min-width:120px}
 .potion-total-row .primary-wide{flex:0 0 auto}
 /* 이번 기록 물욕템 */
@@ -360,6 +378,16 @@ body.entry-open > #homeworkView{display:none!important}
 </style>
 </head>
 <body class="entry-open">
+
+<div id="customConfirmOverlay" class="confirm-overlay">
+  <div class="confirm-box">
+    <div id="confirmMsg" class="confirm-msg">정말 삭제하시겠습니까?</div>
+    <div class="confirm-btns">
+      <button id="confirmNo" class="secondary">아니오</button>
+      <button id="confirmYes" class="btn-yes">예, 삭제합니다</button>
+    </div>
+  </div>
+</div>
 
 <div id="entryView">
   <div class="entry-box">
@@ -543,7 +571,16 @@ body.entry-open > #homeworkView{display:none!important}
 <div id="profitView" class="view record-view">
   <div class="record-header"><div><h1>수익 정리</h1><div class="record-sub">사냥과 보스 기록을 한눈에 정리합니다.</div></div></div>
   <div class="summary-grid" id="profitSummary"></div>
-  <div class="record-card"><div class="section-title">📊 최근 기록</div><div id="profitRecent"></div></div>
+  <div class="record-card">
+    <div class="section-title" style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <span>📊 전체 기록 관리</span>
+      <div style="font-size:12px; display:flex; gap:12px; align-items:center;">
+        <label style="display:flex; align-items:center; gap:4px; margin:0; cursor:pointer; color:#bbb;"><input type="checkbox" id="selectAllProfit" style="width:16px; height:16px; margin:0; accent-color:#fff;"> 모두 선택</label>
+        <button id="deleteSelectedProfit" class="small-btn secondary" style="padding:6px 10px; font-size:12px; background:#25282e; color:#aaa;">선택 삭제</button>
+      </div>
+    </div>
+    <div id="profitRecent"></div>
+  </div>
 </div>
 
 <div id="huntView" class="view record-view">
@@ -551,10 +588,10 @@ body.entry-open > #homeworkView{display:none!important}
   <div class="record-card">
     <div class="form-grid">
       <label>캐릭터<input id="huntCharacter" type="text" placeholder="닉네임"></label>
-      <label>사냥시간 (분)<input id="huntMinutes" type="number" min="1" placeholder="120"></label>
+      <label>사냥시간 (분)<input id="huntMinutes" type="number" min="1" placeholder="120"><div class="money-preview" data-preview-time="huntMinutes"></div></label>
       <label>사냥 전 메소<input id="huntBefore" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntBefore"></div></label>
       <label>사냥 후 메소<input id="huntAfter" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntAfter"></div></label>
-      <label>획득 솔 에르다 조각<input id="huntFragments" type="number" min="0" placeholder="0"></label>
+      <label>획득 솔 에르다 조각<input id="huntFragments" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for-count="huntFragments"></div></label>
       <label>조각 개당 가격<input id="huntFragmentPrice" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntFragmentPrice"></div></label>
     </div>
     <div class="section-title" style="margin-top:22px">🧪 사용한 소모품 <span class="sub">개수 × 가격</span></div>
@@ -689,6 +726,22 @@ body.entry-open > #homeworkView{display:none!important}
 </div>
 
 <script>
+// 커스텀 확인 창(모달) 함수 추가
+function showConfirm(msg, onYes) {
+  const overlay = document.getElementById('customConfirmOverlay');
+  const msgEl = document.getElementById('confirmMsg');
+  msgEl.innerHTML = msg;
+  overlay.style.display = 'flex';
+  
+  document.getElementById('confirmYes').onclick = () => { 
+    overlay.style.display = 'none'; 
+    onYes(); 
+  };
+  document.getElementById('confirmNo').onclick = () => { 
+    overlay.style.display = 'none'; 
+  };
+}
+
 let intervalSeconds=60,remaining=60,running=false,timer=null;
 const timeEl=document.getElementById('time'),statusEl=document.getElementById('status'),textEl=document.getElementById('ttsText');
 
@@ -1329,17 +1382,44 @@ function moneyShort(n){
   return n.toLocaleString()
 }
 function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function mesoPreview(n){
-  n=Math.floor(Number(n||0));
-  if(!n||isNaN(n))return '';
-  const eok=Math.floor(n/1e8),man=Math.floor((n%1e8)/1e4),rest=n%1e4;
-  const parts=[];
-  if(eok)parts.push(eok.toLocaleString('ko-KR')+'억');
-  if(man)parts.push(man.toLocaleString('ko-KR')+'만');
-  if(rest||!parts.length)parts.push(rest.toLocaleString('ko-KR')+' 메소');
-  else parts[parts.length-1]+=' 메소';
+
+// '경' 단위까지 지원하는 숫자 포맷팅 함수
+function formatKoreanNumber(n, suffix = ' 메소') {
+  n = Math.floor(Number(n||0));
+  if(!n||isNaN(n)) return '';
+  const gyeong = Math.floor(n / 10000000000000000);
+  const jo = Math.floor((n % 10000000000000000) / 1000000000000);
+  const eok = Math.floor((n % 1000000000000) / 100000000);
+  const man = Math.floor((n % 100000000) / 10000);
+  const rest = n % 10000;
+
+  const parts = [];
+  if(gyeong) parts.push(gyeong.toLocaleString('ko-KR') + '경');
+  if(jo) parts.push(jo.toLocaleString('ko-KR') + '조');
+  if(eok) parts.push(eok.toLocaleString('ko-KR') + '억');
+  if(man) parts.push(man.toLocaleString('ko-KR') + '만');
+
+  if(rest || !parts.length) {
+     parts.push(rest.toLocaleString('ko-KR') + suffix);
+  } else {
+     parts[parts.length-1] += suffix;
+  }
   return parts.join(' ');
 }
+
+function mesoPreview(n) { return formatKoreanNumber(n, ' 메소'); }
+function countPreview(n) { return formatKoreanNumber(n, '개'); }
+function timePreview(m) {
+  m = Math.floor(Number(m||0));
+  if(!m||isNaN(m)) return '';
+  const hours = Math.floor(m / 60);
+  const mins = m % 60;
+  const parts = [];
+  if(hours) parts.push(`${hours.toLocaleString('ko-KR')}시간`);
+  if(mins || !parts.length) parts.push(`${mins}분`);
+  return parts.join(' ');
+}
+
 function updateMoneyPreviews(){
   document.querySelectorAll('[data-preview-price]').forEach(el=>{
     const k=el.dataset.previewPrice;
@@ -1360,12 +1440,43 @@ function updateMoneyPreviews(){
     const inp=document.getElementById(el.dataset.previewFor);
     el.textContent=mesoPreview(inp?inp.value:0);
   });
+  
+  // 개수 및 시간 프리뷰 추가
+  document.querySelectorAll('[data-preview-qty]').forEach(el=>{
+    const k=el.dataset.previewQty;
+    const inp=document.querySelector('#huntConsumables [data-consume="'+CSS.escape(k)+'"][data-kind="qty"]');
+    el.textContent=countPreview(inp?inp.value:0);
+  });
+  document.querySelectorAll('[data-preview-potion-qty]').forEach(el=>{
+    const k=el.dataset.previewPotionQty;
+    const inp=document.querySelector('#presetChars [data-potion="'+CSS.escape(k)+'"]');
+    el.textContent=countPreview(inp?inp.value:0);
+  });
+  document.querySelectorAll('[data-preview-for-count]').forEach(el=>{
+    const inp=document.getElementById(el.dataset.previewForCount);
+    el.textContent=countPreview(inp?inp.value:0);
+  });
+  document.querySelectorAll('[data-preview-time]').forEach(el=>{
+    const inp=document.getElementById(el.dataset.previewTime);
+    el.textContent=timePreview(inp?inp.value:0);
+  });
 }
 
 function setupConsumables(){
   const box=document.getElementById('huntConsumables');
   if(!box)return;
-  box.innerHTML=defaultConsumables.map(([name,key])=>`<div class="consumable-item"><span>${name}</span><input type="number" min="0" data-consume="${key}" data-kind="qty" placeholder="개수"><input type="number" min="0" data-consume="${key}" data-kind="price" placeholder="개당 가격"><div class="money-preview consumable-preview" data-preview-consume="${key}"></div></div>`).join('');
+  box.innerHTML=defaultConsumables.map(([name,key])=>`
+    <div class="consumable-item">
+      <span>${name}</span>
+      <div class="price-cell">
+        <input type="number" min="0" data-consume="${key}" data-kind="qty" placeholder="개수">
+        <div class="money-preview" data-preview-qty="${key}"></div>
+      </div>
+      <div class="price-cell">
+        <input type="number" min="0" data-consume="${key}" data-kind="price" placeholder="개당 가격">
+        <div class="money-preview" data-preview-consume="${key}"></div>
+      </div>
+    </div>`).join('');
 }
 
 function setupPresets(){
@@ -1392,7 +1503,10 @@ function renderPreset(){
       <div class="potion-head"><span>이름</span><span>개수</span><span>개당 가격</span></div>
       <div class="potion-list">${potionNames.map(([n,k,price,fixed])=>`<div class="potion-row">
         <span class="potion-label">${n}</span>
-        <input type="number" min="0" data-potion="${k}" data-field="qty" value="${Number(c.potions?.[k]||0)}" placeholder="0">
+        <div class="price-cell">
+          <input type="number" min="0" data-potion="${k}" data-field="qty" value="${Number(c.potions?.[k]||0)}" placeholder="0">
+          <div class="money-preview" data-preview-potion-qty="${k}"></div>
+        </div>
         <div class="price-cell">
           ${fixed?`<input type="number" class="fixed-price" data-fixed-price="${k}" value="${price}" readonly>`:`<input type="number" min="0" data-price="${k}" data-field="price" value="${Number(c.prices?.[k]||0)}" placeholder="가격">`}
           <div class="money-preview" data-preview-price="${k}" data-fixed="${fixed?1:0}"></div>
@@ -1614,16 +1728,48 @@ function renderBosses(){
 }
 
 function renderProfit(){
-  const d=recLoad(),huntGross=d.hunts.reduce((a,r)=>a+Number(r.net||0),0),bossGross=d.bosses.reduce((a,r)=>a+Number(r.net||0),0),total=huntGross+bossGross;
-  document.getElementById('profitSummary').innerHTML=[['사냥 순수익',huntGross],['보스 순수익',bossGross],['총 순수익',total],['기록 수',d.hunts.length+d.bosses.length]].map(x=>`<div class="summary-box"><div class="summary-label">${x[0]}</div><div class="summary-value">${x[0]=='기록 수'?Number(x[1]).toLocaleString()+'개':moneyShort(x[1])}</div></div>`).join('');
-  const all=[...d.hunts.map(r=>({type:'사냥',name:r.character,net:r.net})),...d.bosses.map(r=>({type:'보스',name:r.character,net:r.net}))].slice(-8).reverse();
-  document.getElementById('profitRecent').innerHTML=all.length?all.map(r=>`<div class="record-row"><div><b>${r.type}</b></div><div>${esc(r.name||'미입력')}</div><div></div><div class="money"><b>${money(r.net)}</b></div><div></div></div>`).join(''):'<div class="empty-record">아직 수익 기록이 없습니다.</div>';
+  const d = recLoad();
+  const huntGross = d.hunts.reduce((a,r) => a + Number(r.net || 0), 0);
+  const bossGross = d.bosses.reduce((a,r) => a + Number(r.net || 0), 0);
+  const total = huntGross + bossGross;
+  
+  document.getElementById('profitSummary').innerHTML = [
+    ['사냥 순수익', huntGross],
+    ['보스 순수익', bossGross],
+    ['총 순수익', total],
+    ['기록 수', d.hunts.length + d.bosses.length]
+  ].map(x => `<div class="summary-box"><div class="summary-label">${x[0]}</div><div class="summary-value">${x[0]=='기록 수' ? Number(x[1]).toLocaleString() + '개' : moneyShort(x[1])}</div></div>`).join('');
+  
+  // 모든 기록 합치고 최신순 정렬
+  const allHunts = d.hunts.map((r, i) => ({ type: '사냥', origIdx: i, data: r, created: r.created || 0 }));
+  const allBosses = d.bosses.map((r, i) => ({ type: '보스', origIdx: i, data: r, created: r.created || 0 }));
+  const all = [...allHunts, ...allBosses].sort((a,b) => b.created - a.created);
+  
+  const box = document.getElementById('profitRecent');
+  if(!all.length){
+    box.innerHTML = '<div class="empty-record">아직 수익 기록이 없습니다.</div>';
+    return;
+  }
+  
+  box.innerHTML = all.map(r => `
+    <div class="record-row profit-row">
+      <input type="checkbox" class="profit-check" data-type="${r.type === '사냥' ? 'hunt' : 'boss'}" data-idx="${r.origIdx}" style="width:16px; height:16px; accent-color:#fff;">
+      <div><b>${r.type}</b> <div class="muted">${new Date(r.created).toLocaleDateString().slice(0,-1)}</div></div>
+      <div>${esc(r.data.character || '미입력')}</div>
+      <div class="money"><b>${money(r.data.net)}</b></div>
+      <button class="delete-record" data-type="${r.type === '사냥' ? 'hunt' : 'boss'}" data-index="${r.origIdx}">삭제</button>
+    </div>
+  `).join('');
+  
+  const selectAllCb = document.getElementById('selectAllProfit');
+  if(selectAllCb) selectAllCb.checked = false;
 }
 
 document.getElementById('huntView').addEventListener('input',e=>{
-  if(['huntBefore','huntAfter','huntFragmentPrice'].includes(e.target.id))updateMoneyPreviews();
-  if(e.target.matches('[data-consume][data-kind="price"]'))updateMoneyPreviews();
+  if(['huntBefore','huntAfter','huntFragmentPrice','huntMinutes','huntFragments'].includes(e.target.id))updateMoneyPreviews();
+  if(e.target.matches('[data-consume]'))updateMoneyPreviews();
 });
+
 function saveHunt(){
   const q=id=>Number(document.getElementById(id).value||0),character=document.getElementById('huntCharacter').value.trim(),minutes=q('huntMinutes'),before=q('huntBefore'),after=q('huntAfter'),fragments=q('huntFragments'),fp=q('huntFragmentPrice');
   if(!character||minutes<1){alert('캐릭터와 사냥시간을 입력해 주세요.');return}
@@ -1666,12 +1812,18 @@ document.getElementById('addPreset').onclick=()=>{
   d.presets.push({name:'',chars:[{name:'',potions:{},prices:{}}]});
   recSave(d);setupPresets();document.getElementById('presetSelect').value=String(d.presets.length-1);renderPreset();renderBossCards();
 };
+
 document.getElementById('deletePreset').onclick=()=>{
   const d=recLoad();
   if(d.presets.length<=1){alert('프리셋은 최소 1개가 필요합니다.');return}
-  const i=Number(document.getElementById('presetSelect').value);
-  d.presets.splice(i,1);recSave(d);setupPresets();
+  showConfirm("현재 선택된 프리셋을 정말 삭제할까요?", () => {
+    const i=Number(document.getElementById('presetSelect').value);
+    d.presets.splice(i,1);
+    recSave(d);
+    setupPresets();
+  });
 };
+
 document.getElementById('presetChars').addEventListener('input',e=>{
   const d=recLoad(),i=Number(document.getElementById('presetSelect').value),c=d.presets[i]?.chars?.[0];
   if(!c)return;
@@ -1683,6 +1835,7 @@ document.getElementById('presetChars').addEventListener('input',e=>{
   updateMoneyPreviews();
   if(e.target.classList.contains('preset-name'))renderBossCards();
 });
+
 document.getElementById('bossCards').addEventListener('click',e=>{
   const diff=e.target.closest('.boss-difficulty');
   if(diff && !diff.disabled){
@@ -1705,351 +1858,95 @@ document.getElementById('bossCards').addEventListener('click',e=>{
   const cancel=e.target.closest('[data-cancel-boss]');
   if(cancel){pendingBosses.delete(cancel.dataset.cancelBoss);renderBossCards();}
 });
+
 document.getElementById('bossCards').addEventListener('change',e=>{
   if(!e.target.classList.contains('boss-party'))return;
   const name=e.target.dataset.boss,v=pendingBosses.get(name);
   if(v){v.party=Number(e.target.value);renderBossCards();}
 });
+
+// 사냥 기록 삭제 로직 수정 (버그 픽스 + 모달 연결)
 document.getElementById('huntView').addEventListener('click',e=>{
   if(!e.target.classList.contains('delete-record'))return;
-  const d=recLoad();d.hunts.splice(Number(e.target.dataset.index),1);renderHunts();renderProfit();
+  const idx = Number(e.target.dataset.index);
+  showConfirm("이 사냥 기록을 정말 삭제하시겠습니까?", () => {
+    const d=recLoad();
+    d.hunts.splice(idx,1);
+    recSave(d); // 누락되었던 핵심 코드 복구!
+    renderHunts();
+    renderProfit();
+  });
 });
+
+// 보스 기록 개별 삭제
 document.getElementById('bossView').addEventListener('click',e=>{
   if(!e.target.classList.contains('delete-record'))return;
-  const d=recLoad();d.bosses.splice(Number(e.target.dataset.index),1);recSave(d);renderBosses();renderProfit();renderBossCards();
+  const idx = Number(e.target.dataset.index);
+  showConfirm("이 보스 기록을 정말 삭제하시겠습니까?", () => {
+    const d=recLoad();
+    d.bosses.splice(idx,1);
+    recSave(d);
+    renderBosses();
+    renderProfit();
+    renderBossCards();
+  });
 });
+
+// 수익 정리 개별 삭제 및 전체 선택 삭제 로직 
+const profitView = document.getElementById('profitView');
+if (profitView) {
+  // 개별 삭제 버튼 이벤트 
+  profitView.addEventListener('click', e => {
+    if (e.target.classList.contains('delete-record')) {
+      const type = e.target.dataset.type;
+      const idx = Number(e.target.dataset.index);
+      showConfirm(`이 ${type === 'hunt' ? '사냥' : '보스'} 기록을 정말 삭제하시겠습니까?`, () => {
+        const d = recLoad();
+        if (type === 'hunt') d.hunts.splice(idx, 1);
+        else if (type === 'boss') d.bosses.splice(idx, 1);
+        recSave(d);
+        renderHunts(); renderBosses(); renderProfit();
+      });
+    }
+  });
+
+  // 모두 선택 체크박스
+  profitView.addEventListener('change', e => {
+    if (e.target.id === 'selectAllProfit') {
+      const checked = e.target.checked;
+      document.querySelectorAll('.profit-check').forEach(cb => cb.checked = checked);
+    }
+  });
+
+  // 선택 삭제 버튼 
+  profitView.addEventListener('click', e => {
+    if (e.target.id === 'deleteSelectedProfit') {
+      const checked = Array.from(document.querySelectorAll('.profit-check:checked'));
+      if (checked.length === 0) {
+        alert('삭제할 기록을 선택해 주세요.');
+        return;
+      }
+      showConfirm(`선택한 ${checked.length}개의 기록을 정말 삭제하시겠습니까?`, () => {
+        const d = recLoad();
+        
+        // 인덱스가 밀리는 걸 방지하기 위해 내림차순(역순)으로 정렬해서 삭제
+        const huntsToDelete = checked.filter(cb => cb.dataset.type === 'hunt').map(cb => Number(cb.dataset.idx)).sort((a, b) => b - a);
+        const bossesToDelete = checked.filter(cb => cb.dataset.type === 'boss').map(cb => Number(cb.dataset.idx)).sort((a, b) => b - a);
+
+        huntsToDelete.forEach(idx => d.hunts.splice(idx, 1));
+        bossesToDelete.forEach(idx => d.bosses.splice(idx, 1));
+
+        recSave(d);
+        renderHunts(); renderBosses(); renderProfit();
+      });
+    }
+  });
+}
+
 for(const [id,v] of [['menuProfit','profit'],['menuHunt','hunt'],['menuBoss','boss'],['menuLinks','links']]){
   document.getElementById(id).onclick=()=>{closeDrawer();document.body.classList.remove('entry-open');switchRecordView(v);setDrawerActive(v)}
 }
 
 </script>
-<script data-pplx-inline-edit>
-(function () {
-  if (window === window.top) return;
-
-  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://perplexity.localhost","http://localhost:1420","http://127.0.0.1:1420","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
-  const MAX_FONT_BYTES = 500 * 1024;
-  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
-  let scrollForwarding = false;
-  let scrollRaf = 0;
-  let trustedTopOrigin = null;
-
-  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
-  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
-  // across multiple labels.
-  function matchesAllowedOrigin(origin) {
-    if (!origin) return false;
-    for (const entry of allowedParentOrigins) {
-      if (!entry.includes("*")) {
-        if (entry === origin) return true;
-        continue;
-      }
-      const pattern = new RegExp(
-        "^" +
-          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
-          "$",
-      );
-      if (pattern.test(origin)) return true;
-    }
-    return false;
-  }
-
-  // Trust decision: when the sender is same-origin-visible (event.origin is a
-  // real origin like https://www.perplexity.ai) we trust event.origin directly.
-  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
-  // broker's stamped `parentOrigin` to identify the top window. The fallback
-  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
-  // on the response path (see postToTrustedTop) to ensure replies can't be
-  // delivered to anyone but the actual top window of that claimed origin.
-  function getTrustedParentOrigin(event) {
-    const forwardedParentOrigin =
-      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
-    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
-    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
-  }
-
-  // All responses go to window.top with targetOrigin = the allowlisted origin.
-  // An attacker that iframes us inside their own null-origin broker can claim
-  // any parentOrigin they like, but the browser will drop the reply whenever
-  // the real top's origin doesn't match — so the screenshot never leaves.
-  function postToTrustedTop(message) {
-    if (!trustedTopOrigin) return;
-    try {
-      window.top.postMessage(message, trustedTopOrigin);
-    } catch (_error) {}
-  }
-
-  function inlineAll(original, clone) {
-    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
-
-    try {
-      const computedStyle = getComputedStyle(original);
-      // cssText on a computed style is the serialized declaration in modern
-      // Chromium/Safari — a single read beats enumerating ~400 longhand
-      // properties. Firefox returns "" here, so we fall back on empty.
-      const serialized = computedStyle.cssText;
-      if (serialized) {
-        clone.style.cssText = serialized;
-      } else {
-        const parts = new Array(computedStyle.length);
-        for (let index = 0; index < computedStyle.length; index += 1) {
-          const property = computedStyle[index];
-          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
-        }
-        clone.style.cssText = parts.join("");
-      }
-    } catch (_error) {}
-
-    const originalChildren = original.children;
-    const clonedChildren = clone.children;
-    for (
-      let index = 0;
-      index < originalChildren.length && index < clonedChildren.length;
-      index += 1
-    ) {
-      inlineAll(originalChildren[index], clonedChildren[index]);
-    }
-  }
-
-  function extractFontUrl(srcValue) {
-    const matches = [
-      ...srcValue.matchAll(
-        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
-      ),
-    ];
-    if (matches.length === 0) return null;
-    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
-    if (woff2) return woff2[1];
-    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
-    if (woff) return woff[1];
-    return matches[0][1];
-  }
-
-  // Cache resolved font URL -> data URI across captures. Fonts on a page
-  // essentially never change, and a batch run emits multiple captures back to
-  // back — without this we'd refetch + re-base64 every time.
-  const fontDataUriCache = new Map();
-  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
-
-  async function fetchAsDataUri(url) {
-    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
-    let dataUri = null;
-    try {
-      const response = await fetch(url, { mode: "cors", credentials: "omit" });
-      if (response.ok) {
-        const blob = await response.blob();
-        if (blob.size <= MAX_FONT_BYTES) {
-          dataUri = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onloadend = () =>
-              resolve(typeof reader.result === "string" ? reader.result : null);
-            reader.onerror = () => resolve(null);
-            reader.readAsDataURL(blob);
-          });
-        }
-      }
-    } catch (_error) {
-      dataUri = null;
-    }
-    fontDataUriCache.set(url, dataUri);
-    return dataUri;
-  }
-
-  function collectFontFaceRuleTexts() {
-    const rules = [];
-    for (const sheet of document.styleSheets) {
-      let cssRules;
-      try {
-        cssRules = sheet.cssRules;
-      } catch (_error) {
-        continue;
-      }
-      if (!cssRules) continue;
-      for (const rule of cssRules) {
-        const cssText = rule.cssText || "";
-        if (cssText.startsWith("@font-face")) rules.push(cssText);
-      }
-    }
-    return rules;
-  }
-
-  async function buildInlinedFontCss() {
-    const ruleTexts = collectFontFaceRuleTexts();
-    if (ruleTexts.length === 0) return null;
-
-    const resolved = ruleTexts.map((cssText) => {
-      if (!SRC_DECLARATION_RE.test(cssText)) return null;
-      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
-      if (!srcMatch) return null;
-      const url = extractFontUrl(srcMatch[1]);
-      if (!url) return null;
-      try {
-        return { cssText, url: new URL(url, document.baseURI).href };
-      } catch (_error) {
-        return null;
-      }
-    });
-
-    const dataUris = await Promise.all(
-      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
-    );
-
-    const inlined = [];
-    let totalBytes = 0;
-    for (let index = 0; index < resolved.length; index += 1) {
-      const entry = resolved[index];
-      const dataUri = dataUris[index];
-      if (!entry || !dataUri) continue;
-      const approxBytes = dataUri.length * 0.75;
-      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
-      totalBytes += approxBytes;
-      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
-    }
-    return inlined.length > 0 ? inlined.join("\n") : null;
-  }
-
-  function stripExternal(clone) {
-    const images = clone.querySelectorAll("img");
-    for (let index = 0; index < images.length; index += 1) {
-      const src = images[index].getAttribute("src");
-      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
-    }
-
-    const elements = clone.querySelectorAll("*");
-    for (let index = 0; index < elements.length; index += 1) {
-      const style = elements[index].style.cssText;
-      if (style && style.includes("url(")) {
-        elements[index].style.cssText = style.replace(
-          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
-          "none",
-        );
-      }
-    }
-  }
-
-  function emitScroll() {
-    scrollRaf = 0;
-    if (!scrollForwarding) return;
-    postToTrustedTop({
-      type: "INLINE_EDIT_SCROLL",
-      scrollX: window.scrollX,
-      scrollY: window.scrollY,
-    });
-  }
-
-  window.addEventListener(
-    "scroll",
-    function () {
-      if (!scrollForwarding || scrollRaf) return;
-      scrollRaf = requestAnimationFrame(emitScroll);
-    },
-    { passive: true, capture: true },
-  );
-
-  async function handleCaptureRequest(event) {
-    const requestId = event.data.requestId;
-    const scrollX = window.scrollX;
-    const scrollY = window.scrollY;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    function postResult(dataUrl) {
-      postToTrustedTop({
-        type: "INLINE_EDIT_SCREENSHOT_RESULT",
-        requestId,
-        dataUrl,
-        scrollX,
-        scrollY,
-      });
-    }
-
-    try {
-      // Wait for any pending web fonts to resolve so both inline metrics and
-      // the @font-face inlining below see the same loaded faces.
-      if (document.fonts && document.fonts.ready) {
-        try {
-          await document.fonts.ready;
-        } catch (_error) {}
-      }
-
-      const clone = document.documentElement.cloneNode(true);
-      inlineAll(document.documentElement, clone);
-
-      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
-      for (let index = 0; index < removedNodes.length; index += 1) {
-        removedNodes[index].remove();
-      }
-
-      stripExternal(clone);
-
-      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
-      // can resolve them — external font URLs aren't fetched during
-      // foreignObject rendering, which would otherwise force a fallback face
-      // and change text metrics.
-      const inlinedFontCss = await buildInlinedFontCss();
-      if (inlinedFontCss) {
-        const styleEl = document.createElement("style");
-        styleEl.textContent = inlinedFontCss;
-        const head = clone.querySelector("head");
-        if (head) head.appendChild(styleEl);
-        else clone.insertBefore(styleEl, clone.firstChild);
-      }
-
-      const html = new XMLSerializer().serializeToString(clone);
-      const svg =
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
-        '<foreignObject width="100%" height="100%">' +
-        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
-        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
-        html +
-        "</div></div></foreignObject></svg>";
-      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-      const image = new Image();
-      image.onload = function () {
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        canvas.getContext("2d").drawImage(image, 0, 0);
-        postResult(canvas.toDataURL("image/png"));
-      };
-      image.onerror = function () {
-        postResult(null);
-      };
-      image.src = svgUrl;
-    } catch (_error) {
-      postResult(null);
-    }
-  }
-
-  window.addEventListener("message", function (event) {
-    if (!event.data) return;
-    // Only accept messages from the direct parent frame. Blocks sibling /
-    // unrelated-window postMessage senders that could otherwise reach us.
-    if (event.source !== window.parent) return;
-
-    const trustedParentOrigin = getTrustedParentOrigin(event);
-    if (!trustedParentOrigin) return;
-    trustedTopOrigin = trustedParentOrigin;
-
-    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
-      scrollForwarding = true;
-      emitScroll();
-      return;
-    }
-
-    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
-      scrollForwarding = false;
-      if (scrollRaf) cancelAnimationFrame(scrollRaf);
-      scrollRaf = 0;
-      return;
-    }
-
-    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
-
-    handleCaptureRequest(event);
-  });
-})();
-
-
-</script></body>
+</body>
 </html>
