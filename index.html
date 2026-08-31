@@ -22,8 +22,8 @@ select{padding:11px 14px;border:1px solid #444;border-radius:10px;background:#33
 .choice:has(input:checked){border-color:#777;background:#25282e;color:#fff;box-shadow:inset 0 0 0 1px #555}
 .choice input{width:auto;accent-color:#fff}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b0c0f;color:#f5f5f5;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-.wrap{text-align:center;width:min(92vw,620px);padding:32px 0}h1{font-size:28px;margin:0 0 24px}
-#time{font-size:clamp(90px,24vw,170px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.wrap{text-align:center;width:min(92vw,620px);padding:40px 0 32px}h1{font-size:28px;margin:0 0 24px}
+#time{font-size:clamp(72px,20vw,150px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
 
 .interval-card{margin:0 auto 24px;padding:16px;border:1px solid #292b31;border-radius:16px;background:#15171b;text-align:left}
 .interval-title{font-weight:800;margin-bottom:12px}
@@ -31,25 +31,70 @@ select{padding:11px 14px;border:1px solid #444;border-radius:10px;background:#33
 .interval-inputs input{width:78px;text-align:center}.interval-inputs span{color:#999;font-size:13px}
 .interval-presets{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.interval-presets button{padding:8px 12px;font-size:13px;background:#24272d;color:#ddd}
 .status{height:28px;margin:18px 0;color:#aaa}.buttons,.tts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-button{border:0;border-radius:12px;padding:13px 21px;font-size:16px;font-weight:700;cursor:pointer;background:#fff;color:#111}
+button{border:0;border-radius:12px;padding:12px 20px;font-size:15px;font-weight:700;cursor:pointer;background:#fff;color:#111}
 button.secondary{background:#333;color:#fff}button:active{transform:scale(.97)}
-.panel{margin-top:28px;padding:24px;border:1px solid #292b31;border-radius:20px;text-align:left;background:#15171b;box-shadow:0 12px 35px rgba(0,0,0,.25)}
+.panel{margin-top:24px;padding:22px;border:1px solid #292b31;border-radius:18px;text-align:left;background:#15171b;box-shadow:0 12px 35px rgba(0,0,0,.25)}
 label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%;padding:12px;border:1px solid #444;border-radius:10px;background:#111;color:#fff;font-size:16px}
 .tts{margin-top:12px}.tts button{font-size:14px;padding:11px 16px}.hint{margin-top:18px;color:#777;font-size:13px}
 
-/* ===== 탭 UI ===== */
-.top-tabs{
-  position:fixed;top:18px;left:18px;z-index:50;
-  display:flex;gap:6px;padding:5px;max-width:calc(100vw - 36px);overflow-x:auto;
-  background:#15171b;border:1px solid #292b31;border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,.22)
+/* ===== 햄버거 버튼 (왼쪽 상단 고정) ===== */
+.fab-menu{
+  position:fixed;top:18px;left:18px;z-index:60;
+  width:52px;height:52px;border-radius:14px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;cursor:pointer;
+  background:#15171b;border:1px solid #292b31;
+  box-shadow:0 8px 24px rgba(0,0,0,.22);
+  transition:background .15s,transform .15s
 }
-.top-tab{
-  border:0;border-radius:9px;padding:9px 15px;
-  background:transparent;color:#999;font-size:14px;font-weight:800;
-  cursor:pointer
+.fab-menu:hover{background:#1c1f24;transform:translateY(-1px)}
+.fab-menu span{
+  display:block;width:22px;height:2px;border-radius:2px;background:#f5f5f5;
+  transition:transform .25s,opacity .25s,width .25s
 }
-.top-tab.active{background:#fff;color:#111}
+body.drawer-open .fab-menu span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+body.drawer-open .fab-menu span:nth-child(2){opacity:0;width:0}
+body.drawer-open .fab-menu span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ===== 사이드 드로어 메뉴 ===== */
+.drawer-overlay{
+  position:fixed;inset:0;z-index:54;
+  background:rgba(0,0,0,.5);backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity .25s
+}
+body.drawer-open .drawer-overlay{opacity:1;pointer-events:auto}
+.drawer{
+  position:fixed;top:0;left:0;bottom:0;z-index:55;
+  width:min(88vw,330px);
+  display:flex;flex-direction:column;
+  background:#0f1115;border-right:1px solid #292b31;
+  transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+  box-shadow:14px 0 40px rgba(0,0,0,.4);
+  overflow-y:auto;padding:78px 16px 24px
+}
+body.drawer-open .drawer{transform:translateX(0)}
+.drawer-section-title{color:#666;font-size:12px;font-weight:800;letter-spacing:.5px;
+  margin:4px 8px 10px;text-transform:uppercase}
+.drawer-card{
+  display:flex;align-items:center;gap:13px;width:100%;
+  padding:14px;border:1px solid #292b31;border-radius:14px;
+  background:#15171b;color:#fff;cursor:pointer;text-align:left;
+  margin-bottom:9px;transition:.15s;text-decoration:none
+}
+.drawer-card:hover{border-color:#555;background:#1c1f24;transform:translateX(3px)}
+.drawer-card.active{border-color:#7fd3ff;background:#1a232b;box-shadow:inset 0 0 0 1px #7fd3ff}
+.drawer-card.active .drawer-icon{background:#16202a;border-color:#2a4658}
+.drawer-icon{flex:0 0 auto;width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:21px;
+  background:#101216;border:1px solid #303238}
+.drawer-body{flex:1;min-width:0}
+.drawer-name{font-size:15px;font-weight:800;margin-bottom:2px}
+.drawer-desc{font-size:12px;color:#888;line-height:1.4}
+.drawer-home{margin-bottom:18px}
+.drawer-close{position:absolute;top:18px;right:18px;width:36px;height:36px;
+  display:none;align-items:center;justify-content:center;font-size:20px;
+  color:#888;cursor:pointer;border-radius:10px;background:transparent;border:0}
+@media(max-width:600px){.fab-menu{top:12px;left:12px;width:46px;height:46px}}
 .view{display:none}
 .view.active{display:block}
 #homeworkView{width:min(92vw,760px);margin:0 auto;text-align:left}
@@ -129,8 +174,7 @@ label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%
 .empty-homework strong{display:block;color:#aaa;margin-bottom:6px}
 .homework-footer{margin-top:16px;font-size:12px;color:#666;text-align:center}
 @media(max-width:600px){
-  .top-tabs{top:10px;left:10px}
-  .top-tab{padding:8px 12px}
+  .fab-menu{top:12px;left:12px}
   #timerView{padding-top:45px}
   #homeworkView{padding-top:45px}
   .homework-header{align-items:flex-end}
@@ -155,7 +199,7 @@ label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%
   color:#777;font-size:14px;margin:0 0 28px;
 }
 .entry-tabs{
-  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;
 }
 .entry-tab{
   min-height:125px;padding:20px 14px;
@@ -172,33 +216,14 @@ label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%
 .entry-icon{font-size:30px}
 .entry-name{font-size:17px;font-weight:800}
 .entry-desc{font-size:12px;color:#888}
-body.entry-open > .top-tabs,
+body.entry-open > .fab-menu,
+body.entry-open > .drawer-overlay,
+body.entry-open > .drawer,
 body.entry-open > #timerView,
 body.entry-open > #homeworkView{display:none!important}
 
 
-.menu-tab{min-width:44px;padding-left:11px;padding-right:11px}
-.menu-panel{
-  position:fixed;top:68px;left:18px;z-index:60;
-  width:190px;padding:10px;
-  background:#15171b;border:1px solid #292b31;border-radius:14px;
-  box-shadow:0 14px 35px rgba(0,0,0,.35);
-  display:none;text-align:left
-}
-.menu-panel.open{display:block}
-.menu-panel-title{
-  padding:8px 10px 10px;color:#777;font-size:12px;font-weight:800;
-  border-bottom:1px solid #292b31;margin-bottom:6px
-}
-.menu-panel button{
-  display:block;width:100%;padding:11px 10px;
-  background:transparent;color:#ddd;text-align:left;
-  font-size:14px;border-radius:9px
-}
-.menu-panel button:hover{background:#25282e;color:#fff}
-@media(max-width:600px){
-  .menu-panel{top:60px;left:10px}
-}
+.drawer{display:flex}
 
 
 /* 모든 텍스트 입력칸: 마우스 오버/포커스 시 연결된 X 표시 */
@@ -208,15 +233,15 @@ body.entry-open > #homeworkView{display:none!important}
 .input-wrap:hover .delete-input,.input-wrap:focus-within .delete-input{opacity:1;pointer-events:auto}
 
 /* ===== 수익/사냥/보스 기록 ===== */
-.record-view{width:min(94vw,1000px);margin:0 auto;text-align:left;padding:74px 0 30px}
+.record-view{width:min(94vw,1000px);margin:0 auto;text-align:left;padding:88px 0 30px}
 .record-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}
 .record-header h1{margin:0 0 5px;font-size:28px}.record-sub{font-size:13px;color:#777}
 .record-card{background:#15171b;border:1px solid #292b31;border-radius:16px;padding:18px;margin-bottom:16px}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
 .form-grid label{color:#aaa;font-size:12px}.form-grid input,.form-grid select{margin-top:7px;width:100%}
 .consumable-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.consumable-item{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;align-items:center;padding:9px;border:1px solid #292b31;border-radius:10px;background:#101216}
-.consumable-item span{font-size:12px;color:#bbb}.consumable-item input{padding:9px;font-size:13px}
+.consumable-item{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;align-items:start;padding:9px;border:1px solid #292b31;border-radius:10px;background:#101216}
+.consumable-item span{font-size:12px;color:#bbb;padding-top:8px}.consumable-item input{padding:9px;font-size:13px}
 .primary-wide{width:100%;margin-top:15px}.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
 .summary-box{padding:17px;border:1px solid #292b31;border-radius:14px;background:#15171b}.summary-label{font-size:12px;color:#888}.summary-value{font-size:22px;font-weight:800;margin-top:7px;font-variant-numeric:tabular-nums}
 .record-row{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr auto;gap:10px;padding:11px 0;border-bottom:1px solid #292b31;align-items:center;font-size:13px}.record-row:last-child{border-bottom:0}.muted{color:#888}.money{font-variant-numeric:tabular-nums;text-align:right}
@@ -225,18 +250,21 @@ body.entry-open > #homeworkView{display:none!important}
 .preset-chars{grid-template-columns:1fr}
 .preset-char-head{gap:8px}.preset-char-head .char-actions{display:flex;gap:5px}.char-actions button{padding:6px 9px;font-size:12px;background:#25282e;color:#aaa}
 .add-character{width:100%;margin-top:10px;padding:10px;background:#25282e;color:#ddd;font-size:13px}
-.potion-list{display:grid;gap:7px;margin-top:8px}.potion-row{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;align-items:center;padding:8px;border:1px solid #292b31;border-radius:9px;background:#15171b}.potion-row .potion-label{font-size:12px;color:#bbb}.potion-row .potion-fixed{font-size:11px;color:#888;text-align:right}.potion-row input{padding:8px;font-size:13px}.potion-row .fixed-price{background:#191b20;color:#aaa}.potion-row .custom-price{display:block}
-.potion-head{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;padding:0 8px;color:#777;font-size:10px;text-align:right}.potion-head span:first-child{text-align:left}
+.potion-list{display:grid;gap:7px;margin-top:8px}.potion-row{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;align-items:start;padding:8px;border:1px solid #292b31;border-radius:9px;background:#15171b}.potion-row .potion-label{font-size:12px;color:#bbb;padding-top:8px}.potion-row .potion-fixed{font-size:11px;color:#888;text-align:right}.potion-row input{padding:8px;font-size:13px}
+.price-cell{display:flex;flex-direction:column;gap:3px;min-width:0}
+.money-preview{font-size:10px;color:#8f949d;text-align:right;line-height:1.35;font-variant-numeric:tabular-nums;min-height:13px;word-break:keep-all}
+.consumable-preview{grid-column:1/-1;margin-top:-2px}.potion-row .fixed-price{background:#191b20;color:#aaa}.potion-row .custom-price{display:block}
+.potion-head{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;padding:0 8px;color:#777;font-size:10px;text-align:right}.potion-head span:first-child{text-align:left}.potion-head span:nth-child(2),.potion-head span:nth-child(3){padding-top:0}
 
-@media(max-width:700px){.form-grid,.consumable-grid,.preset-chars,.summary-grid{grid-template-columns:1fr}.record-row{grid-template-columns:1fr 1fr}.money{text-align:left}.consumable-item{grid-template-columns:minmax(0,1fr) 70px 95px}}
+@media(max-width:700px){.form-grid,.consumable-grid,.preset-chars,.summary-grid{grid-template-columns:1fr}.record-row{grid-template-columns:1fr 1fr}.money{text-align:left}.consumable-item{grid-template-columns:minmax(0,1fr) 70px 95px;align-items:start}}
 
 
 .boss-selection-card{overflow:hidden}
 .boss-selection-top{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:14px}
 .boss-selection-help{font-size:12px;color:#7f8490;margin-top:-8px}
-.boss-count-box{min-width:82px;text-align:center;padding:9px 12px;border:1px solid #363940;border-radius:10px;background:#101216;color:#d8dbe1;font-size:13px}
+.boss-count-box{min-width:78px;text-align:center;padding:8px 11px;border:1px solid #363940;border-radius:10px;background:#101216;color:#d8dbe1;font-size:12px}
 .boss-count-box b{font-size:18px;color:#fff}.boss-count-box span{color:#777}
-.boss-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.boss-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
 .boss-card{background:#191b1f;border:1px solid #303238;border-radius:9px;overflow:hidden}
 .boss-card.recorded{opacity:.45}
 .boss-card-head{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:11px 12px;border-bottom:1px solid #2b2d32}
@@ -289,7 +317,7 @@ body.entry-open > #homeworkView{display:none!important}
 /* 하단 2열 그리드 */
 .boss-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
 /* 메이플 길라잡이 링크 */
-.links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
 .link-card{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid #292b31;border-radius:14px;background:#15171b;color:#f5f5f5;text-decoration:none;transition:.15s;cursor:pointer}
 .link-card:hover{border-color:#5a5d65;background:#1c1f24;transform:translateY(-1px)}
 .link-icon{flex:0 0 auto;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:22px;background:#101216;border:1px solid #303238;border-radius:11px}
@@ -300,7 +328,7 @@ body.entry-open > #homeworkView{display:none!important}
 .link-arrow{flex:0 0 auto;color:#5a5d65;font-size:16px;font-weight:700}
 @media(max-width:900px){.boss-bottom-grid{grid-template-columns:1fr}}
 @media(max-width:1000px){.boss-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){.boss-cards{grid-template-columns:1fr}.boss-selection-top{align-items:flex-start;flex-direction:column}}
+@media(max-width:560px){.boss-cards{grid-template-columns:1fr}.boss-selection-top{align-items:flex-start;flex-direction:column}}
 
 /* 하단 총 메소 계산 요약 스타일 추가 */
 .total-meso-summary{
@@ -312,6 +340,16 @@ body.entry-open > #homeworkView{display:none!important}
 .total-meso-summary span{font-weight:700}
 .total-meso-summary b{font-size:18px;color:#ffe866;font-variant-numeric:tabular-nums;font-weight:800}
 
+.boss-section-label{
+  font-size:13px;font-weight:800;color:#8f949d;letter-spacing:.3px;
+  margin:14px 0 8px;padding-left:2px
+}
+.boss-section-monthly{margin-top:20px}
+.boss-cards-monthly{margin-bottom:6px}
+.boss-cards-monthly .boss-card{border-color:#3a2e1e;background:#1a1611}
+.boss-cards-monthly .boss-card.recorded{opacity:.45}
+.boss-cards-monthly .boss-card .boss-name{color:#ffd9a0}
+.boss-count-box.monthly b{color:#ffb37a!important}
 .bossView-center{max-width:900px;margin:0 auto}
 #bossView .record-card:first-of-type{max-width:760px;margin-left:auto;margin-right:auto}
 #bossView .single-preset-char{max-width:720px;margin:0 auto}
@@ -338,6 +376,21 @@ body.entry-open > #homeworkView{display:none!important}
         <span class="entry-name">체크리스트</span>
         <span class="entry-desc">할 일과 완료 체크</span>
       </button>
+      <button class="entry-tab" data-entry="profit">
+        <span class="entry-icon">₩</span>
+        <span class="entry-name">수익 정리</span>
+        <span class="entry-desc">사냥·보스 수익 요약</span>
+      </button>
+      <button class="entry-tab" data-entry="hunt">
+        <span class="entry-icon">⚔</span>
+        <span class="entry-name">사냥 기록</span>
+        <span class="entry-desc">사냥 전후 메소 기록</span>
+      </button>
+      <button class="entry-tab" data-entry="boss">
+        <span class="entry-icon">👑</span>
+        <span class="entry-name">보스 기록</span>
+        <span class="entry-desc">보스 결정석 메소 계산</span>
+      </button>
       <button class="entry-tab" data-entry="links">
         <span class="entry-icon">🧭</span>
         <span class="entry-name">길라잡이</span>
@@ -348,26 +401,64 @@ body.entry-open > #homeworkView{display:none!important}
 </div>
 
 
-<div class="top-tabs" role="tablist" aria-label="페이지 선택">
-  <button id="menuTab" class="top-tab menu-tab" type="button" aria-label="메뉴">☰</button>
-  <button id="timerTab" class="top-tab active" role="tab" aria-selected="true">⏱️ 타이머</button>
-  <button id="homeworkTab" class="top-tab" role="tab" aria-selected="false">✓ 체크리스트</button>
-  <button id="linksTab" class="top-tab" type="button">🧭 길라잡이</button>
-  <button id="profitTab" class="top-tab" type="button">₩ 수익 정리</button>
-  <button id="huntTab" class="top-tab" type="button">⚔ 사냥 기록</button>
-  <button id="bossTab" class="top-tab" type="button">👑 보스 기록</button>
-</div>
+<button class="fab-menu" id="menuTab" type="button" aria-label="메뉴 열기" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
 
-<div id="menuPanel" class="menu-panel" aria-hidden="true">
-  <div class="menu-panel-title">메뉴</div>
-  <button type="button" id="menuHome">⌂ 메인 홈</button>
-  <button type="button" id="menuTimer">⏱️ 타이머</button>
-  <button type="button" id="menuHomework">✓ 체크리스트</button>
-  <button type="button" id="menuProfit">₩ 수익 정리</button>
-  <button type="button" id="menuHunt">⚔ 사냥 기록</button>
-  <button type="button" id="menuBoss">👑 보스 기록</button>
-  <button type="button" id="menuLinks">🧭 길라잡이</button>
-</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="menuPanel" aria-hidden="true">
+  <div class="drawer-section-title">메뉴</div>
+  <button type="button" class="drawer-card drawer-home" id="menuHome">
+    <span class="drawer-icon">⌂</span>
+    <span class="drawer-body">
+      <span class="drawer-name">메인 홈</span>
+      <span class="drawer-desc">기능 선택 화면으로</span>
+    </span>
+  </button>
+  <div class="drawer-section-title">기능</div>
+  <button type="button" class="drawer-card" id="menuTimer">
+    <span class="drawer-icon">⏱️</span>
+    <span class="drawer-body">
+      <span class="drawer-name">타이머</span>
+      <span class="drawer-desc">반복 타이머와 알림</span>
+    </span>
+  </button>
+  <button type="button" class="drawer-card" id="menuHomework">
+    <span class="drawer-icon">✓</span>
+    <span class="drawer-body">
+      <span class="drawer-name">체크리스트</span>
+      <span class="drawer-desc">할 일과 완료 체크</span>
+    </span>
+  </button>
+  <button type="button" class="drawer-card" id="menuProfit">
+    <span class="drawer-icon">₩</span>
+    <span class="drawer-body">
+      <span class="drawer-name">수익 정리</span>
+      <span class="drawer-desc">사냥·보스 수익 요약</span>
+    </span>
+  </button>
+  <button type="button" class="drawer-card" id="menuHunt">
+    <span class="drawer-icon">⚔</span>
+    <span class="drawer-body">
+      <span class="drawer-name">사냥 기록</span>
+      <span class="drawer-desc">사냥 전후 메소 기록</span>
+    </span>
+  </button>
+  <button type="button" class="drawer-card" id="menuBoss">
+    <span class="drawer-icon">👑</span>
+    <span class="drawer-body">
+      <span class="drawer-name">보스 기록</span>
+      <span class="drawer-desc">보스 결정석 메소 계산</span>
+    </span>
+  </button>
+  <button type="button" class="drawer-card" id="menuLinks">
+    <span class="drawer-icon">🧭</span>
+    <span class="drawer-body">
+      <span class="drawer-name">길라잡이</span>
+      <span class="drawer-desc">메이플 유틸 사이트 모음</span>
+    </span>
+  </button>
+</aside>
 
 <div id="timerView" class="view active wrap">
 <h1>반복 타이머</h1>
@@ -461,10 +552,10 @@ body.entry-open > #homeworkView{display:none!important}
     <div class="form-grid">
       <label>캐릭터<input id="huntCharacter" type="text" placeholder="닉네임"></label>
       <label>사냥시간 (분)<input id="huntMinutes" type="number" min="1" placeholder="120"></label>
-      <label>사냥 전 메소<input id="huntBefore" type="number" min="0" placeholder="0"></label>
-      <label>사냥 후 메소<input id="huntAfter" type="number" min="0" placeholder="0"></label>
+      <label>사냥 전 메소<input id="huntBefore" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntBefore"></div></label>
+      <label>사냥 후 메소<input id="huntAfter" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntAfter"></div></label>
       <label>획득 솔 에르다 조각<input id="huntFragments" type="number" min="0" placeholder="0"></label>
-      <label>조각 개당 가격<input id="huntFragmentPrice" type="number" min="0" placeholder="0"></label>
+      <label>조각 개당 가격<input id="huntFragmentPrice" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntFragmentPrice"></div></label>
     </div>
     <div class="section-title" style="margin-top:22px">🧪 사용한 소모품 <span class="sub">개수 × 가격</span></div>
     <div class="consumable-grid" id="huntConsumables"></div>
@@ -508,7 +599,10 @@ body.entry-open > #homeworkView{display:none!important}
         <div class="boss-count-box monthly"><b id="selectedMonthlyBossCount">0</b> <span>월간</span></div>
       </div>
     </div>
+    <div class="boss-section-label">주간 보스</div>
     <div id="bossCards" class="boss-cards"></div>
+    <div class="boss-section-label boss-section-monthly">월간 보스</div>
+    <div id="bossCardsMonthly" class="boss-cards boss-cards-monthly"></div>
     
     <div class="total-meso-summary">
       <span>선택한 보스 총 결정석 메소</span>
@@ -1009,14 +1103,23 @@ document.getElementById('homeworkList').addEventListener('input', e => {
   }
 });
 
-function switchView(view){switchRecordView(view);document.getElementById('timerTab').setAttribute('aria-selected',view==='timer');document.getElementById('homeworkTab').setAttribute('aria-selected',view==='homework');}
+function switchView(view){switchRecordView(view);setDrawerActive(view);}
 
-document.getElementById('timerTab').onclick = () => switchView('timer');
-document.getElementById('homeworkTab').onclick = () => switchView('homework');
-document.getElementById('profitTab').onclick = () => switchRecordView('profit');
-document.getElementById('huntTab').onclick = () => switchRecordView('hunt');
-document.getElementById('bossTab').onclick = () => switchRecordView('boss');
-document.getElementById('linksTab').onclick = () => switchRecordView('links');
+// 드로어 열고 닫기
+function openDrawer(){
+  document.body.classList.add('drawer-open');
+  menuTab.setAttribute('aria-expanded','true');
+  menuPanel.setAttribute('aria-hidden','false');
+}
+function closeDrawer(){
+  document.body.classList.remove('drawer-open');
+  menuTab.setAttribute('aria-expanded','false');
+  menuPanel.setAttribute('aria-hidden','true');
+}
+function toggleDrawer(){
+  if(document.body.classList.contains('drawer-open')) closeDrawer();
+  else openDrawer();
+}
 
 resetChecksIfNewDay();
 renderHomework();
@@ -1039,8 +1142,10 @@ function enterFromStart(view){
 
   if(view==='timer'||view==='homework'){
     switchView(view);
+    setDrawerActive(view);
   } else {
     switchRecordView(view);
+    setDrawerActive(view);
   }
 }
 
@@ -1054,34 +1159,35 @@ document.querySelectorAll('.entry-tab').forEach(tab => {
 /* ===== 메뉴 ===== */
 const menuTab = document.getElementById('menuTab');
 const menuPanel = document.getElementById('menuPanel');
+const drawerOverlay = document.getElementById('drawerOverlay');
 
-menuTab.onclick = () => {
-  showMainHome();
+menuTab.onclick = (e) => {
+  e.stopPropagation();
+  toggleDrawer();
 };
 
+drawerOverlay.onclick = closeDrawer;
+
 document.getElementById('menuTimer').onclick = () => {
-  menuPanel.classList.remove('open');
-  menuPanel.setAttribute('aria-hidden', 'true');
+  closeDrawer();
   switchView('timer');
+  setDrawerActive('timer');
 };
 
 document.getElementById('menuHomework').onclick = () => {
-  menuPanel.classList.remove('open');
-  menuPanel.setAttribute('aria-hidden', 'true');
+  closeDrawer();
   switchView('homework');
+  setDrawerActive('homework');
 };
 
-document.addEventListener('click', (e) => {
-  if(!menuPanel.contains(e.target) && e.target !== menuTab){
-    menuPanel.classList.remove('open');
-    menuPanel.setAttribute('aria-hidden', 'true');
-  }
+// ESC로 드로어 닫기
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && document.body.classList.contains('drawer-open')) closeDrawer();
 });
 
 
 function showMainHome(){
-  menuPanel.classList.remove('open');
-  menuPanel.setAttribute('aria-hidden', 'true');
+  closeDrawer();
 
   let entry = document.getElementById('entryView');
 
@@ -1102,6 +1208,21 @@ function showMainHome(){
             <span class="entry-icon">✓</span>
             <span class="entry-name">체크리스트</span>
             <span class="entry-desc">할 일과 완료 체크</span>
+          </button>
+          <button class="entry-tab" data-entry="profit">
+            <span class="entry-icon">₩</span>
+            <span class="entry-name">수익 정리</span>
+            <span class="entry-desc">사냥·보스 수익 요약</span>
+          </button>
+          <button class="entry-tab" data-entry="hunt">
+            <span class="entry-icon">⚔</span>
+            <span class="entry-name">사냥 기록</span>
+            <span class="entry-desc">사냥 전후 메소 기록</span>
+          </button>
+          <button class="entry-tab" data-entry="boss">
+            <span class="entry-icon">👑</span>
+            <span class="entry-name">보스 기록</span>
+            <span class="entry-desc">보스 결정석 메소 계산</span>
           </button>
           <button class="entry-tab" data-entry="links">
             <span class="entry-icon">🧭</span>
@@ -1208,11 +1329,43 @@ function moneyShort(n){
   return n.toLocaleString()
 }
 function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function mesoPreview(n){
+  n=Math.floor(Number(n||0));
+  if(!n||isNaN(n))return '';
+  const eok=Math.floor(n/1e8),man=Math.floor((n%1e8)/1e4),rest=n%1e4;
+  const parts=[];
+  if(eok)parts.push(eok.toLocaleString('ko-KR')+'억');
+  if(man)parts.push(man.toLocaleString('ko-KR')+'만');
+  if(rest||!parts.length)parts.push(rest.toLocaleString('ko-KR')+' 메소');
+  else parts[parts.length-1]+=' 메소';
+  return parts.join(' ');
+}
+function updateMoneyPreviews(){
+  document.querySelectorAll('[data-preview-price]').forEach(el=>{
+    const k=el.dataset.previewPrice;
+    if(el.dataset.fixed==='1'){
+      const fixedEl=document.querySelector('.fixed-price[data-fixed-price="'+CSS.escape(k)+'"]');
+      el.textContent=mesoPreview(fixedEl?fixedEl.value:k);
+      return;
+    }
+    const inp=document.querySelector('[data-price="'+CSS.escape(k)+'"]');
+    el.textContent=mesoPreview(inp?inp.value:0);
+  });
+  document.querySelectorAll('[data-preview-consume]').forEach(el=>{
+    const k=el.dataset.previewConsume;
+    const inp=document.querySelector('#huntConsumables [data-consume="'+CSS.escape(k)+'"][data-kind="price"]');
+    el.textContent=mesoPreview(inp?inp.value:0);
+  });
+  document.querySelectorAll('[data-preview-for]').forEach(el=>{
+    const inp=document.getElementById(el.dataset.previewFor);
+    el.textContent=mesoPreview(inp?inp.value:0);
+  });
+}
 
 function setupConsumables(){
   const box=document.getElementById('huntConsumables');
   if(!box)return;
-  box.innerHTML=defaultConsumables.map(([name,key])=>`<div class="consumable-item"><span>${name}</span><input type="number" min="0" data-consume="${key}" data-kind="qty" placeholder="개수"><input type="number" min="0" data-consume="${key}" data-kind="price" placeholder="개당 가격"></div>`).join('');
+  box.innerHTML=defaultConsumables.map(([name,key])=>`<div class="consumable-item"><span>${name}</span><input type="number" min="0" data-consume="${key}" data-kind="qty" placeholder="개수"><input type="number" min="0" data-consume="${key}" data-kind="price" placeholder="개당 가격"><div class="money-preview consumable-preview" data-preview-consume="${key}"></div></div>`).join('');
 }
 
 function setupPresets(){
@@ -1240,10 +1393,14 @@ function renderPreset(){
       <div class="potion-list">${potionNames.map(([n,k,price,fixed])=>`<div class="potion-row">
         <span class="potion-label">${n}</span>
         <input type="number" min="0" data-potion="${k}" data-field="qty" value="${Number(c.potions?.[k]||0)}" placeholder="0">
-        ${fixed?`<input type="number" class="fixed-price" value="${price}" readonly>`:`<input type="number" min="0" data-price="${k}" data-field="price" value="${Number(c.prices?.[k]||0)}" placeholder="가격">`}
+        <div class="price-cell">
+          ${fixed?`<input type="number" class="fixed-price" data-fixed-price="${k}" value="${price}" readonly>`:`<input type="number" min="0" data-price="${k}" data-field="price" value="${Number(c.prices?.[k]||0)}" placeholder="가격">`}
+          <div class="money-preview" data-preview-price="${k}" data-fixed="${fixed?1:0}"></div>
+        </div>
       </div>`).join('')}</div>
     </div>`;
   updatePotionTotal(c);
+  updateMoneyPreviews();
 }
 
 function updatePotionTotal(c){
@@ -1333,18 +1490,8 @@ function alreadyRecordedBosses(character){
   return used;
 }
 
-function renderBossCards(){
-  const box=document.getElementById('bossCards');
-  if(!box)return;
-  if(typeof bossData==='undefined'){box.innerHTML='<div class="empty-record">보스 데이터를 불러오지 못했습니다.</div>';return;}
-  const d=recLoad(),pi=Number(document.getElementById('presetSelect').value||0),c=d.presets[pi]?.chars?.[0];
-  const recorded=c?.name?alreadyRecordedBosses(c.name):new Set();
-
-  box.innerHTML=bossNames().map(name=>{
-    const opts=bossData.filter(b=>b[1]===name);
-    const selected=pendingBosses.get(name);
-    const disabled=recorded.has(name);
-    return `<div class="boss-card ${disabled?'recorded':''}" data-boss="${esc(name)}">
+function buildBossCard(name,opts,selected,disabled,recorded){
+  return `<div class="boss-card ${disabled?'recorded':''}" data-boss="${esc(name)}">
       <div class="boss-card-head">
         <div class="boss-name">${esc(name)}</div>
         <div class="boss-card-actions">
@@ -1363,7 +1510,26 @@ function renderBossCards(){
       </div>
       ${selected?`<div class="boss-card-bottom">${selected.party}인 기준 결정석 <b>${money(Math.floor(selected.price/selected.party))}</b></div>`:''}
     </div>`;
-  }).join('');
+}
+function renderBossCards(){
+  const box=document.getElementById('bossCards');
+  const boxM=document.getElementById('bossCardsMonthly');
+  if(!box)return;
+  if(typeof bossData==='undefined'){box.innerHTML='<div class="empty-record">보스 데이터를 불러오지 못했습니다.</div>';return;}
+  const d=recLoad(),pi=Number(document.getElementById('presetSelect').value||0),c=d.presets[pi]?.chars?.[0];
+  const recorded=c?.name?alreadyRecordedBosses(c.name):new Set();
+
+  const weekly=[],monthly=[];
+  bossNames().forEach(name=>{
+    const opts=bossData.filter(b=>b[1]===name);
+    const selected=pendingBosses.get(name);
+    const disabled=recorded.has(name);
+    const card=buildBossCard(name,opts,selected,disabled,recorded);
+    if(bossCycle(name)==='monthly')monthly.push(card);else weekly.push(card);
+  });
+
+  box.innerHTML=weekly.join('')||'<div class="empty-record">주간 보스가 없습니다.</div>';
+  if(boxM)boxM.innerHTML=monthly.join('')||'<div class="empty-record">월간 보스가 없습니다.</div>';
   updateBossCount();
   updateTotalMeso();
 }
@@ -1454,6 +1620,10 @@ function renderProfit(){
   document.getElementById('profitRecent').innerHTML=all.length?all.map(r=>`<div class="record-row"><div><b>${r.type}</b></div><div>${esc(r.name||'미입력')}</div><div></div><div class="money"><b>${money(r.net)}</b></div><div></div></div>`).join(''):'<div class="empty-record">아직 수익 기록이 없습니다.</div>';
 }
 
+document.getElementById('huntView').addEventListener('input',e=>{
+  if(['huntBefore','huntAfter','huntFragmentPrice'].includes(e.target.id))updateMoneyPreviews();
+  if(e.target.matches('[data-consume][data-kind="price"]'))updateMoneyPreviews();
+});
 function saveHunt(){
   const q=id=>Number(document.getElementById(id).value||0),character=document.getElementById('huntCharacter').value.trim(),minutes=q('huntMinutes'),before=q('huntBefore'),after=q('huntAfter'),fragments=q('huntFragments'),fp=q('huntFragmentPrice');
   if(!character||minutes<1){alert('캐릭터와 사냥시간을 입력해 주세요.');return}
@@ -1465,6 +1635,12 @@ function saveHunt(){
   renderHunts();renderProfit();alert('사냥 기록을 저장했습니다.');
 }
 
+function setDrawerActive(view){
+  document.querySelectorAll('.drawer-card').forEach(c=>c.classList.remove('active'));
+  const map={timer:'menuTimer',homework:'menuHomework',profit:'menuProfit',hunt:'menuHunt',boss:'menuBoss',links:'menuLinks'};
+  const el=document.getElementById(map[view]);
+  if(el) el.classList.add('active');
+}
 function switchRecordView(v){
   ['timer','homework','profit','hunt','boss','links'].forEach(x=>{
     const el=document.getElementById(x==='timer'?'timerView':x==='homework'?'homeworkView':x+'View');
@@ -1474,11 +1650,12 @@ function switchRecordView(v){
   });
   if(v==='homework')renderHomework();
   if(v==='profit')renderProfit();
-  if(v==='hunt')renderHunts();
+  if(v==='hunt'){renderHunts();updateMoneyPreviews();}
   if(v==='boss'){setupPresets();renderBossLoot();renderBossCards();renderBosses();}
+  setDrawerActive(v);
 }
 
-setupConsumables();setupPresets();renderHunts();renderBosses();renderProfit();renderBossCards();renderBossLoot();
+setupConsumables();setupPresets();renderHunts();renderBosses();renderProfit();renderBossCards();renderBossLoot();updateMoneyPreviews();
 
 document.getElementById('saveHunt').onclick=saveHunt;
 document.getElementById('saveBoss').onclick=saveBoss;
@@ -1503,6 +1680,7 @@ document.getElementById('presetChars').addEventListener('input',e=>{
   else if(e.target.dataset.price)c.prices[e.target.dataset.price]=Number(e.target.value||0);
   recSave(d);
   updatePotionTotal(c);
+  updateMoneyPreviews();
   if(e.target.classList.contains('preset-name'))renderBossCards();
 });
 document.getElementById('bossCards').addEventListener('click',e=>{
@@ -1541,9 +1719,337 @@ document.getElementById('bossView').addEventListener('click',e=>{
   const d=recLoad();d.bosses.splice(Number(e.target.dataset.index),1);recSave(d);renderBosses();renderProfit();renderBossCards();
 });
 for(const [id,v] of [['menuProfit','profit'],['menuHunt','hunt'],['menuBoss','boss'],['menuLinks','links']]){
-  document.getElementById(id).onclick=()=>{menuPanel.classList.remove('open');menuPanel.setAttribute('aria-hidden','true');document.body.classList.remove('entry-open');switchRecordView(v)}
+  document.getElementById(id).onclick=()=>{closeDrawer();document.body.classList.remove('entry-open');switchRecordView(v);setDrawerActive(v)}
 }
 
 </script>
-</body>
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://perplexity.localhost","http://localhost:1420","http://127.0.0.1:1420","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
 </html>
