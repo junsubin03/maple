@@ -1836,7 +1836,7 @@ document.getElementById('presetChars').addEventListener('input',e=>{
   if(e.target.classList.contains('preset-name'))renderBossCards();
 });
 
-document.getElementById('bossCards').addEventListener('click',e=>{
+document.querySelector('.boss-selection-card').addEventListener('click',e=>{
   const diff=e.target.closest('.boss-difficulty');
   if(diff && !diff.disabled){
     const name=diff.dataset.boss,difficulty=diff.dataset.difficulty,b=getBossBy(name,difficulty);
@@ -1859,7 +1859,7 @@ document.getElementById('bossCards').addEventListener('click',e=>{
   if(cancel){pendingBosses.delete(cancel.dataset.cancelBoss);renderBossCards();}
 });
 
-document.getElementById('bossCards').addEventListener('change',e=>{
+document.querySelector('.boss-selection-card').addEventListener('change',e=>{
   if(!e.target.classList.contains('boss-party'))return;
   const name=e.target.dataset.boss,v=pendingBosses.get(name);
   if(v){v.party=Number(e.target.value);renderBossCards();}
