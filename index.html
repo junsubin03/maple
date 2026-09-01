@@ -5,37 +5,38 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>타이머 · 숙제 체크</title>
 <style>
-select{padding:11px 14px;border:1px solid #444;border-radius:10px;background:#333;color:#fff;font-size:14px;min-width:180px}
+select{padding:11px 14px;border:1px solid #444;border-radius:10px;background:#333;color:#fff;font-size:14px;min-width:180px;white-space:nowrap}
 .choice-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
-.section-title{font-size:18px;font-weight:800;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #292b31}
-.sub{font-size:12px;color:#888;font-weight:400}
+.section-title{font-size:18px;font-weight:800;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #292b31;white-space:nowrap}
+.sub{font-size:12px;color:#888;font-weight:400;white-space:nowrap}
 .toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.toggle{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #444;border-radius:10px;background:#111;color:#fff;font-weight:700;cursor:pointer}
+.toggle{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #444;border-radius:10px;background:#111;color:#fff;font-weight:700;cursor:pointer;white-space:nowrap}
 .toggle input{width:auto;accent-color:#fff}
-.small-btn{padding:9px 14px;font-size:14px}
-.panel>label{font-weight:600;color:#ddd}
+.small-btn{padding:9px 14px;font-size:14px;white-space:nowrap}
+.panel>label{font-weight:600;color:#ddd;white-space:nowrap}
 .panel select{width:100%;margin-top:8px}
-.volume-row{display:grid;grid-template-columns:auto 1fr 48px;align-items:center;gap:10px;margin:13px 0 4px;padding:11px 12px;border:1px solid #292b31;border-radius:11px;background:#101216;color:#bbb;font-size:13px}
+.volume-row{display:grid;grid-template-columns:auto 1fr 48px;align-items:center;gap:10px;margin:13px 0 4px;padding:11px 12px;border:1px solid #292b31;border-radius:11px;background:#101216;color:#bbb;font-size:13px;white-space:nowrap}
 .volume-row input[type=range]{width:100%;accent-color:#fff}
 .volume-row output{text-align:right;color:#fff;font-variant-numeric:tabular-nums}
-.choice{display:flex;align-items:center;gap:8px;padding:11px 13px;border:1px solid #303238;border-radius:11px;background:#101216;color:#ddd;font-size:14px;cursor:pointer;transition:.15s}
+.choice{display:flex;align-items:center;gap:8px;padding:11px 13px;border:1px solid #303238;border-radius:11px;background:#101216;color:#ddd;font-size:14px;cursor:pointer;transition:.15s;white-space:nowrap}
 .choice:has(input:checked){border-color:#777;background:#25282e;color:#fff;box-shadow:inset 0 0 0 1px #555}
 .choice input{width:auto;accent-color:#fff}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b0c0f;color:#f5f5f5;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-.wrap{text-align:center;width:min(92vw,620px);padding:40px 0 32px}h1{font-size:28px;margin:0 0 24px}
-#time{font-size:clamp(72px,20vw,150px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.wrap{text-align:center;width:min(92vw,680px);padding:40px 0 32px}h1{font-size:28px;margin:0 0 24px;white-space:nowrap}
+#time{font-size:clamp(72px,20vw,150px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
 
 .interval-card{margin:0 auto 24px;padding:16px;border:1px solid #292b31;border-radius:16px;background:#15171b;text-align:left}
-.interval-title{font-weight:800;margin-bottom:12px}
+.interval-title{font-weight:800;margin-bottom:12px;white-space:nowrap}
 .interval-inputs{display:flex;align-items:center;gap:8px}.interval-inputs>div{display:flex;align-items:center;gap:6px}
-.interval-inputs input{width:78px;text-align:center}.interval-inputs span{color:#999;font-size:13px}
-.interval-presets{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.interval-presets button{padding:8px 12px;font-size:13px;background:#24272d;color:#ddd}
-.status{height:28px;margin:18px 0;color:#aaa}.buttons,.tts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-button{border:0;border-radius:12px;padding:12px 20px;font-size:15px;font-weight:700;cursor:pointer;background:#fff;color:#111}
+.interval-inputs input{width:78px;text-align:center}.interval-inputs span{color:#999;font-size:13px;white-space:nowrap}
+.interval-presets{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.interval-presets button{padding:8px 12px;font-size:13px;background:#24272d;color:#ddd;white-space:nowrap}
+.status{height:28px;margin:18px 0;color:#aaa;white-space:nowrap}.buttons,.tts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+button{border:0;border-radius:12px;padding:12px 20px;font-size:15px;font-weight:700;cursor:pointer;background:#fff;color:#111;white-space:nowrap}
 button.secondary{background:#333;color:#fff}button:active{transform:scale(.97)}
 .panel{margin-top:24px;padding:22px;border:1px solid #292b31;border-radius:18px;text-align:left;background:#15171b;box-shadow:0 12px 35px rgba(0,0,0,.25)}
-label{display:block;color:#aaa;font-size:13px;margin-bottom:8px}input{width:100%;padding:12px;border:1px solid #444;border-radius:10px;background:#111;color:#fff;font-size:16px}
-.tts{margin-top:12px}.tts button{font-size:14px;padding:11px 16px}.hint{margin-top:18px;color:#777;font-size:13px}
+label{display:block;color:#aaa;font-size:13px;margin-bottom:8px;white-space:nowrap}input,textarea{width:100%;padding:12px;border:1px solid #444;border-radius:10px;background:#111;color:#fff;font-size:16px}
+textarea{resize:vertical;font-family:monospace}
+.tts{margin-top:12px}.tts button{font-size:14px;padding:11px 16px}.hint{margin-top:18px;color:#777;font-size:13px;white-space:nowrap}
 
 /* ===== 햄버거 버튼 (왼쪽 상단 고정) ===== */
 .fab-menu{
@@ -65,7 +66,7 @@ body.drawer-open .fab-menu span:nth-child(3){transform:translateY(-7px) rotate(-
 body.drawer-open .drawer-overlay{opacity:1;pointer-events:auto}
 .drawer{
   position:fixed;top:0;left:0;bottom:0;z-index:55;
-  width:min(88vw,330px);
+  width:min(88vw,340px);
   display:flex;flex-direction:column;
   background:#0f1115;border-right:1px solid #292b31;
   transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
@@ -74,7 +75,7 @@ body.drawer-open .drawer-overlay{opacity:1;pointer-events:auto}
 }
 body.drawer-open .drawer{transform:translateX(0)}
 .drawer-section-title{color:#666;font-size:12px;font-weight:800;letter-spacing:.5px;
-  margin:4px 8px 10px;text-transform:uppercase}
+  margin:4px 8px 10px;text-transform:uppercase;white-space:nowrap}
 .drawer-card{
   display:flex;align-items:center;gap:13px;width:100%;
   padding:14px;border:1px solid #292b31;border-radius:14px;
@@ -88,22 +89,19 @@ body.drawer-open .drawer{transform:translateX(0)}
   display:flex;align-items:center;justify-content:center;font-size:21px;
   background:#101216;border:1px solid #303238}
 .drawer-body{flex:1;min-width:0}
-.drawer-name{font-size:15px;font-weight:800;margin-bottom:2px}
-.drawer-desc{font-size:12px;color:#888;line-height:1.4}
+.drawer-name{font-size:15px;font-weight:800;margin-bottom:2px;white-space:nowrap}
+.drawer-desc{font-size:12px;color:#888;line-height:1.4;white-space:nowrap}
 .drawer-home{margin-bottom:18px}
-.drawer-close{position:absolute;top:18px;right:18px;width:36px;height:36px;
-  display:none;align-items:center;justify-content:center;font-size:20px;
-  color:#888;cursor:pointer;border-radius:10px;background:transparent;border:0}
 @media(max-width:600px){.fab-menu{top:12px;left:12px;width:46px;height:46px}}
 .view{display:none}
 .view.active{display:block}
-#homeworkView{width:min(92vw,760px);margin:0 auto;text-align:left}
+#homeworkView{width:min(92vw,840px);margin:0 auto;text-align:left}
 .homework-header{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
   margin-bottom:20px
 }
-.homework-title{font-size:28px;font-weight:800;margin:0}
-.homework-date{font-size:13px;color:#888;margin-top:5px}
+.homework-title{font-size:28px;font-weight:800;margin:0;white-space:nowrap}
+.homework-date{font-size:13px;color:#888;margin-top:5px;white-space:nowrap}
 .add-task-btn{white-space:nowrap}
 .homework-list{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
@@ -165,14 +163,14 @@ body.drawer-open .drawer{transform:translateX(0)}
 .task-row.done .task-input{color:#777;text-decoration:line-through}
 .add-subtask{
   width:100%;margin-top:5px;padding:9px 12px;font-size:13px;
-  background:#25282e;color:#ddd
+  background:#25282e;color:#ddd;white-space:nowrap
 }
 .empty-homework{
   grid-column:1/-1;padding:55px 20px;text-align:center;color:#777;
-  border:1px dashed #303238;border-radius:16px
+  border:1px dashed #303238;border-radius:16px;white-space:nowrap
 }
 .empty-homework strong{display:block;color:#aaa;margin-bottom:6px}
-.homework-footer{margin-top:16px;font-size:12px;color:#666;text-align:center}
+.homework-footer{margin-top:16px;font-size:12px;color:#666;text-align:center;white-space:nowrap}
 @media(max-width:600px){
   .fab-menu{top:12px;left:12px}
   #timerView{padding-top:45px}
@@ -181,7 +179,6 @@ body.drawer-open .drawer{transform:translateX(0)}
   .homework-title{font-size:24px}
 }
 
-
 /* ===== 입장 선택 화면 ===== */
 #entryView{
   position:fixed;inset:0;z-index:100;
@@ -189,17 +186,17 @@ body.drawer-open .drawer{transform:translateX(0)}
   background:#0b0c0f;
 }
 .entry-box{
-  width:min(90vw,520px);
+  width:min(90vw,600px);
   text-align:center;
 }
 .entry-title{
-  font-size:30px;font-weight:800;margin:0 0 8px;
+  font-size:30px;font-weight:800;margin:0 0 8px;white-space:nowrap
 }
 .entry-subtitle{
-  color:#777;font-size:14px;margin:0 0 28px;
+  color:#777;font-size:14px;margin:0 0 28px;white-space:nowrap
 }
 .entry-tabs{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;
 }
 .entry-tab{
   min-height:125px;padding:20px 14px;
@@ -214,59 +211,121 @@ body.drawer-open .drawer{transform:translateX(0)}
   transform:translateY(-2px);
 }
 .entry-icon{font-size:30px}
-.entry-name{font-size:17px;font-weight:800}
-.entry-desc{font-size:12px;color:#888}
+.entry-name{font-size:17px;font-weight:800;white-space:nowrap}
+.entry-desc{font-size:12px;color:#888;white-space:nowrap}
 body.entry-open > .fab-menu,
 body.entry-open > .drawer-overlay,
 body.entry-open > .drawer,
 body.entry-open > #timerView,
 body.entry-open > #homeworkView{display:none!important}
 
-
 .drawer{display:flex}
 
-
-/* 모든 텍스트 입력칸: 마우스 오버/포커스 시 연결된 X 표시 */
 .input-wrap{position:relative;min-width:0}
 .input-wrap input[type="text"]{width:100%;padding-right:38px}
 .input-wrap .delete-input{position:absolute;right:5px;top:50%;transform:translateY(-50%);opacity:0;pointer-events:none}
 .input-wrap:hover .delete-input,.input-wrap:focus-within .delete-input{opacity:1;pointer-events:auto}
 
-/* ===== 커스텀 확인 모달 UI ===== */
+/* ===== 커스텀 확인/데이터 관리 모달 UI ===== */
 .confirm-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(2px)}
-.confirm-box{width:min(85vw,320px);background:#15171b;border:1px solid #303238;border-radius:16px;padding:24px;text-align:center;box-shadow:0 15px 45px rgba(0,0,0,.5);animation:popIn .2s cubic-bezier(.175,.885,.32,1.275)}
+.confirm-box{width:min(90vw,460px);background:#15171b;border:1px solid #303238;border-radius:16px;padding:24px;text-align:center;box-shadow:0 15px 45px rgba(0,0,0,.5);animation:popIn .2s cubic-bezier(.175,.885,.32,1.275)}
 @keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 .confirm-msg{font-size:15px;color:#eee;margin-bottom:20px;line-height:1.4;word-break:keep-all}
 .confirm-btns{display:flex;gap:10px}
-.confirm-btns button{flex:1;padding:12px;font-size:14px}
+.confirm-btns button{flex:1;padding:12px;font-size:14px;white-space:nowrap}
 .confirm-btns .btn-yes{background:#ff5252;color:#fff}
 .confirm-btns .btn-yes:hover{background:#ff3838}
 
+/* 커스텀 데이터 백업/복구 모달 전용 스타일 */
+.backup-tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid #292b31;padding-bottom:10px}
+.backup-tab-btn{flex:1;padding:8px;font-size:13px;background:#24272d;color:#aaa;border-radius:8px;white-space:nowrap}
+.backup-tab-btn.active{background:#fff;color:#111}
+.backup-panel{display:none;text-align:left}
+.backup-panel.active{display:block}
+
+/* ===== 소재비 모달 UI ===== */
+.sojaebi-option-group{margin-bottom:14px;background:#101216;padding:12px;border-radius:12px;border:1px solid #292b31}
+.sojaebi-group-title{font-size:13px;font-weight:700;color:#7fd3ff;margin-bottom:8px;white-space:nowrap}
+.sojaebi-label{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;background:#15171b;color:#ddd;font-size:13px;cursor:pointer;margin-bottom:4px;white-space:nowrap}
+.sojaebi-label:hover{background:#25282e}
+.sojaebi-label input{width:auto;accent-color:#7fd3ff}
+
 /* ===== 수익/사냥/보스 기록 ===== */
-.record-view{width:min(94vw,1000px);margin:0 auto;text-align:left;padding:88px 0 30px}
-.record-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}
-.record-header h1{margin:0 0 5px;font-size:28px}.record-sub{font-size:13px;color:#777}
+.record-view{width:min(94vw,1080px);margin:0 auto;text-align:left;padding:88px 0 30px}
+.record-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.record-header h1{margin:0 0 5px;font-size:28px;white-space:nowrap}.record-sub{font-size:13px;color:#777;white-space:nowrap}
 .record-card{background:#15171b;border:1px solid #292b31;border-radius:16px;padding:18px;margin-bottom:16px}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.form-grid label{color:#aaa;font-size:12px}.form-grid input,.form-grid select{margin-top:7px;width:100%}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px 14px;
+  min-width:0;
+}
+.form-grid>label{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  min-width:0;
+  margin:0;
+  color:#aaa;
+  font-size:12px;
+  line-height:1.35;
+  white-space:nowrap;
+}
+.form-grid>label input{
+  display:block;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  margin-top:7px;
+  padding:11px 12px;
+  border:1px solid #444;
+  border-radius:12px;
+  background:#111;
+  color:#fff;
+  font-size:14px;
+  box-sizing:border-box;
+  outline:none;
+  transition:border-color .15s,background .15s,box-shadow .15s;
+}
+.form-grid>label input:focus{
+  border-color:#666;
+  background:#121418;
+  box-shadow:0 0 0 2px rgba(127,211,255,.08);
+}
+.form-grid>label .money-preview{
+  margin-top:4px;
+  min-height:13px;
+}
+.form-grid label{color:#aaa;font-size:12px;word-break:keep-all}
+.form-grid input,.form-grid select{
+  min-width:0;
+  box-sizing:border-box;
+}
+.form-grid>label{min-width:0}
+.form-grid{min-width:0}
+.record-card{min-width:0}
 .consumable-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .consumable-item{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;align-items:start;padding:9px;border:1px solid #292b31;border-radius:10px;background:#101216}
-.consumable-item span{font-size:12px;color:#bbb;padding-top:8px}.consumable-item input{padding:9px;font-size:13px}
-.primary-wide{width:100%;margin-top:15px}.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.summary-box{padding:17px;border:1px solid #292b31;border-radius:14px;background:#15171b}.summary-label{font-size:12px;color:#888}.summary-value{font-size:22px;font-weight:800;margin-top:7px;font-variant-numeric:tabular-nums}
-.record-row{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr auto;gap:10px;padding:11px 0;border-bottom:1px solid #292b31;align-items:center;font-size:13px}.record-row:last-child{border-bottom:0}.muted{color:#888}.money{font-variant-numeric:tabular-nums;text-align:right}
+.consumable-item span{font-size:12px;color:#bbb;padding-top:8px;word-break:keep-all}.consumable-item input{padding:9px;font-size:13px;max-width:100%}
+.primary-wide{width:100%;margin-top:15px;white-space:nowrap}.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.summary-box{padding:17px;border:1px solid #292b31;border-radius:14px;background:#15171b}.summary-label{font-size:12px;color:#888;white-space:nowrap}.summary-value{font-size:22px;font-weight:800;margin-top:7px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.record-row{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr auto;gap:10px;padding:11px 0;border-bottom:1px solid #292b31;align-items:center;font-size:13px;white-space:nowrap}.record-row:last-child{border-bottom:0}.muted{color:#888;white-space:nowrap}.money{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
 .profit-row{grid-template-columns:auto 1.2fr 1fr 1.5fr auto !important;}
-.preset-toolbar{display:flex;gap:8px;flex-wrap:wrap}.preset-toolbar select{flex:1;min-width:180px}.preset-toolbar button{padding:10px 14px;font-size:13px}.preset-chars{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:12px}.preset-char{border:1px solid #292b31;border-radius:11px;padding:10px;background:#101216}.preset-char-head{display:flex;justify-content:space-between;align-items:center;color:#aaa;font-size:12px;margin-bottom:8px}.preset-char-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.preset-char input{padding:9px;font-size:13px}.potion-name{font-size:11px;color:#777;margin-top:7px}.price-info{margin-top:13px;padding:12px;border:1px solid #292b31;border-radius:11px;background:#101216;color:#bbb;font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.price-info strong{color:#fff}.danger{color:#ff6b88}.empty-record{padding:25px;text-align:center;color:#777}.delete-record{padding:7px 9px;background:#25282e;color:#aaa;font-size:12px}
-.preset-name-wrap input{flex:1}.preset-name-wrap button{padding:10px 14px;font-size:13px}
+.preset-toolbar{display:flex;gap:8px;flex-wrap:wrap}.preset-toolbar select{flex:1;min-width:180px}.preset-toolbar button{padding:10px 14px;font-size:13px;white-space:nowrap}.preset-chars{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:12px}.preset-char{border:1px solid #292b31;border-radius:11px;padding:10px;background:#101216}.preset-char-head{display:flex;justify-content:space-between;align-items:center;color:#aaa;font-size:12px;margin-bottom:8px;white-space:nowrap}.preset-char-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.preset-char input{padding:9px;font-size:13px}.potion-name{font-size:11px;color:#777;margin-top:7px;white-space:nowrap}.price-info{margin-top:13px;padding:12px;border:1px solid #292b31;border-radius:11px;background:#101216;color:#bbb;font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;white-space:nowrap}.price-info strong{color:#fff}.danger{color:#ff6b88}.empty-record{padding:25px;text-align:center;color:#777;white-space:nowrap}.delete-record{padding:7px 9px;background:#25282e;color:#aaa;font-size:12px;white-space:nowrap}
+.preset-name-wrap input{flex:1}.preset-name-wrap button{padding:10px 14px;font-size:13px;white-space:nowrap}
 .preset-chars{grid-template-columns:1fr}
-.preset-char-head{gap:8px}.preset-char-head .char-actions{display:flex;gap:5px}.char-actions button{padding:6px 9px;font-size:12px;background:#25282e;color:#aaa}
-.add-character{width:100%;margin-top:10px;padding:10px;background:#25282e;color:#ddd;font-size:13px}
-.potion-list{display:grid;gap:7px;margin-top:8px}.potion-row{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;align-items:start;padding:8px;border:1px solid #292b31;border-radius:9px;background:#15171b}.potion-row .potion-label{font-size:12px;color:#bbb;padding-top:8px}.potion-row .potion-fixed{font-size:11px;color:#888;text-align:right}.potion-row input{padding:8px;font-size:13px}
+.preset-char-head{gap:8px}.preset-char-head .char-actions{display:flex;gap:5px}.char-actions button{padding:6px 9px;font-size:12px;background:#25282e;color:#aaa;white-space:nowrap}
+.add-character{width:100%;margin-top:10px;padding:10px;background:#25282e;color:#ddd;font-size:13px;white-space:nowrap}
+.potion-list{display:grid;gap:7px;margin-top:8px}.potion-row{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;align-items:start;padding:8px;border:1px solid #292b31;border-radius:9px;background:#15171b}.potion-row .potion-label{font-size:12px;color:#bbb;padding-top:8px;word-break:keep-all}.potion-row .potion-fixed{font-size:11px;color:#888;text-align:right;white-space:nowrap}.potion-row input{padding:8px;font-size:13px}
 .price-cell{display:flex;flex-direction:column;gap:3px;min-width:0}
-.money-preview{font-size:10px;color:#8f949d;text-align:right;line-height:1.35;font-variant-numeric:tabular-nums;min-height:13px;word-break:keep-all}
+.money-preview{font-size:10px;color:#8f949d;text-align:right;line-height:1.35;font-variant-numeric:tabular-nums;min-height:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .consumable-preview{grid-column:1/-1;margin-top:-2px}.potion-row .fixed-price{background:#191b20;color:#aaa}.potion-row .custom-price{display:block}
-.potion-head{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;padding:0 8px;color:#777;font-size:10px;text-align:right}.potion-head span:first-child{text-align:left}.potion-head span:nth-child(2),.potion-head span:nth-child(3){padding-top:0}
+.potion-head{display:grid;grid-template-columns:minmax(0,1fr) 80px 105px;gap:7px;padding:0 8px;color:#777;font-size:10px;text-align:right;white-space:nowrap}.potion-head span:first-child{text-align:left}.potion-head span:nth-child(2),.potion-head span:nth-child(3){padding-top:0}
 
+@media(max-width:900px){
+  .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:700px){
   .form-grid,.consumable-grid,.preset-chars,.summary-grid{grid-template-columns:1fr}
   .record-row{grid-template-columns:1fr 1fr}
@@ -276,25 +335,24 @@ body.entry-open > #homeworkView{display:none!important}
   .profit-row .money{text-align:right;}
 }
 
-
 .boss-selection-card{overflow:hidden}
-.boss-selection-top{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:14px}
-.boss-selection-help{font-size:12px;color:#7f8490;margin-top:-8px}
-.boss-count-box{min-width:78px;text-align:center;padding:8px 11px;border:1px solid #363940;border-radius:10px;background:#101216;color:#d8dbe1;font-size:12px}
+.boss-selection-top{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.boss-selection-help{font-size:12px;color:#7f8490;margin-top:-8px;word-break:keep-all}
+.boss-count-box{min-width:78px;text-align:center;padding:8px 11px;border:1px solid #363940;border-radius:10px;background:#101216;color:#d8dbe1;font-size:12px;white-space:nowrap}
 .boss-count-box b{font-size:18px;color:#fff}.boss-count-box span{color:#777}
 .boss-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
 .boss-card{background:#191b1f;border:1px solid #303238;border-radius:9px;overflow:hidden}
 .boss-card.recorded{opacity:.45}
 .boss-card-head{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:11px 12px;border-bottom:1px solid #2b2d32}
-.boss-name{font-size:15px;font-weight:800;color:#f0f1f3;white-space:nowrap;line-height:1.35;letter-spacing:-.2px}
+.boss-name{font-size:15px;font-weight:800;color:#f0f1f3;word-break:keep-all;line-height:1.35;letter-spacing:-.2px}
 .boss-card-actions{display:flex;align-items:center;gap:6px;width:100%}
 .boss-card-actions .boss-party{flex:1;min-width:0}
 .boss-card-actions .boss-cancel{flex:0 0 42px}
 .boss-party{width:61px;padding:6px 5px;font-size:12px}
-.boss-cancel{border:0;border-radius:5px;padding:6px 7px;background:#30333a;color:#c4c7ce;font-size:11px;cursor:pointer}
+.boss-cancel{border:0;border-radius:5px;padding:6px 7px;background:#30333a;color:#c4c7ce;font-size:11px;cursor:pointer;white-space:nowrap}
 .boss-cancel:hover{background:#3b3e46}
 .boss-difficulties{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px}
-.boss-difficulty{display:inline-flex;align-items:center;gap:6px;border:1px solid #383b43;border-radius:6px;background:#24272d;color:#cdd0d7;padding:7px 9px;font-size:11px;cursor:pointer;transition:.12s}
+.boss-difficulty{display:inline-flex;align-items:center;gap:6px;border:1px solid #383b43;border-radius:6px;background:#24272d;color:#cdd0d7;padding:7px 9px;font-size:11px;cursor:pointer;transition:.12s;white-space:nowrap}
 .boss-difficulty:hover{border-color:#666a73;background:#2b2e34}
 .boss-difficulty.selected{border-color:#d7d9dd;background:#34373d;color:#fff}
 .boss-difficulty.locked{cursor:not-allowed}
@@ -302,65 +360,64 @@ body.entry-open > #homeworkView{display:none!important}
 .boss-difficulty.selected .check-dot{background:#f0f0f0;border-color:#f0f0f0;color:#15171b}
 .difficulty-name{font-weight:700;white-space:nowrap}.difficulty-price{color:#8f949d;margin-left:2px;white-space:nowrap}
 .boss-difficulty.selected .difficulty-price{color:#e5e6e8}
-.boss-card-bottom{padding:0 12px 10px;color:#8f949d;font-size:11px}
+.boss-card-bottom{padding:0 12px 10px;color:#8f949d;font-size:11px;word-break:keep-all}
 .boss-card-bottom b{color:#eee}
-.potion-note{font-size:11px;color:#777;margin-top:8px}
+.potion-note{font-size:11px;color:#777;margin-top:8px;word-break:keep-all}
 .single-preset-char{max-width:720px}
 .boss-count-boxes{display:flex;gap:8px}
 .boss-count-box.monthly{border-color:#5b3a2e;background:#1c1410;color:#e8d6c8}
 .boss-count-box.monthly b{color:#ffb37a}
 .boss-count-box.monthly span{color:#a06b4f}
-/* 총 영약값 + 저장 버튼 */
+
 .potion-total-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:13px 16px;border:1px solid #303238;border-radius:12px;background:#101216;font-size:14px;color:#bbb}
-.potion-total-row span{font-weight:700}
-.potion-total-row b{font-size:18px;color:#7fd3ff;font-variant-numeric:tabular-nums;font-weight:800;flex:1;min-width:120px}
+.potion-total-row span{font-weight:700;white-space:nowrap}
+.potion-total-row b{font-size:18px;color:#7fd3ff;font-variant-numeric:tabular-nums;font-weight:800;flex:1;min-width:120px;word-break:keep-all}
 .potion-total-row .primary-wide{flex:0 0 auto}
-/* 이번 기록 물욕템 */
+
 .boss-loot-section{margin-top:16px;padding:14px;border:1px solid #2b2d32;border-radius:12px;background:#101216}
-.loot-title{font-size:15px!important;margin-bottom:4px}
+.loot-title{font-size:15px!important;margin-bottom:4px;white-space:nowrap}
 .loot-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid #2b2d32;grid-column:1/-1}
-.loot-chip{font-size:12px;padding:5px 10px;border:1px solid #4a7d5e;border-radius:7px;background:#15221a;color:#9fe3b8}
-/* 물욕템 기록 */
-.wish-summary{margin-bottom:14px;padding:10px 14px;border:1px solid #303238;border-radius:11px;background:#101216;font-size:13px;color:#bbb}
+.loot-chip{font-size:12px;padding:5px 10px;border:1px solid #4a7d5e;border-radius:7px;background:#15221a;color:#9fe3b8;white-space:nowrap}
+
+.wish-summary{margin-bottom:14px;padding:10px 14px;border:1px solid #303238;border-radius:11px;background:#101216;font-size:13px;color:#bbb;white-space:nowrap}
 .wish-summary b{color:#fff;font-size:16px}
 .wish-cat{margin:0;padding:12px;border:1px solid #303238;border-radius:12px;background:#101216}
-.wish-cat-title{font-weight:800;font-size:14px;margin-bottom:8px;color:#e8e9eb}
-.wish-cat-count{font-size:12px;color:#8f949d;font-weight:600;margin-left:6px}
-.wish-item-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px}
+.wish-cat-title{font-weight:800;font-size:14px;margin-bottom:8px;color:#e8e9eb;white-space:nowrap}
+.wish-cat-count{font-size:12px;color:#8f949d;font-weight:600;margin-left:6px;white-space:nowrap}
+.wish-item-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px}
 .wish-item{display:flex;align-items:center;gap:6px;padding:8px 9px;border:1px solid #303238;border-radius:8px;background:#101216;color:#cdd0d7;font-size:12px;cursor:pointer;transition:.12s}
 .wish-item:hover{border-color:#555}
 .wish-item.checked{border-color:#4a7d5e;background:#15221a;color:#fff}
 .wish-item input{width:auto;accent-color:#5fae7a}
-.wish-item span{min-width:0;line-height:1.25}
-/* 하단 2열 그리드 */
+.wish-item span{min-width:0;line-height:1.25;word-break:keep-all}
+
 .boss-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-/* 메이플 길라잡이 링크 */
+
 .links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
 .link-card{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid #292b31;border-radius:14px;background:#15171b;color:#f5f5f5;text-decoration:none;transition:.15s;cursor:pointer}
 .link-card:hover{border-color:#5a5d65;background:#1c1f24;transform:translateY(-1px)}
 .link-icon{flex:0 0 auto;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:22px;background:#101216;border:1px solid #303238;border-radius:11px}
 .link-body{flex:1;min-width:0}
-.link-name{font-size:15px;font-weight:800;margin-bottom:2px}
-.link-url{font-size:12px;color:#8f949d}
-.link-desc{font-size:12px;color:#6f747c;margin-top:4px}
+.link-name{font-size:15px;font-weight:800;margin-bottom:2px;white-space:nowrap}
+.link-url{font-size:12px;color:#8f949d;white-space:nowrap}
+.link-desc{font-size:12px;color:#6f747c;margin-top:4px;word-break:keep-all}
 .link-arrow{flex:0 0 auto;color:#5a5d65;font-size:16px;font-weight:700}
 @media(max-width:900px){.boss-bottom-grid{grid-template-columns:1fr}}
 @media(max-width:1000px){.boss-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.boss-cards{grid-template-columns:1fr}.boss-selection-top{align-items:flex-start;flex-direction:column}}
 
-/* 하단 총 메소 계산 요약 스타일 추가 */
 .total-meso-summary{
   display:flex;justify-content:space-between;align-items:center;
   margin-top:16px;padding:15px 18px;
   background:#101216;border:1px solid #303238;border-radius:12px;
-  font-size:14px;color:#ccc;
+  font-size:14px;color:#ccc;flex-wrap:wrap;gap:8px;
 }
-.total-meso-summary span{font-weight:700}
-.total-meso-summary b{font-size:18px;color:#ffe866;font-variant-numeric:tabular-nums;font-weight:800}
+.total-meso-summary span{font-weight:700;white-space:nowrap}
+.total-meso-summary b{font-size:18px;color:#ffe866;font-variant-numeric:tabular-nums;font-weight:800;word-break:keep-all}
 
 .boss-section-label{
   font-size:13px;font-weight:800;color:#8f949d;letter-spacing:.3px;
-  margin:14px 0 8px;padding-left:2px
+  margin:14px 0 8px;padding-left:2px;white-space:nowrap;
 }
 .boss-section-monthly{margin-top:20px}
 .boss-cards-monthly{margin-bottom:6px}
@@ -375,16 +432,87 @@ body.entry-open > #homeworkView{display:none!important}
 #bossView .potion-note{max-width:720px;margin-left:auto;margin-right:auto}
 #bossView .boss-selection-card{max-width:900px;margin-left:auto;margin-right:auto}
 #bossView .boss-cards{max-width:900px;margin-left:auto;margin-right:auto}
+
+.sojaebi-btn-group{display:flex;gap:10px;margin-top:14px;margin-bottom:14px;flex-wrap:wrap}
+.sojaebi-btn-group button{flex:1;min-width:140px}
 </style>
 </head>
 <body class="entry-open">
 
+<!-- 커스텀 확인 모달 -->
 <div id="customConfirmOverlay" class="confirm-overlay">
   <div class="confirm-box">
     <div id="confirmMsg" class="confirm-msg">정말 삭제하시겠습니까?</div>
     <div class="confirm-btns">
       <button id="confirmNo" class="secondary">아니오</button>
       <button id="confirmYes" class="btn-yes">예, 삭제합니다</button>
+    </div>
+  </div>
+</div>
+
+<!-- 커스텀 데이터 백업 및 복구 모달 (파일/코드 선택) -->
+<div id="dataModalOverlay" class="confirm-overlay">
+  <div class="confirm-box" style="width:min(90vw,500px);">
+    <div class="section-title" id="dataModalTitle">데이터 백업 / 불러오기</div>
+    <div class="backup-tabs">
+      <button type="button" class="backup-tab-btn active" id="tabFileBtn">📁 파일 방식</button>
+      <button type="button" class="backup-tab-btn" id="tabCodeBtn">💻 코드(텍스트) 방식</button>
+    </div>
+
+    <!-- 파일 방식 패널 -->
+    <div id="panelFile" class="backup-panel active">
+      <p class="sub" style="margin-bottom:12px;">JSON 파일 형태로 데이터를 내보내거나 불러옵니다.</p>
+      <div style="display:flex; gap:10px; flex-direction:column;">
+        <button id="btnExportFile" class="primary-wide" style="margin-top:0;">📥 백업 파일 다운로드 (.json)</button>
+        <div style="position:relative;">
+          <button id="btnImportFileTrigger" class="secondary" style="width:100%;">📤 백업 파일 선택하여 불러오기</button>
+          <input type="file" id="fileInput" accept=".json" style="display:none;">
+        </div>
+      </div>
+    </div>
+
+    <!-- 코드 방식 패널 -->
+    <div id="panelCode" class="backup-panel">
+      <p class="sub" style="margin-bottom:8px;">텍스트 코드를 복사하거나 붙여넣어 관리합니다.</p>
+      <textarea id="dataCodeText" rows="6" placeholder="여기에 백업 코드가 표시되거나 입력합니다."></textarea>
+      <div style="display:flex; gap:8px; margin-top:10px;">
+        <button id="btnCopyCode" class="secondary" style="flex:1;">📋 코드 복사</button>
+        <button id="btnApplyCode" style="flex:1; background:#7fd3ff; color:#111;">📥 코드 적용하기</button>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; text-align:right;">
+      <button id="closeDataModal" class="secondary" style="padding:8px 16px; font-size:13px;">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 소재비 변경 모달 -->
+<div id="sojaebiModalOverlay" class="confirm-overlay">
+  <div class="confirm-box">
+    <div class="section-title">🧪 소재비 조합 설정</div>
+    <p class="sub" style="margin-bottom:14px;">사용할 소재비 항목을 선택하세요.</p>
+    
+    <div class="sojaebi-option-group">
+      <div class="sojaebi-group-title">재물 획득</div>
+      <label class="sojaebi-label"><input type="checkbox" id="chk_fortune"> 소형 재물 획득의 비약</label>
+    </div>
+
+    <div class="sojaebi-option-group">
+      <div class="sojaebi-group-title">경험치 비약 (택 1)</div>
+      <label class="sojaebi-label"><input type="checkbox" id="chk_exp" class="exp-potion-group"> 소형 경험 축적의 비약</label>
+      <label class="sojaebi-label"><input type="checkbox" id="chk_highExp" class="exp-potion-group"> 소형 고농축 경험치 획득의 비약</label>
+    </div>
+
+    <div class="sojaebi-option-group">
+      <div class="sojaebi-group-title">경험치 쿠폰 (택 1)</div>
+      <label class="sojaebi-label"><input type="checkbox" id="chk_coupon50" class="exp-coupon-group"> 추가 경험치 50% 쿠폰</label>
+      <label class="sojaebi-label"><input type="checkbox" id="chk_coupon70" class="exp-coupon-group"> 추가 경험치 70% 쿠폰</label>
+    </div>
+
+    <div class="confirm-btns" style="margin-top:20px;">
+      <button id="btnSaveSojaebi" style="background:#7fd3ff; color:#111;">저장</button>
+      <button id="btnCloseSojaebi" class="secondary">취소</button>
     </div>
   </div>
 </div>
@@ -427,7 +555,6 @@ body.entry-open > #homeworkView{display:none!important}
     </div>
   </div>
 </div>
-
 
 <button class="fab-menu" id="menuTab" type="button" aria-label="메뉴 열기" aria-expanded="false">
   <span></span><span></span><span></span>
@@ -567,12 +694,18 @@ body.entry-open > #homeworkView{display:none!important}
   <div class="homework-footer">숙제 내용은 자동 저장되며, 매일 자정에 체크 상태만 초기화됩니다.</div>
 </div>
 
-
 <div id="profitView" class="view record-view">
-  <div class="record-header"><div><h1>수익 정리</h1><div class="record-sub">사냥과 보스 기록을 한눈에 정리합니다.</div></div></div>
+  <div class="record-header">
+    <div>
+      <h1>수익 정리</h1>
+      <div class="record-sub">사냥과 보스 기록을 한눈에 정리합니다.</div>
+    </div>
+    <!-- 커스텀 백업/불러오기 버튼 -->
+    <button id="openDataModal" class="small-btn secondary" style="background:#25282e; color:#7fd3ff; border:1px solid #303238;">💾 데이터 백업 / 불러오기</button>
+  </div>
   <div class="summary-grid" id="profitSummary"></div>
   <div class="record-card">
-    <div class="section-title" style="display:flex; justify-content:space-between; align-items:flex-end;">
+    <div class="section-title" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:8px;">
       <span>📊 전체 기록 관리</span>
       <div style="font-size:12px; display:flex; gap:12px; align-items:center;">
         <label style="display:flex; align-items:center; gap:4px; margin:0; cursor:pointer; color:#bbb;"><input type="checkbox" id="selectAllProfit" style="width:16px; height:16px; margin:0; accent-color:#fff;"> 모두 선택</label>
@@ -594,6 +727,12 @@ body.entry-open > #homeworkView{display:none!important}
       <label>획득 솔 에르다 조각<input id="huntFragments" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for-count="huntFragments"></div></label>
       <label>조각 개당 가격<input id="huntFragmentPrice" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntFragmentPrice"></div></label>
     </div>
+
+    <div class="sojaebi-btn-group" style="margin-top:16px;">
+      <button id="btnUseSojaebi" style="background:#7fd3ff; color:#111;">🧪 소재비 사용 (+30분)</button>
+      <button id="btnOpenSojaebi" class="secondary">⚙️ 소재비 변경</button>
+    </div>
+
     <div class="section-title" style="margin-top:22px">🧪 사용한 소모품 <span class="sub">개수 × 가격</span></div>
     <div class="consumable-grid" id="huntConsumables"></div>
     <button id="saveHunt" class="primary-wide">＋ 사냥 기록 저장</button>
@@ -629,7 +768,7 @@ body.entry-open > #homeworkView{display:none!important}
     <div class="boss-selection-top">
       <div>
         <div class="section-title">👑 보스 선택</div>
-        <div class="boss-selection-help">같은 보스는 난이도 하나만 선택할 수 있습니다. 다른 보스는 여러 개 선택할 수 있습니다.</div>
+        <div class="boss-selection-help">주간 보스는 최대 12개까지 선택할 수 있습니다. 같은 보스는 난이도 하나만 선택 가능합니다.</div>
       </div>
       <div class="boss-count-boxes">
         <div class="boss-count-box"><b id="selectedBossCount">0</b> / 12 <span>주간</span></div>
@@ -726,7 +865,7 @@ body.entry-open > #homeworkView{display:none!important}
 </div>
 
 <script>
-// 커스텀 확인 창(모달) 함수 추가
+// 커스텀 확인 창(모달)
 function showConfirm(msg, onYes) {
   const overlay = document.getElementById('customConfirmOverlay');
   const msgEl = document.getElementById('confirmMsg');
@@ -735,10 +874,23 @@ function showConfirm(msg, onYes) {
   
   document.getElementById('confirmYes').onclick = () => { 
     overlay.style.display = 'none'; 
-    onYes(); 
+    if(onYes) onYes(); 
   };
   document.getElementById('confirmNo').onclick = () => { 
     overlay.style.display = 'none'; 
+  };
+}
+
+// 12개 초과 경고 전용 커스텀 모달 알림창 함수 추가
+function showAlertModal(msg) {
+  showConfirm(msg, null);
+  // '아니오' 버튼을 숨기거나 확인 전용으로 처리하려면 아래와 같이 처리 가능합니다.
+  document.getElementById('confirmNo').style.display = 'none';
+  document.getElementById('confirmYes').textContent = '확인';
+  document.getElementById('confirmYes').onclick = () => {
+    document.getElementById('customConfirmOverlay').style.display = 'none';
+    document.getElementById('confirmNo').style.display = 'block'; // 원상복구
+    document.getElementById('confirmYes').textContent = '예, 삭제합니다';
   };
 }
 
@@ -754,9 +906,10 @@ function speak(){
   if(!voices.length){statusEl.textContent='TTS 목소리를 하나 이상 선택해 주세요.';return}
   speechSynthesis.cancel();
   const text=textEl.value || '야누스가 꺼집니다';
-  voices.forEach(voice=>{
+  voices.forEach((voice,index)=>{
     const u=new SpeechSynthesisUtterance(text);
     u.voice=voice;u.lang=voice.lang;u.rate=1;u.pitch=1;u.volume=Number(document.getElementById('ttsVolume').value)/100;
+    if(index>0) u.text=text;
     speechSynthesis.speak(u);
   });
 }
@@ -807,6 +960,7 @@ function playSound(type){
     setTimeout(()=>ctx.close(),2200);
   }catch(e){}
 }
+
 function tick(){
   remaining--;
   if(remaining<=0){
@@ -818,6 +972,7 @@ function tick(){
   }
   render();
 }
+
 function setIntervalTime(total){
   total=Math.max(1,Math.min(59999,total));
   intervalSeconds=total; remaining=total;
@@ -826,6 +981,7 @@ function setIntervalTime(total){
   statusEl.textContent=`반복 간격 ${Math.floor(total/60)}분 ${total%60}초`;
   render();
 }
+
 document.getElementById('applyInterval').onclick=()=>{
   const m=Math.max(0,Math.min(999,Number(document.getElementById('minutesInput').value)||0));
   const s=Math.max(0,Math.min(59,Number(document.getElementById('secondsInput').value)||0));
@@ -846,12 +1002,13 @@ document.getElementById('pause').onclick=()=>{
 document.getElementById('reset').onclick=()=>{
   running=false;clearInterval(timer);remaining=intervalSeconds;speechSynthesis.cancel();statusEl.textContent='대기 중';render();
 };
+
 const voiceList=document.getElementById('voiceList');
 let availableVoices=[];
 
 function loadVoices(){
   if(!('speechSynthesis' in window)){
-    voiceList.innerHTML='<div style="color:#aaa;font-size:13px">이 브라우저는 TTS를 지원하지 않습니다.</div>';
+    voiceList.innerHTML='<div style="color:#aaa;font-size:13px;white-space:nowrap">이 브라우저는 TTS를 지원하지 않습니다.</div>';
     return;
   }
   availableVoices=speechSynthesis.getVoices()
@@ -860,7 +1017,7 @@ function loadVoices(){
 
   voiceList.innerHTML='';
   if(!availableVoices.length){
-    voiceList.innerHTML='<div style="color:#aaa;font-size:13px">한국어 음성이 없습니다. OS의 음성 기능을 확인해 주세요.</div>';
+    voiceList.innerHTML='<div style="color:#aaa;font-size:13px;white-space:nowrap">한국어 음성이 없습니다. OS의 음성 기능을 확인해 주세요.</div>';
     return;
   }
   availableVoices.forEach((v,i)=>{
@@ -878,20 +1035,6 @@ function getSelectedVoices(){
     .map(x=>availableVoices[Number(x.value)]).filter(Boolean);
 }
 
-function speak(){
-  if(!('speechSynthesis' in window)){statusEl.textContent='이 브라우저는 TTS를 지원하지 않습니다.';return}
-  const voices=getSelectedVoices();
-  if(!voices.length){statusEl.textContent='TTS 목소리를 하나 이상 선택해 주세요.';return}
-  speechSynthesis.cancel();
-  const text=textEl.value || '야누스가 꺼집니다';
-  voices.forEach((voice,index)=>{
-    const u=new SpeechSynthesisUtterance(text);
-    u.voice=voice;u.lang=voice.lang;u.rate=1;u.pitch=1;u.volume=Number(document.getElementById('ttsVolume').value)/100;
-    if(index>0) u.text=text;
-    speechSynthesis.speak(u);
-  });
-}
-
 document.getElementById('preview').onclick=()=>speak();
 document.getElementById('soundPreview').onclick=()=>{
   if(!document.getElementById('soundEnabled').checked){statusEl.textContent='효과음이 꺼져 있습니다.';return}
@@ -901,10 +1044,8 @@ document.getElementById('soundPreview').onclick=()=>{
 document.getElementById('ttsVolume').oninput=e=>document.getElementById('ttsVolumeValue').textContent=e.target.value+'%';
 document.getElementById('soundVolume').oninput=e=>document.getElementById('soundVolumeValue').textContent=e.target.value+'%';
 
-
-// Picture-in-Picture
+// PIP 모드
 let pipWindow=null;
-
 function updatePip(){
   if(!pipWindow || pipWindow.closed) return;
   const pipTime=pipWindow.document.getElementById('pipTime');
@@ -919,7 +1060,7 @@ function updatePip(){
 
 async function openPip(){
   if(!('documentPictureInPicture' in window)){
-    statusEl.textContent='이 브라우저에서는 PIP를 지원하지 않습니다. Chrome 116 이상을 사용해 주세요.';
+    statusEl.textContent='이 브라우저에서는 PIP를 지원하지 않습니다.';
     return;
   }
   if(pipWindow && !pipWindow.closed){
@@ -929,17 +1070,16 @@ async function openPip(){
 
   try{
     pipWindow=await documentPictureInPicture.requestWindow({width:320,height:190});
-
     const d=pipWindow.document;
     d.body.innerHTML=`
       <style>
         *{box-sizing:border-box}
         body{margin:0;background:#0b0c0f;color:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
              display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;overflow:hidden}
-        #pipTime{font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
-        #pipStatus{font-size:12px;color:#aaa;height:18px;margin:8px 0}
+        #pipTime{font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+        #pipStatus{font-size:12px;color:#aaa;height:18px;margin:8px 0;white-space:nowrap}
         .pipBtns{display:flex;gap:6px}
-        button{border:0;border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer;background:#fff;color:#111}
+        button{border:0;border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer;background:#fff;color:#111;white-space:nowrap}
         button.secondary{background:#333;color:#fff}
         button:disabled{opacity:.45;cursor:default}
       </style>
@@ -956,17 +1096,13 @@ async function openPip(){
     d.getElementById('pipPause').onclick=()=>document.getElementById('pause').click();
     d.getElementById('pipReset').onclick=()=>document.getElementById('reset').click();
 
-    pipWindow.addEventListener('pagehide',()=>{
-      pipWindow=null;
-    });
-
+    pipWindow.addEventListener('pagehide',()=>{ pipWindow=null; });
     updatePip();
   }catch(e){
     pipWindow=null;
     statusEl.textContent='PIP 창을 열지 못했습니다.';
   }
 }
-
 document.getElementById('pip').onclick=openPip;
 
 if('speechSynthesis' in window){
@@ -1065,7 +1201,6 @@ function addSection(){
   data.push({id:createId(), title:'새 체크리스트', tasks:[{id:createId(), text:'', done:false}]});
   saveHomework(data);
   renderHomework();
-
   const last = document.querySelector('.homework-card:last-child .section-input');
   if(last){ last.focus(); last.select(); }
 }
@@ -1111,10 +1246,10 @@ document.getElementById('homeworkList').addEventListener('click', e => {
   }
 
   if(e.target.closest('.delete-title')){
-    if(confirm(`"${section?.title || '이 대제목'}"을 삭제할까요?`)){
+    showConfirm(`"${section?.title || '이 대제목'}"을 삭제할까요?`, () => {
       saveHomework(data.filter(s => s.id !== sectionId));
       renderHomework();
-    }
+    });
     return;
   }
 
@@ -1156,9 +1291,28 @@ document.getElementById('homeworkList').addEventListener('input', e => {
   }
 });
 
-function switchView(view){switchRecordView(view);setDrawerActive(view);}
+function switchRecordView(viewName) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const target = document.getElementById(viewName + 'View');
+  if(target) target.classList.add('active');
+}
 
-// 드로어 열고 닫기
+function setDrawerActive(viewName) {
+  document.querySelectorAll('.drawer-card').forEach(c => c.classList.remove('active'));
+  const btnMap = {
+    'timer': 'menuTimer', 'homework': 'menuHomework', 'profit': 'menuProfit',
+    'hunt': 'menuHunt', 'boss': 'menuBoss', 'links': 'menuLinks'
+  };
+  const activeBtn = document.getElementById(btnMap[viewName]);
+  if(activeBtn) activeBtn.classList.add('active');
+}
+
+function switchView(view){
+  switchRecordView(view);
+  setDrawerActive(view);
+  if(view==='profit') renderProfitSummary();
+}
+
 function openDrawer(){
   document.body.classList.add('drawer-open');
   menuTab.setAttribute('aria-expanded','true');
@@ -1186,20 +1340,13 @@ setInterval(() => {
   }
 }, 30000);
 
-
 /* ===== 입장 화면 ===== */
 function enterFromStart(view){
   const entry = document.getElementById('entryView');
-  if(entry) entry.remove();
+  if(entry) entry.style.display = 'none';
   document.body.classList.remove('entry-open');
 
-  if(view==='timer'||view==='homework'){
-    switchView(view);
-    setDrawerActive(view);
-  } else {
-    switchRecordView(view);
-    setDrawerActive(view);
-  }
+  switchView(view);
 }
 
 document.querySelectorAll('.entry-tab').forEach(tab => {
@@ -1207,7 +1354,6 @@ document.querySelectorAll('.entry-tab').forEach(tab => {
     enterFromStart(this.dataset.entry);
   });
 });
-
 
 /* ===== 메뉴 ===== */
 const menuTab = document.getElementById('menuTab');
@@ -1221,84 +1367,29 @@ menuTab.onclick = (e) => {
 
 drawerOverlay.onclick = closeDrawer;
 
-document.getElementById('menuTimer').onclick = () => {
-  closeDrawer();
-  switchView('timer');
-  setDrawerActive('timer');
-};
+document.getElementById('menuTimer').onclick = () => { closeDrawer(); switchView('timer'); };
+document.getElementById('menuHomework').onclick = () => { closeDrawer(); switchView('homework'); };
+document.getElementById('menuProfit').onclick = () => { closeDrawer(); switchView('profit'); };
+document.getElementById('menuHunt').onclick = () => { closeDrawer(); switchView('hunt'); };
+document.getElementById('menuBoss').onclick = () => { closeDrawer(); switchView('boss'); };
+document.getElementById('menuLinks').onclick = () => { closeDrawer(); switchView('links'); };
 
-document.getElementById('menuHomework').onclick = () => {
-  closeDrawer();
-  switchView('homework');
-  setDrawerActive('homework');
-};
-
-// ESC로 드로어 닫기
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape' && document.body.classList.contains('drawer-open')) closeDrawer();
 });
 
-
 function showMainHome(){
   closeDrawer();
-
   let entry = document.getElementById('entryView');
-
-  if(!entry){
-    entry = document.createElement('div');
-    entry.id = 'entryView';
-    entry.innerHTML = `
-      <div class="entry-box">
-        <h1 class="entry-title">무엇을 사용할까요?</h1>
-        <p class="entry-subtitle">사용할 기능을 선택하세요.</p>
-        <div class="entry-tabs">
-          <button class="entry-tab" data-entry="timer">
-            <span class="entry-icon">⏱️</span>
-            <span class="entry-name">타이머</span>
-            <span class="entry-desc">반복 타이머와 알림</span>
-          </button>
-          <button class="entry-tab" data-entry="homework">
-            <span class="entry-icon">✓</span>
-            <span class="entry-name">체크리스트</span>
-            <span class="entry-desc">할 일과 완료 체크</span>
-          </button>
-          <button class="entry-tab" data-entry="profit">
-            <span class="entry-icon">₩</span>
-            <span class="entry-name">수익 정리</span>
-            <span class="entry-desc">사냥·보스 수익 요약</span>
-          </button>
-          <button class="entry-tab" data-entry="hunt">
-            <span class="entry-icon">⚔</span>
-            <span class="entry-name">사냥 기록</span>
-            <span class="entry-desc">사냥 전후 메소 기록</span>
-          </button>
-          <button class="entry-tab" data-entry="boss">
-            <span class="entry-icon">👑</span>
-            <span class="entry-name">보스 기록</span>
-            <span class="entry-desc">보스 결정석 메소 계산</span>
-          </button>
-          <button class="entry-tab" data-entry="links">
-            <span class="entry-icon">🧭</span>
-            <span class="entry-name">길라잡이</span>
-            <span class="entry-desc">메이플 유틸 사이트 모음</span>
-          </button>
-        </div>
-      </div>`;
-    document.body.appendChild(entry);
-
-    entry.querySelectorAll('.entry-tab').forEach(tab => {
-      tab.onclick = () => enterFromStart(tab.dataset.entry);
-    });
+  if(entry){
+    entry.style.display = 'flex';
   }
-
   document.body.classList.add('entry-open');
 }
 
-document.getElementById('menuHome').onclick = () => {
-  showMainHome();
-};
+document.getElementById('menuHome').onclick = showMainHome;
 
-
+/* ===== 보스 정보 데이터 ===== */
 const bossData=[
 ['카오스','자쿰',8080000,'weekly'],['카오스','블러디 퀸',8140000,'weekly'],['카오스','반반',8150000,'weekly'],['카오스','피에르',9280000,'weekly'],['하드','매그너스',8560000,'weekly'],['카오스','벨룸',9280000,'weekly'],['카오스','파풀라투스',13100000,'weekly'],
 ['노말','스우',16700000,'weekly'],['하드','스우',51500000,'weekly'],['익스트림','스우',574000000,'weekly'],
@@ -1315,12 +1406,14 @@ const bossData=[
 ['이지','벨로나',440000000,'weekly'],['노말','벨로나',850000000,'weekly'],['하드','벨로나',2950000000,'weekly'],
 ['노말','찬란한 흉성',625000000,'weekly'],['하드','찬란한 흉성',2678000000,'weekly'],
 ['노말','림보',1026000000,'weekly'],['하드','림보',2385000000,'weekly'],
-['노말','발드릭스',1368000000,'weekly'],['하드','발드릭스',3078000000,'weekly'],
-['노말','유피테르',1615000000,'weekly'],['하드','유피테르',4845000000,'weekly'],
+['노말','발드릭스',1368000000,'weekly'],['하드','발드릭스',3078000000,'weekly'],['노말','유피테르',1615000000,'weekly'],['하드','유피테르',4845000000,'weekly'],
 ['하드','검은마법사',665000000,'monthly'],['익스트림','검은마법사',8740000000,'monthly']
 ];
-/* ===== 수익 정리 / 사냥 기록 / 보스 기록 ===== */
+
+/* ===== 수익 / 사냥 / 보스 기록 로직 ===== */
 const REC_KEY='simpleTimerRevenueV1';
+const SOJAEBI_KEY='simpleTimerSojaebiV1';
+
 const defaultConsumables=[
   ['소형 재물 획득의 비약','fortune'],['소형 경험 축적의 비약','exp'],['소형 고농축 경험치 획득의 비약','highExp'],
   ['추가 경험치 50% 쿠폰','coupon50'],['추가 경험치 70% 쿠폰','coupon70']
@@ -1337,7 +1430,7 @@ const potionNames=[
 ];
 
 const wishItemData={
-  '칠흑':['루즈 컨트롤 머신 마크','마력이 깃든 안대','컴플리트 언더컨트롤','몽환의 벨트','고통의 근원','창세의 뱃지','커맨더 포스 이어링','거대한 공포','저주받은 마도서','미트라의 분노'],
+  '칠흑':['루즈 컨트롤 머신 마크','마력이 깃든 안대','컴플리트 언더컨트롤','몽환의 벨트','고통의 근원','창세의 뱃지','커맨더 포스 이어링','거대한 공포','거대한 공포','저주받은 마도서','미트라의 분노'],
   '광휘':['근원의 속삭임','죽음의 맹세','불멸의 유산','황홀한 악몽','오만의 원죄','굶주리는 핏빛 원혼'],
   '반지':['리스트레인트 링','컨티뉴어스 링']
 };
@@ -1348,19 +1441,6 @@ function recLoad(){
     if(!Array.isArray(d.hunts))d.hunts=[];
     if(!Array.isArray(d.bosses))d.bosses=[];
     if(!Array.isArray(d.presets))d.presets=[];
-    // 레거시 전역 영약 단가 -> 캐릭터별 가격으로 이관(데이터 손실 방지)
-    if(d.potionPrices){
-      d.presets.forEach(p=>{
-        const c=(p.chars&&p.chars[0]);
-        if(c){
-          c.prices=c.prices||{};
-          for(const [k,v] of Object.entries(d.potionPrices)){
-            if(c.prices[k]===undefined||c.prices[k]===0)c.prices[k]=v;
-          }
-        }
-      });
-      delete d.potionPrices;
-    }
     if(!d.wishItems)d.wishItems={};
     d.presets=d.presets.map((p,i)=>{
       const c=(p.chars&&p.chars[0])||{name:'',potions:{},prices:{}};
@@ -1379,11 +1459,10 @@ function moneyShort(n){
   n=Number(n||0);
   if(n>=100000000)return (n/100000000).toFixed(n%100000000?'2':'0')+'억';
   if(n>=10000)return Math.round(n/10000).toLocaleString()+'만';
-  return n.toLocaleString()
+  return n.toLocaleString();
 }
 function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
-// '경' 단위까지 지원하는 숫자 포맷팅 함수
 function formatKoreanNumber(n, suffix = ' 메소') {
   n = Math.floor(Number(n||0));
   if(!n||isNaN(n)) return '';
@@ -1440,8 +1519,6 @@ function updateMoneyPreviews(){
     const inp=document.getElementById(el.dataset.previewFor);
     el.textContent=mesoPreview(inp?inp.value:0);
   });
-  
-  // 개수 및 시간 프리뷰 추가
   document.querySelectorAll('[data-preview-qty]').forEach(el=>{
     const k=el.dataset.previewQty;
     const inp=document.querySelector('#huntConsumables [data-consume="'+CSS.escape(k)+'"][data-kind="qty"]');
@@ -1479,6 +1556,89 @@ function setupConsumables(){
     </div>`).join('');
 }
 
+/* ===== 소재비 기능 ===== */
+function loadSojaebiConfig(){
+  try{ return JSON.parse(localStorage.getItem(SOJAEBI_KEY)||"{}"); }
+  catch(e){ return {}; }
+}
+function saveSojaebiConfig(cfg){
+  localStorage.setItem(SOJAEBI_KEY, JSON.stringify(cfg));
+}
+
+document.querySelectorAll('.exp-potion-group').forEach(chk => {
+  chk.addEventListener('change', function() {
+    if(this.checked) {
+      document.querySelectorAll('.exp-potion-group').forEach(other => {
+        if(other !== this) other.checked = false;
+      });
+    }
+  });
+});
+
+document.querySelectorAll('.exp-coupon-group').forEach(chk => {
+  chk.addEventListener('change', function() {
+    if(this.checked) {
+      document.querySelectorAll('.exp-coupon-group').forEach(other => {
+        if(other !== this) other.checked = false;
+      });
+    }
+  });
+});
+
+document.getElementById('btnOpenSojaebi').onclick = () => {
+  const cfg = loadSojaebiConfig();
+  document.getElementById('chk_fortune').checked = !!cfg.fortune;
+  document.getElementById('chk_exp').checked = !!cfg.exp;
+  document.getElementById('chk_highExp').checked = !!cfg.highExp;
+  document.getElementById('chk_coupon50').checked = !!cfg.coupon50;
+  document.getElementById('chk_coupon70').checked = !!cfg.coupon70;
+  
+  document.getElementById('sojaebiModalOverlay').style.display = 'flex';
+};
+
+document.getElementById('btnCloseSojaebi').onclick = () => {
+  document.getElementById('sojaebiModalOverlay').style.display = 'none';
+};
+
+document.getElementById('btnSaveSojaebi').onclick = () => {
+  const cfg = {
+    fortune: document.getElementById('chk_fortune').checked,
+    exp: document.getElementById('chk_exp').checked,
+    highExp: document.getElementById('chk_highExp').checked,
+    coupon50: document.getElementById('chk_coupon50').checked,
+    coupon70: document.getElementById('chk_coupon70').checked
+  };
+  saveSojaebiConfig(cfg);
+  document.getElementById('sojaebiModalOverlay').style.display = 'none';
+};
+
+document.getElementById('btnUseSojaebi').onclick = () => {
+  const cfg = loadSojaebiConfig();
+  const keys = ['fortune', 'exp', 'highExp', 'coupon50', 'coupon70'];
+  let anySelected = false;
+
+  keys.forEach(k => {
+    if(cfg[k]){
+      anySelected = true;
+      const inp = document.querySelector(`#huntConsumables [data-consume="${k}"][data-kind="qty"]`);
+      if(inp){
+        inp.value = (Number(inp.value)||0) + 1;
+      }
+    }
+  });
+
+  if(!anySelected){
+    showAlertModal('설정된 소재비 항목이 없습니다. [소재비 변경] 버튼을 눌러 항목을 먼저 선택해 주세요.');
+    return;
+  }
+
+  const huntMins = document.getElementById('huntMinutes');
+  if(huntMins){
+    huntMins.value = (Number(huntMins.value)||0) + 30;
+  }
+  updateMoneyPreviews();
+};
+
 function setupPresets(){
   const d=recLoad();
   d.presets.forEach(p=>{
@@ -1496,7 +1656,7 @@ function renderPreset(){
   const d=recLoad(),sel=document.getElementById('presetSelect'),idx=Number(sel.value||0),p=d.presets[idx];
   if(!p)return;
   const c=p.chars[0]||(p.chars[0]={name:'',potions:{},prices:{}});
-    document.getElementById('presetChars').innerHTML=`
+  document.getElementById('presetChars').innerHTML=`
     <div class="preset-char single-preset-char">
       <div class="preset-char-head"><b>캐릭터</b><span class="muted">영약 사용 개수 / 가격</span></div>
       <input class="preset-name" data-i="0" value="${esc(c.name||'')}" placeholder="닉네임">
@@ -1535,13 +1695,13 @@ function saveCurrentPreset(showAlert){
   recSave(d);
   updatePotionTotal(c);
   renderBossCards();
-  if(showAlert)alert('영약값을 저장했습니다.');
+  if(showAlert) showAlertModal('영약값을 저장했습니다.');
 }
 
 function renderBossLoot(){
   const box=document.getElementById('bossLoot');
   if(!box)return;
-  box.innerHTML=Object.entries(wishItemData).map(([cat,items])=>`<div class="wish-cat">
+  box.innerHTML=Object.entries(wishItemData).map(([cat,items])=>`<div class="wish-cat" style="margin-bottom:10px;">
     <div class="wish-cat-title">${cat}</div>
     <div class="wish-item-list">${items.map(i=>`<label class="wish-item"><input type="checkbox" data-loot="${esc(i)}"><span>${esc(i)}</span></label>`).join('')}</div>
   </div>`).join('');
@@ -1555,23 +1715,6 @@ function getSelectedBossLoot(){
 
 function clearBossLoot(){
   document.querySelectorAll('#bossLoot [data-loot]').forEach(cb=>{cb.checked=false;});
-}
-
-function renderWishItems(){
-  const box=document.getElementById('wishItems');
-  if(!box)return;
-  const d=recLoad();
-  let total=0,got=0;
-  box.innerHTML=Object.entries(wishItemData).map(([cat,items])=>{
-    const cnt=items.filter(i=>d.wishItems[i]).length;
-    total+=items.length;got+=cnt;
-    return `<div class="wish-cat">
-      <div class="wish-cat-title">${cat} <span class="wish-cat-count">${cnt} / ${items.length}</span></div>
-      <div class="wish-item-list">${items.map(i=>`<label class="wish-item ${d.wishItems[i]?'checked':''}"><input type="checkbox" data-wish="${esc(i)}" ${d.wishItems[i]?'checked':''}><span>${esc(i)}</span></label>`).join('')}</div>
-    </div>`;
-  }).join('');
-  const sum=document.getElementById('wishSummary');
-  if(sum)sum.innerHTML=`<span class="wish-summary-text">총 획득 <b>${got}</b> / ${total} 개</span>`;
 }
 
 function potionCost(c){
@@ -1625,6 +1768,7 @@ function buildBossCard(name,opts,selected,disabled,recorded){
       ${selected?`<div class="boss-card-bottom">${selected.party}인 기준 결정석 <b>${money(Math.floor(selected.price/selected.party))}</b></div>`:''}
     </div>`;
 }
+
 function renderBossCards(){
   const box=document.getElementById('bossCards');
   const boxM=document.getElementById('bossCardsMonthly');
@@ -1650,303 +1794,144 @@ function renderBossCards(){
 
 function updateBossCount(){
   let weekly=0,monthly=0;
-  for(const [,v] of pendingBosses){if(v.cycle==='monthly')monthly++;else weekly++;}
-  const el=document.getElementById('selectedBossCount');
-  if(el)el.textContent=String(weekly);
-  const mel=document.getElementById('selectedMonthlyBossCount');
-  if(mel)mel.textContent=String(monthly);
+  for(const [name,v] of pendingBosses.entries()){
+    if(bossCycle(name)==='monthly') monthly++;
+    else weekly++;
+  }
+  const wEl=document.getElementById('selectedBossCount');
+  const mEl=document.getElementById('selectedMonthlyBossCount');
+  if(wEl) wEl.textContent=weekly;
+  if(mEl) mEl.textContent=monthly;
 }
 
 function updateTotalMeso(){
-  let total=0;
-  for(const [name,v] of pendingBosses){
-    if(v && v.price && v.party){
-      total += Math.floor(v.price / v.party);
-    }
+  let sum=0;
+  for(const [name,v] of pendingBosses.entries()){
+    sum+=Math.floor(v.price/v.party);
   }
   const el=document.getElementById('totalBossMeso');
-  if(el){
-    if(total===0){
-      el.textContent='0 메소';
-    } else {
-      el.textContent=`${moneyShort(total)} (${total.toLocaleString('ko-KR')} 메소)`;
-    }
-  }
+  if(el) el.textContent=sum?money(sum):'0 메소';
 }
 
-function clearBossSelections(){
-  pendingBosses.clear();
-  renderBossCards();
-}
-
-function saveBoss(){
-  const d=recLoad(),pi=Number(document.getElementById('presetSelect').value||0),p=d.presets[pi],c=p?.chars?.[0];
-  if(!c?.name?.trim()){alert('프리셋의 캐릭터 닉네임을 먼저 입력해 주세요.');return}
-  if(!pendingBosses.size){alert('기록할 보스를 하나 이상 선택해 주세요.');return}
-
-  const weeklyExisting=d.bosses.filter(r=>r.character===c.name&&r.cycle==='weekly'&&new Date(r.created)>=weekStart()).length;
-  const monthlyExisting=d.bosses.filter(r=>r.character===c.name&&r.cycle==='monthly'&&new Date(r.created)>=monthStart()).length;
-
-  let weeklyAdd=0,monthlyAdd=0;
-  for(const [name,v] of pendingBosses){
-    if(alreadyRecordedBosses(c.name).has(name)){
-      alert(`${name}은(는) 이미 기록되어 있습니다.
-같은 보스는 다른 난이도로도 중복 기록할 수 없습니다.`);
-      return;
-    }
-    if(v.cycle==='monthly')monthlyAdd++;else weeklyAdd++;
-  }
-  if(weeklyExisting+weeklyAdd>12){alert(`주간 보스는 일주일에 12개까지 기록할 수 있습니다.`);return}
-  if(monthlyExisting+monthlyAdd>1){alert(`월간 보스는 한 달에 1개만 기록할 수 있습니다.`);return}
-
-  const cost=potionCost(c);
-  const lootItems=getSelectedBossLoot();
-  for(const [name,v] of pendingBosses){
-    const share=Math.floor(v.price/v.party);
-    d.bosses.push({
-      character:c.name,boss:name,bossId:name,difficulty:v.difficulty,party:v.party,
-      cycle:v.cycle,crystal:v.price,crystalShare:share,potionCost:cost,net:share-cost,lootItems:[...lootItems],created:Date.now()
-    });
-  }
-  if(lootItems.length)lootItems.forEach(item=>{d.wishItems[item]=true;});
-  recSave(d);
-  pendingBosses.clear();clearBossLoot();
-  renderBossCards();renderBosses();renderProfit();
-  alert('선택한 보스 기록을 저장했습니다.');
-}
-
-function renderHunts(){
-  const d=recLoad(),box=document.getElementById('huntRecords');
-  if(!d.hunts.length){box.innerHTML='<div class="empty-record">저장된 사냥 기록이 없습니다.</div>';return}
-  box.innerHTML=d.hunts.slice().reverse().map((r,ri)=>`<div class="record-row"><div><b>${esc(r.character||'미입력')}</b><div class="muted">${r.minutes}분</div></div><div>메소 <b>${moneyShort(r.meso)}</b></div><div>조각 ${Number(r.fragments||0).toLocaleString()}개</div><div class="money">순수익 <b>${money(r.net)}</b></div><button class="delete-record" data-type="hunt" data-index="${d.hunts.length-1-ri}">삭제</button></div>`).join('');
-}
-
-function renderBosses(){
-  const d=recLoad(),box=document.getElementById('bossRecords');
-  if(!d.bosses.length){box.innerHTML='<div class="empty-record">저장된 보스 기록이 없습니다.</div>';return}
-  box.innerHTML=d.bosses.slice().reverse().map((r,ri)=>{const loot=(r.lootItems&&r.lootItems.length)?`<div class="loot-chips">${r.lootItems.map(i=>`<span class="loot-chip">💎 ${esc(i)}</span>`).join('')}</div>`:'';return `<div class="record-row"><div><b>${esc(r.character||'미입력')}</b><div class="muted">${esc(r.boss)} · ${esc(r.difficulty||'')}</div></div><div>${r.party}인 · ${r.cycle==='monthly'?'월간':'주간'} · ${moneyShort(r.crystalShare)}</div><div>영약 ${moneyShort(r.potionCost)}</div><div class="money">수익 <b>${money(r.net)}</b></div><button class="delete-record" data-type="boss" data-index="${d.bosses.length-1-ri}">삭제</button></div>${loot}`}).join('');
-}
-
-function renderProfit(){
-  const d = recLoad();
-  const huntGross = d.hunts.reduce((a,r) => a + Number(r.net || 0), 0);
-  const bossGross = d.bosses.reduce((a,r) => a + Number(r.net || 0), 0);
-  const total = huntGross + bossGross;
-  
-  document.getElementById('profitSummary').innerHTML = [
-    ['사냥 순수익', huntGross],
-    ['보스 순수익', bossGross],
-    ['총 순수익', total],
-    ['기록 수', d.hunts.length + d.bosses.length]
-  ].map(x => `<div class="summary-box"><div class="summary-label">${x[0]}</div><div class="summary-value">${x[0]=='기록 수' ? Number(x[1]).toLocaleString() + '개' : moneyShort(x[1])}</div></div>`).join('');
-  
-  // 모든 기록 합치고 최신순 정렬
-  const allHunts = d.hunts.map((r, i) => ({ type: '사냥', origIdx: i, data: r, created: r.created || 0 }));
-  const allBosses = d.bosses.map((r, i) => ({ type: '보스', origIdx: i, data: r, created: r.created || 0 }));
-  const all = [...allHunts, ...allBosses].sort((a,b) => b.created - a.created);
-  
-  const box = document.getElementById('profitRecent');
-  if(!all.length){
-    box.innerHTML = '<div class="empty-record">아직 수익 기록이 없습니다.</div>';
-    return;
-  }
-  
-  box.innerHTML = all.map(r => `
-    <div class="record-row profit-row">
-      <input type="checkbox" class="profit-check" data-type="${r.type === '사냥' ? 'hunt' : 'boss'}" data-idx="${r.origIdx}" style="width:16px; height:16px; accent-color:#fff;">
-      <div><b>${r.type}</b> <div class="muted">${new Date(r.created).toLocaleDateString().slice(0,-1)}</div></div>
-      <div>${esc(r.data.character || '미입력')}</div>
-      <div class="money"><b>${money(r.data.net)}</b></div>
-      <button class="delete-record" data-type="${r.type === '사냥' ? 'hunt' : 'boss'}" data-index="${r.origIdx}">삭제</button>
-    </div>
-  `).join('');
-  
-  const selectAllCb = document.getElementById('selectAllProfit');
-  if(selectAllCb) selectAllCb.checked = false;
-}
-
-document.getElementById('huntView').addEventListener('input',e=>{
-  if(['huntBefore','huntAfter','huntFragmentPrice','huntMinutes','huntFragments'].includes(e.target.id))updateMoneyPreviews();
-  if(e.target.matches('[data-consume]'))updateMoneyPreviews();
+// 주간보스 12개 제한 검증 및 커스텀 UI 경고창 발동 로직
+document.getElementById('bossCards').addEventListener('click', e => {
+  handleBossCardClick(e);
+});
+document.getElementById('bossCardsMonthly').addEventListener('click', e => {
+  handleBossCardClick(e);
 });
 
-function saveHunt(){
-  const q=id=>Number(document.getElementById(id).value||0),character=document.getElementById('huntCharacter').value.trim(),minutes=q('huntMinutes'),before=q('huntBefore'),after=q('huntAfter'),fragments=q('huntFragments'),fp=q('huntFragmentPrice');
-  if(!character||minutes<1){alert('캐릭터와 사냥시간을 입력해 주세요.');return}
-  let cost=0;document.querySelectorAll('#huntConsumables .consumable-item').forEach(el=>cost+=Number(el.querySelector('[data-kind="qty"]').value||0)*Number(el.querySelector('[data-kind="price"]').value||0));
-  const meso=after-before,fragmentProfit=fragments*fp,net=meso+fragmentProfit-cost,d=recLoad();
-  d.hunts.push({character,minutes,before,after,fragments,fp,cost,meso,net,created:Date.now()});recSave(d);
-  ['huntCharacter','huntMinutes','huntBefore','huntAfter','huntFragments','huntFragmentPrice'].forEach(id=>document.getElementById(id).value='');
-  document.querySelectorAll('#huntConsumables input').forEach(x=>x.value='');
-  renderHunts();renderProfit();alert('사냥 기록을 저장했습니다.');
-}
-
-function setDrawerActive(view){
-  document.querySelectorAll('.drawer-card').forEach(c=>c.classList.remove('active'));
-  const map={timer:'menuTimer',homework:'menuHomework',profit:'menuProfit',hunt:'menuHunt',boss:'menuBoss',links:'menuLinks'};
-  const el=document.getElementById(map[view]);
-  if(el) el.classList.add('active');
-}
-function switchRecordView(v){
-  ['timer','homework','profit','hunt','boss','links'].forEach(x=>{
-    const el=document.getElementById(x==='timer'?'timerView':x==='homework'?'homeworkView':x+'View');
-    if(el)el.classList.toggle('active',x===v);
-    const tab=document.getElementById(x==='timer'?'timerTab':x==='homework'?'homeworkTab':x+'Tab');
-    if(tab)tab.classList.toggle('active',x===v);
-  });
-  if(v==='homework')renderHomework();
-  if(v==='profit')renderProfit();
-  if(v==='hunt'){renderHunts();updateMoneyPreviews();}
-  if(v==='boss'){setupPresets();renderBossLoot();renderBossCards();renderBosses();}
-  setDrawerActive(v);
-}
-
-setupConsumables();setupPresets();renderHunts();renderBosses();renderProfit();renderBossCards();renderBossLoot();updateMoneyPreviews();
-
-document.getElementById('saveHunt').onclick=saveHunt;
-document.getElementById('saveBoss').onclick=saveBoss;
-document.getElementById('savePreset').onclick=()=>saveCurrentPreset(true);
-document.getElementById('presetSelect').onchange=()=>{pendingBosses.clear();renderPreset();renderBossCards();};
-document.getElementById('addPreset').onclick=()=>{
-  const d=recLoad();
-  d.presets.push({name:'',chars:[{name:'',potions:{},prices:{}}]});
-  recSave(d);setupPresets();document.getElementById('presetSelect').value=String(d.presets.length-1);renderPreset();renderBossCards();
-};
-
-document.getElementById('deletePreset').onclick=()=>{
-  const d=recLoad();
-  if(d.presets.length<=1){alert('프리셋은 최소 1개가 필요합니다.');return}
-  showConfirm("현재 선택된 프리셋을 정말 삭제할까요?", () => {
-    const i=Number(document.getElementById('presetSelect').value);
-    d.presets.splice(i,1);
-    recSave(d);
-    setupPresets();
-  });
-};
-
-document.getElementById('presetChars').addEventListener('input',e=>{
-  const d=recLoad(),i=Number(document.getElementById('presetSelect').value),c=d.presets[i]?.chars?.[0];
-  if(!c)return;
-  if(e.target.classList.contains('preset-name')){c.name=e.target.value;d.presets[i].name=e.target.value.trim()}
-  else if(e.target.dataset.potion)c.potions[e.target.dataset.potion]=Number(e.target.value||0);
-  else if(e.target.dataset.price)c.prices[e.target.dataset.price]=Number(e.target.value||0);
-  recSave(d);
-  updatePotionTotal(c);
-  updateMoneyPreviews();
-  if(e.target.classList.contains('preset-name'))renderBossCards();
-});
-
-document.querySelector('.boss-selection-card').addEventListener('click',e=>{
-  const diff=e.target.closest('.boss-difficulty');
-  if(diff && !diff.disabled){
-    const name=diff.dataset.boss,difficulty=diff.dataset.difficulty,b=getBossBy(name,difficulty);
-    const wasPending=pendingBosses.has(name);
-    // 주간 보스는 선택 시점에 12개 제한(이미 저장된 주간 기록 + 현재 선택 주간 합)
-    if(!wasPending && b[3]==='weekly'){
-      const d=recLoad(),pi=Number(document.getElementById('presetSelect').value||0),c=d.presets[pi]?.chars?.[0];
-      const weeklyExisting=c?.name?d.bosses.filter(r=>r.character===c.name&&r.cycle==='weekly'&&new Date(r.created)>=weekStart()).length:0;
-      let pendingWeekly=0;
-      for(const [,v] of pendingBosses){if(v.cycle!=='monthly')pendingWeekly++;}
-      if(weeklyExisting+pendingWeekly+1>12){alert('주간 보스는 일주일에 최대 12개까지만 선택할 수 있습니다.\n(결정석 수령 제한)');return;}
-    }
-    const old=pendingBosses.get(name);
-    const party=Number(document.querySelector(`.boss-party[data-boss="${CSS.escape(name)}"]`)?.value||old?.party||1);
-    pendingBosses.set(name,{difficulty,party,price:b[2],cycle:b[3]});
-    renderBossCards();
-    return;
-  }
-  const cancel=e.target.closest('[data-cancel-boss]');
-  if(cancel){pendingBosses.delete(cancel.dataset.cancelBoss);renderBossCards();}
-});
-
-document.querySelector('.boss-selection-card').addEventListener('change',e=>{
-  if(!e.target.classList.contains('boss-party'))return;
-  const name=e.target.dataset.boss,v=pendingBosses.get(name);
-  if(v){v.party=Number(e.target.value);renderBossCards();}
-});
-
-// 사냥 기록 삭제 로직 수정 (버그 픽스 + 모달 연결)
-document.getElementById('huntView').addEventListener('click',e=>{
-  if(!e.target.classList.contains('delete-record'))return;
-  const idx = Number(e.target.dataset.index);
-  showConfirm("이 사냥 기록을 정말 삭제하시겠습니까?", () => {
-    const d=recLoad();
-    d.hunts.splice(idx,1);
-    recSave(d); // 누락되었던 핵심 코드 복구!
-    renderHunts();
-    renderProfit();
-  });
-});
-
-// 보스 기록 개별 삭제
-document.getElementById('bossView').addEventListener('click',e=>{
-  if(!e.target.classList.contains('delete-record'))return;
-  const idx = Number(e.target.dataset.index);
-  showConfirm("이 보스 기록을 정말 삭제하시겠습니까?", () => {
-    const d=recLoad();
-    d.bosses.splice(idx,1);
-    recSave(d);
-    renderBosses();
-    renderProfit();
-    renderBossCards();
-  });
-});
-
-// 수익 정리 개별 삭제 및 전체 선택 삭제 로직 
-const profitView = document.getElementById('profitView');
-if (profitView) {
-  // 개별 삭제 버튼 이벤트 
-  profitView.addEventListener('click', e => {
-    if (e.target.classList.contains('delete-record')) {
-      const type = e.target.dataset.type;
-      const idx = Number(e.target.dataset.index);
-      showConfirm(`이 ${type === 'hunt' ? '사냥' : '보스'} 기록을 정말 삭제하시겠습니까?`, () => {
-        const d = recLoad();
-        if (type === 'hunt') d.hunts.splice(idx, 1);
-        else if (type === 'boss') d.bosses.splice(idx, 1);
-        recSave(d);
-        renderHunts(); renderBosses(); renderProfit();
-      });
-    }
-  });
-
-  // 모두 선택 체크박스
-  profitView.addEventListener('change', e => {
-    if (e.target.id === 'selectAllProfit') {
-      const checked = e.target.checked;
-      document.querySelectorAll('.profit-check').forEach(cb => cb.checked = checked);
-    }
-  });
-
-  // 선택 삭제 버튼 
-  profitView.addEventListener('click', e => {
-    if (e.target.id === 'deleteSelectedProfit') {
-      const checked = Array.from(document.querySelectorAll('.profit-check:checked'));
-      if (checked.length === 0) {
-        alert('삭제할 기록을 선택해 주세요.');
-        return;
+function handleBossCardClick(e) {
+  const btn = e.target.closest('.boss-difficulty');
+  if(btn && !btn.classList.contains('locked')) {
+    const name = btn.dataset.boss;
+    const diff = btn.dataset.difficulty;
+    const b = getBossBy(name, diff);
+    if(b) {
+      const isMonthly = (b[3] === 'monthly');
+      
+      // 주간 보스 개수 검증 (이미 선택되지 않은 새로운 보스를 추가하려 할 때 12개 이상인 경우)
+      if(!isMonthly && !pendingBosses.has(name)) {
+        let currentWeeklyCount = 0;
+        for(const [bn, val] of pendingBosses.entries()) {
+          if(bossCycle(bn) !== 'monthly') currentWeeklyCount++;
+        }
+        if(currentWeeklyCount >= 12) {
+          showAlertModal('주간 보스는 최대 12개까지만 선택할 수 있습니다!');
+          return;
+        }
       }
-      showConfirm(`선택한 ${checked.length}개의 기록을 정말 삭제하시겠습니까?`, () => {
-        const d = recLoad();
-        
-        // 인덱스가 밀리는 걸 방지하기 위해 내림차순(역순)으로 정렬해서 삭제
-        const huntsToDelete = checked.filter(cb => cb.dataset.type === 'hunt').map(cb => Number(cb.dataset.idx)).sort((a, b) => b - a);
-        const bossesToDelete = checked.filter(cb => cb.dataset.type === 'boss').map(cb => Number(cb.dataset.idx)).sort((a, b) => b - a);
 
-        huntsToDelete.forEach(idx => d.hunts.splice(idx, 1));
-        bossesToDelete.forEach(idx => d.bosses.splice(idx, 1));
-
-        recSave(d);
-        renderHunts(); renderBosses(); renderProfit();
-      });
+      const card = btn.closest('.boss-card');
+      const partySel = card.querySelector('.boss-party');
+      const party = partySel ? Number(partySel.value)||1 : 1;
+      pendingBosses.set(name, {bossName:name, difficulty:diff, price:b[2], party, cycle:b[3]});
+      renderBossCards();
     }
+    return;
+  }
+
+  const cancelBtn = e.target.closest('.boss-cancel');
+  if(cancelBtn) {
+    const card = cancelBtn.closest('.boss-card');
+    const name = card.dataset.boss;
+    pendingBosses.delete(name);
+    renderBossCards();
+    return;
+  }
+}
+
+document.getElementById('bossCards').addEventListener('change', e => {
+  if(e.target.classList.contains('boss-party')) {
+    const name = e.target.dataset.boss;
+    const item = pendingBosses.get(name);
+    if(item) {
+      item.party = Number(e.target.value)||1;
+      renderBossCards();
+    }
+  }
+});
+document.getElementById('bossCardsMonthly').addEventListener('change', e => {
+  if(e.target.classList.contains('boss-party')) {
+    const name = e.target.dataset.boss;
+    const item = pendingBosses.get(name);
+    if(item) {
+      item.party = Number(e.target.value)||1;
+      renderBossCards();
+    }
+  }
+});
+
+/* ===== 수익 정리 화면 및 순수익 롤백 반영 ===== */
+function renderProfitSummary(){
+  const d=recLoad();
+  let totalHuntProfit=0, totalBossProfit=0, totalCount=d.hunts.length+d.bosses.length;
+
+  d.hunts.forEach(h=>{
+    totalHuntProfit += (Number(h.after)||0) - (Number(h.before)||0) + (Number(h.fragmentProfit)||0) - (Number(h.potionCost)||0);
   });
+
+  d.bosses.forEach(b=>{
+    let bSum = 0;
+    if(b.items && Array.isArray(b.items)){
+      b.items.forEach(item => {
+        bSum += Number(item.price || item.meso || 0);
+      });
+    } else if(b.bosses && Array.isArray(b.bosses)){
+      b.bosses.forEach(x => {
+        bSum += Math.floor(Number(x.price||0)/Number(x.party||1));
+      });
+    } else {
+      bSum += Math.floor(Number(b.price||0)/Number(b.party||1));
+    }
+    totalBossProfit += (bSum - Number(b.potionCost||0));
+  });
+
+  const grandTotal = totalHuntProfit + totalBossProfit;
+
+  const box = document.getElementById('profitSummary');
+  if(!box) return;
+
+  box.innerHTML = `
+    <div class="summary-box"><div class="summary-label">사냥 순수익</div><div class="summary-value">${moneyShort(totalHuntProfit)}</div></div>
+    <div class="summary-box"><div class="summary-label">보스 순수익</div><div class="summary-value">${moneyShort(totalBossProfit)}</div></div>
+    <div class="summary-box"><div class="summary-label">총 순수익</div><div class="summary-value" style="color:#7fd3ff">${moneyShort(grandTotal)}</div></div>
+    <div class="summary-box"><div class="summary-label">전체 기록 수</div><div class="summary-value">${totalCount}개</div></div>
+  `;
 }
 
-for(const [id,v] of [['menuProfit','profit'],['menuHunt','hunt'],['menuBoss','boss'],['menuLinks','links']]){
-  document.getElementById(id).onclick=()=>{closeDrawer();document.body.classList.remove('entry-open');switchRecordView(v);setDrawerActive(v)}
-}
+// 초기 실행 구동
+setupConsumables();
+setupPresets();
+renderBossLoot();
+renderBossCards();
+updateMoneyPreviews();
+renderProfitSummary();
 
+document.querySelectorAll('input, select').forEach(el => {
+  el.addEventListener('input', updateMoneyPreviews);
+  el.addEventListener('change', updateMoneyPreviews);
+});
 </script>
 </body>
 </html>
