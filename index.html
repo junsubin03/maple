@@ -213,6 +213,7 @@ body.drawer-open .drawer{transform:translateX(0)}
 .entry-icon{font-size:30px}
 .entry-name{font-size:17px;font-weight:800;white-space:nowrap}
 .entry-desc{font-size:12px;color:#888;white-space:nowrap}
+.entry-version{margin-top:22px;font-size:10px;color:#555;font-weight:500;letter-spacing:.3px}
 body.entry-open > .fab-menu,
 body.entry-open > .drawer-overlay,
 body.entry-open > .drawer,
@@ -553,6 +554,7 @@ body.entry-open > #homeworkView{display:none!important}
         <span class="entry-desc">메이플 유틸 사이트 모음</span>
       </button>
     </div>
+    <div class="entry-version">v0.0.0.1</div>
   </div>
 </div>
 
@@ -2167,6 +2169,208 @@ document.addEventListener('change', e => {
     syncPotionTotalLive();
   }
 });
+
+
+/* ===== 사냥 / 보스 기록 저장 및 표시 ===== */
+function recordId(prefix){
+  return prefix+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8);
+}
+
+function getCurrentCharacterName(){
+  const el=document.querySelector('#presetChars .preset-name');
+  return String(el?.value||'').trim();
+}
+
+function renderHuntRecords(){
+  const box=document.getElementById('huntRecords');
+  if(!box)return;
+  const d=recLoad();
+  if(!d.hunts.length){box.innerHTML='<div class="empty-record">저장된 사냥 기록이 없습니다.</div>';return;}
+  box.innerHTML=d.hunts.slice().reverse().map((r,revIndex)=>{
+    const originalIndex=d.hunts.length-1-revIndex;
+    const profit=(Number(r.after)||0)-(Number(r.before)||0)+(Number(r.fragmentProfit)||0)-(Number(r.potionCost)||0);
+    return `<div class="record-row" data-record-index="${originalIndex}">
+      <div><b>${esc(r.character||'이름 없음')}</b><div class="muted">${new Date(r.created).toLocaleString('ko-KR')}</div></div>
+      <div>${Number(r.minutes||0)}분</div>
+      <div class="money">${moneyShort(profit)} 메소</div>
+      <div class="muted">조각 ${Number(r.fragments||0).toLocaleString('ko-KR')}개</div>
+      <button type="button" class="delete-record" data-delete-hunt="${originalIndex}">삭제</button>
+    </div>`;
+  }).join('');
+}
+
+function renderBossRecords(){
+  const box=document.getElementById('bossRecords');
+  if(!box)return;
+  const d=recLoad();
+  if(!d.bosses.length){box.innerHTML='<div class="empty-record">저장된 보스 기록이 없습니다.</div>';return;}
+  box.innerHTML=d.bosses.slice().reverse().map((r,revIndex)=>{
+    const originalIndex=d.bosses.length-1-revIndex;
+    const rows=(r.bosses||[]).map(x=>`${esc(x.bossName)} ${esc(x.difficulty)} · ${moneyShort(Math.floor(Number(x.price||0)/Number(x.party||1)))} 메소`).join('<br>');
+    const loot=(r.loot||[]).length?`<div class="loot-chips">${r.loot.map(x=>`<span class="loot-chip">💎 ${esc(x)}</span>`).join('')}</div>`:'';
+    const total=(r.bosses||[]).reduce((sum,x)=>sum+Math.floor(Number(x.price||0)/Number(x.party||1)),0);
+    const net=total-Number(r.potionCost||0);
+    return `<div class="record-row" data-record-index="${originalIndex}" style="grid-template-columns:1.3fr 1fr auto;align-items:start;">
+      <div><b>${esc(r.character||'이름 없음')}</b><div class="muted">${new Date(r.created).toLocaleString('ko-KR')}</div><div class="loot-chips">${rows}</div>${loot}</div>
+      <div class="money"><div>결정석 ${moneyShort(total)} 메소</div><div class="muted">영약 -${moneyShort(r.potionCost||0)} 메소</div><b>${moneyShort(net)} 메소</b></div>
+      <button type="button" class="delete-record" data-delete-boss="${originalIndex}">삭제</button>
+    </div>`;
+  }).join('');
+}
+
+function renderProfitRecent(){
+  const box=document.getElementById('profitRecent');
+  if(!box)return;
+  const d=recLoad();
+  const records=[
+    ...d.hunts.map((r,i)=>({
+      kind:'hunt',i,date:r.created,character:r.character,
+      profit:(Number(r.after)||0)-(Number(r.before)||0)+(Number(r.fragmentProfit)||0)-(Number(r.potionCost)||0)
+    })),
+    ...d.bosses.map((r,i)=>({
+      kind:'boss',i,date:r.created,character:r.character,
+      profit:(r.bosses||[]).reduce((s,x)=>s+Math.floor(Number(x.price||0)/Number(x.party||1)),0)-Number(r.potionCost||0),
+      loot:Array.isArray(r.loot)?r.loot:[]
+    }))
+  ].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  if(!records.length){box.innerHTML='<div class="empty-record">저장된 기록이 없습니다.</div>';return;}
+  box.innerHTML=records.map(r=>{
+    const lootHtml = r.kind==='boss' && r.loot.length
+      ? `<div class="loot-chips" style="grid-column:2 / -1; margin-top:-2px;">${r.loot.map(x=>`<span class="loot-chip">💎 ${esc(x)}</span>`).join('')}</div>`
+      : '';
+    return `<div class="record-row profit-row" style="${r.kind==='boss'&&r.loot.length?'grid-template-columns:16px 70px 1fr auto auto;':''}">
+      <input type="checkbox" class="profit-select" data-kind="${r.kind}" data-index="${r.i}" style="width:16px;height:16px;margin:0;accent-color:#fff;">
+      <div><b>${r.kind==='boss'?'👑 보스':'⚔ 사냥'}</b></div>
+      <div><b>${esc(r.character||'이름 없음')}</b><div class="muted">${new Date(r.date).toLocaleString('ko-KR')}</div></div>
+      <div class="money">${moneyShort(r.profit)} 메소</div>
+      <button type="button" class="delete-record" data-delete-kind="${r.kind}" data-delete-index="${r.i}">삭제</button>
+      ${lootHtml}
+    </div>`;
+  }).join('');
+}
+function refreshAllRecordViews(){
+  renderHuntRecords();
+  renderBossRecords();
+  renderProfitSummary();
+  renderProfitRecent();
+}
+
+function saveHuntRecord(){
+  const character=String(document.getElementById('huntCharacter')?.value||'').trim();
+  const minutes=Number(document.getElementById('huntMinutes')?.value||0);
+  if(!character){showAlertModal('캐릭터 이름을 입력해 주세요.');return;}
+  if(minutes<1){showAlertModal('사냥시간을 1분 이상 입력해 주세요.');return;}
+
+  const before=mesoInputValue(document.getElementById('huntBefore'));
+  const after=mesoInputValue(document.getElementById('huntAfter'));
+  const fragments=Number(document.getElementById('huntFragments')?.value||0);
+  const fragmentPrice=mesoInputValue(document.getElementById('huntFragmentPrice'));
+  let potionCostTotal=0;
+  const consumables={};
+  document.querySelectorAll('#huntConsumables [data-consume]').forEach(el=>{
+    const key=el.dataset.consume;
+    consumables[key]=consumables[key]||{qty:0,price:0};
+    if(el.dataset.kind==='qty') consumables[key].qty=Number(el.value||0);
+    else consumables[key].price=mesoInputValue(el);
+  });
+  Object.values(consumables).forEach(x=>potionCostTotal += x.qty*x.price);
+
+  const d=recLoad();
+  d.hunts.push({
+    id:recordId('hunt'),created:new Date().toISOString(),character,minutes,before,after,
+    fragments,fragmentPrice,fragmentProfit:fragments*fragmentPrice,potionCost:potionCostTotal,consumables
+  });
+  recSave(d);
+  document.getElementById('huntBefore').value='';
+  document.getElementById('huntAfter').value='';
+  document.getElementById('huntFragments').value='';
+  document.getElementById('huntFragmentPrice').value='';
+  document.querySelectorAll('#huntConsumables [data-consume]').forEach(el=>el.value='');
+  updateMoneyPreviews();
+  refreshAllRecordViews();
+  showAlertModal('사냥 기록을 저장했습니다.');
+}
+
+function saveBossRecord(){
+  const d=recLoad();
+  const character=getCurrentCharacterName();
+  if(!character){showAlertModal('보스 프리셋의 캐릭터 이름을 먼저 입력해 주세요.');return;}
+  if(!pendingBosses.size){showAlertModal('저장할 보스를 하나 이상 선택해 주세요.');return;}
+
+  const bosses=[...pendingBosses.values()].map(x=>({
+    bossName:x.bossName,difficulty:x.difficulty,price:Number(x.price||0),party:Number(x.party||1),cycle:x.cycle
+  }));
+  const potionCostTotal=potionCost(d.presets[Number(document.getElementById('presetSelect').value||0)]?.chars?.[0]);
+  const loot=getSelectedBossLoot();
+  d.bosses.push({id:recordId('boss'),created:new Date().toISOString(),character,bosses,potionCost:potionCostTotal,loot});
+  recSave(d);
+  pendingBosses.clear();
+  clearBossLoot();
+  renderBossCards();
+  refreshAllRecordViews();
+  showAlertModal('선택한 보스 기록을 저장했습니다.');
+}
+
+document.getElementById('saveHunt')?.addEventListener('click',saveHuntRecord);
+document.getElementById('saveBoss')?.addEventListener('click',saveBossRecord);
+
+document.getElementById('huntRecords')?.addEventListener('click',e=>{
+  const btn=e.target.closest('[data-delete-hunt]');
+  if(!btn)return;
+  const index=Number(btn.dataset.deleteHunt);
+  showConfirm('이 사냥 기록을 삭제할까요?',()=>{
+    const d=recLoad(); d.hunts.splice(index,1); recSave(d); refreshAllRecordViews();
+  });
+});
+
+document.getElementById('bossRecords')?.addEventListener('click',e=>{
+  const btn=e.target.closest('[data-delete-boss]');
+  if(!btn)return;
+  const index=Number(btn.dataset.deleteBoss);
+  showConfirm('이 보스 기록을 삭제할까요?',()=>{
+    const d=recLoad(); d.bosses.splice(index,1); recSave(d); renderBossCards(); refreshAllRecordViews();
+  });
+});
+
+document.getElementById('profitRecent')?.addEventListener('click',e=>{
+  const btn=e.target.closest('[data-delete-kind]');
+  if(!btn)return;
+  const kind=btn.dataset.deleteKind,index=Number(btn.dataset.deleteIndex);
+  showConfirm('이 기록을 삭제할까요?',()=>{
+    const d=recLoad();
+    if(kind==='hunt') d.hunts.splice(index,1); else d.bosses.splice(index,1);
+    recSave(d); renderBossCards(); refreshAllRecordViews();
+  });
+});
+
+document.getElementById('selectAllProfit')?.addEventListener('change',e=>{
+  document.querySelectorAll('.profit-select').forEach(cb=>cb.checked=e.target.checked);
+});
+
+document.getElementById('deleteSelectedProfit')?.addEventListener('click',()=>{
+  const selected=[...document.querySelectorAll('.profit-select:checked')];
+  if(!selected.length){showAlertModal('삭제할 기록을 선택해 주세요.');return;}
+  showConfirm(`선택한 ${selected.length}개 기록을 삭제할까요?`,()=>{
+    const d=recLoad();
+    const hunts=new Set(),bosses=new Set();
+    selected.forEach(cb=>{(cb.dataset.kind==='hunt'?hunts:bosses).add(Number(cb.dataset.index));});
+    d.hunts=d.hunts.filter((_,i)=>!hunts.has(i));
+    d.bosses=d.bosses.filter((_,i)=>!bosses.has(i));
+    recSave(d); renderBossCards(); refreshAllRecordViews();
+    const all=document.getElementById('selectAllProfit'); if(all)all.checked=false;
+  });
+});
+
+document.getElementById('presetSelect')?.addEventListener('change',()=>{
+  renderPreset();
+  renderBossCards();
+});
+
+// 저장 목록은 페이지 진입/초기화 시에도 항상 복원
+renderHuntRecords();
+renderBossRecords();
+renderProfitRecent();
+
 </script>
 </body>
 </html>
