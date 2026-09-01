@@ -722,10 +722,10 @@ body.entry-open > #homeworkView{display:none!important}
     <div class="form-grid">
       <label>캐릭터<input id="huntCharacter" type="text" placeholder="닉네임"></label>
       <label>사냥시간 (분)<input id="huntMinutes" type="number" min="1" placeholder="120"><div class="money-preview" data-preview-time="huntMinutes"></div></label>
-      <label>사냥 전 메소<input id="huntBefore" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntBefore"></div></label>
-      <label>사냥 후 메소<input id="huntAfter" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntAfter"></div></label>
+      <label>사냥 전 메소<input id="huntBefore" type="text" inputmode="decimal" data-meso-input="1" placeholder="0"><div class="money-preview" data-preview-for="huntBefore"></div></label>
+      <label>사냥 후 메소<input id="huntAfter" type="text" inputmode="decimal" data-meso-input="1" placeholder="0"><div class="money-preview" data-preview-for="huntAfter"></div></label>
       <label>획득 솔 에르다 조각<input id="huntFragments" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for-count="huntFragments"></div></label>
-      <label>조각 개당 가격<input id="huntFragmentPrice" type="number" min="0" placeholder="0"><div class="money-preview" data-preview-for="huntFragmentPrice"></div></label>
+      <label>조각 개당 가격<input id="huntFragmentPrice" type="text" inputmode="decimal" data-meso-input="1" placeholder="0"><div class="money-preview" data-preview-for="huntFragmentPrice"></div></label>
     </div>
 
     <div class="sojaebi-btn-group" style="margin-top:16px;">
@@ -1454,12 +1454,200 @@ function recLoad(){
   }
 }
 function recSave(x){localStorage.setItem(REC_KEY,JSON.stringify(x))}
+
+/* ===== 데이터 백업 / 불러오기 =====
+   저장 대상: 보스 기록 + 사냥 기록 + 수익 정리(보스/사냥 기록으로 자동 계산)
+   파일 방식: JSON 파일
+   코드 방식: UTF-8 안전 Base64 코드
+*/
+function getBackupData(){
+  const d=recLoad();
+  return {
+    app:'simpleTimer',
+    type:'record-backup',
+    version:1,
+    createdAt:new Date().toISOString(),
+    data:{
+      hunts:Array.isArray(d.hunts)?d.hunts:[],
+      bosses:Array.isArray(d.bosses)?d.bosses:[]
+    }
+  };
+}
+
+function encodeBackupCode(obj){
+  const json=JSON.stringify(obj);
+  const bytes=new TextEncoder().encode(json);
+  let binary='';
+  const chunk=0x8000;
+  for(let i=0;i<bytes.length;i+=chunk){
+    binary+=String.fromCharCode(...bytes.subarray(i,i+chunk));
+  }
+  return 'STBACKUP1.'+btoa(binary);
+}
+
+function decodeBackupCode(code){
+  code=String(code||'').trim();
+  if(code.startsWith('STBACKUP1.')) code=code.slice(10);
+  const binary=atob(code);
+  const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+function normalizeBackupData(raw){
+  let src=raw;
+  if(src && src.data) src=src.data;
+  if(!src || !Array.isArray(src.hunts) || !Array.isArray(src.bosses)) throw new Error('백업 데이터 형식이 올바르지 않습니다.');
+  return {hunts:src.hunts,bosses:src.bosses};
+}
+
+function applyBackupData(raw){
+  const imported=normalizeBackupData(raw);
+  const current=recLoad();
+  // 현재 캐릭터/프리셋 설정은 유지하고 기록만 교체합니다.
+  current.hunts=imported.hunts;
+  current.bosses=imported.bosses;
+  recSave(current);
+  pendingBosses.clear();
+  if(typeof renderBossCards==='function') renderBossCards();
+  if(typeof renderProfitSummary==='function') renderProfitSummary();
+  if(typeof renderProfitRecent==='function') renderProfitRecent();
+  return imported;
+}
+
+function downloadBackupFile(){
+  try{
+    const data=getBackupData();
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    const d=new Date();
+    const stamp=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}_${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}`;
+    a.download=`수익기록_백업_${stamp}.json`;
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }catch(e){ showAlertModal('백업 파일을 만들지 못했습니다.'); }
+}
+
+function openDataModal(){
+  const overlay=document.getElementById('dataModalOverlay');
+  if(!overlay)return;
+  document.getElementById('dataModalTitle').textContent='데이터 백업 / 불러오기';
+  document.getElementById('dataCodeText').value=encodeBackupCode(getBackupData());
+  switchBackupTab('file');
+  overlay.style.display='flex';
+}
+
+function closeDataModal(){
+  const overlay=document.getElementById('dataModalOverlay');
+  if(overlay) overlay.style.display='none';
+}
+
+function switchBackupTab(type){
+  const isFile=type==='file';
+  document.getElementById('tabFileBtn')?.classList.toggle('active',isFile);
+  document.getElementById('tabCodeBtn')?.classList.toggle('active',!isFile);
+  document.getElementById('panelFile')?.classList.toggle('active',isFile);
+  document.getElementById('panelCode')?.classList.toggle('active',!isFile);
+  if(!isFile){
+    const ta=document.getElementById('dataCodeText');
+    if(ta && !ta.value.trim()) ta.value=encodeBackupCode(getBackupData());
+  }
+}
+
+const dataModalEl=document.getElementById('dataModalOverlay');
+if(dataModalEl){
+  document.getElementById('openDataModal')?.addEventListener('click',openDataModal);
+  document.getElementById('closeDataModal')?.addEventListener('click',closeDataModal);
+  document.getElementById('tabFileBtn')?.addEventListener('click',()=>switchBackupTab('file'));
+  document.getElementById('tabCodeBtn')?.addEventListener('click',()=>switchBackupTab('code'));
+  document.getElementById('btnExportFile')?.addEventListener('click',downloadBackupFile);
+  document.getElementById('btnImportFileTrigger')?.addEventListener('click',()=>document.getElementById('fileInput')?.click());
+  document.getElementById('fileInput')?.addEventListener('change',e=>{
+    const file=e.target.files?.[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=()=>{
+      try{
+        applyBackupData(JSON.parse(reader.result));
+        closeDataModal();
+        showAlertModal('보스 기록과 사냥 기록을 불러왔습니다. 수익 정리도 자동으로 갱신되었습니다.');
+      }catch(err){ showAlertModal('백업 파일을 불러오지 못했습니다. 올바른 백업 JSON 파일인지 확인해주세요.'); }
+      e.target.value='';
+    };
+    reader.onerror=()=>{showAlertModal('파일을 읽지 못했습니다.');e.target.value='';};
+    reader.readAsText(file,'utf-8');
+  });
+  document.getElementById('btnCopyCode')?.addEventListener('click',async()=>{
+    const ta=document.getElementById('dataCodeText');
+    if(!ta)return;
+    try{
+      await navigator.clipboard.writeText(ta.value);
+      showAlertModal('백업 코드를 복사했습니다.');
+    }catch(e){
+      ta.focus();ta.select();
+      try{document.execCommand('copy');showAlertModal('백업 코드를 복사했습니다.');}
+      catch(err){showAlertModal('코드 복사에 실패했습니다. 직접 선택해서 복사해주세요.');}
+    }
+  });
+  document.getElementById('btnApplyCode')?.addEventListener('click',()=>{
+    try{
+      applyBackupData(decodeBackupCode(document.getElementById('dataCodeText').value));
+      closeDataModal();
+      showAlertModal('백업 코드를 불러왔습니다. 수익 정리도 자동으로 갱신되었습니다.');
+    }catch(err){ showAlertModal('백업 코드를 불러오지 못했습니다. 코드를 정확히 붙여넣었는지 확인해주세요.'); }
+  });
+  dataModalEl.addEventListener('click',e=>{if(e.target===dataModalEl)closeDataModal();});
+}
+/* 한국식 큰 숫자 단위 입력: 만 / 억 / 조 / 경 */
+function parseKoreanNumber(value){
+  if(typeof value==='number') return Number.isFinite(value)?value:0;
+  let s=String(value??'').trim().replace(/\s+/g,'').replace(/,/g,'');
+  if(!s) return 0;
+  // 숫자만 입력한 경우
+  if(/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(s)) return Math.max(0,Number(s));
+  const units=[['경',10000000000000000],['조',1000000000000],['억',100000000],['만',10000]];
+  let total=0, matched=false;
+  for(const [unit,mult] of units){
+    const idx=s.indexOf(unit);
+    if(idx>=0){
+      const part=s.slice(0,idx);
+      if(part && !/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(part)) return 0;
+      total += (part?Number(part):1)*mult;
+      s=s.slice(idx+unit.length);
+      matched=true;
+    }
+  }
+  if(s){
+    if(!/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(s)) return 0;
+    total += Number(s);
+    matched=true;
+  }
+  return matched && Number.isFinite(total) ? Math.max(0,total) : 0;
+}
+function mesoInputValue(el){ return parseKoreanNumber(el?.value); }
 function money(n){return Number(n||0).toLocaleString('ko-KR')+' 메소'}
 function moneyShort(n){
-  n=Number(n||0);
-  if(n>=100000000)return (n/100000000).toFixed(n%100000000?'2':'0')+'억';
-  if(n>=10000)return Math.round(n/10000).toLocaleString()+'만';
-  return n.toLocaleString();
+  n=Math.floor(Number(n||0));
+  if(!Number.isFinite(n)) n=0;
+  const sign=n<0?'-':'';
+  let v=Math.abs(n);
+  const parts=[];
+  const units=[
+    [10000000000000000,'경'],
+    [1000000000000,'조'],
+    [100000000,'억'],
+    [10000,'만']
+  ];
+  for(const [unit,name] of units){
+    if(v>=unit){
+      const q=Math.floor(v/unit);
+      parts.push(q.toLocaleString('ko-KR')+name);
+      v%=unit;
+    }
+  }
+  if(v>0 || !parts.length) parts.push(v.toLocaleString('ko-KR'));
+  return sign+parts.join(' ');
 }
 function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
@@ -1508,16 +1696,16 @@ function updateMoneyPreviews(){
       return;
     }
     const inp=document.querySelector('[data-price="'+CSS.escape(k)+'"]');
-    el.textContent=mesoPreview(inp?inp.value:0);
+    el.textContent=mesoPreview(inp?mesoInputValue(inp):0);
   });
   document.querySelectorAll('[data-preview-consume]').forEach(el=>{
     const k=el.dataset.previewConsume;
     const inp=document.querySelector('#huntConsumables [data-consume="'+CSS.escape(k)+'"][data-kind="price"]');
-    el.textContent=mesoPreview(inp?inp.value:0);
+    el.textContent=mesoPreview(inp?mesoInputValue(inp):0);
   });
   document.querySelectorAll('[data-preview-for]').forEach(el=>{
     const inp=document.getElementById(el.dataset.previewFor);
-    el.textContent=mesoPreview(inp?inp.value:0);
+    el.textContent=mesoPreview(inp?mesoInputValue(inp):0);
   });
   document.querySelectorAll('[data-preview-qty]').forEach(el=>{
     const k=el.dataset.previewQty;
@@ -1550,7 +1738,7 @@ function setupConsumables(){
         <div class="money-preview" data-preview-qty="${key}"></div>
       </div>
       <div class="price-cell">
-        <input type="number" min="0" data-consume="${key}" data-kind="price" placeholder="개당 가격">
+        <input type="number" min="0" data-consume="${key}" data-kind="price" data-meso-input="1" placeholder="개당 가격">
         <div class="money-preview" data-preview-consume="${key}"></div>
       </div>
     </div>`).join('');
@@ -1668,7 +1856,7 @@ function renderPreset(){
           <div class="money-preview" data-preview-potion-qty="${k}"></div>
         </div>
         <div class="price-cell">
-          ${fixed?`<input type="number" class="fixed-price" data-fixed-price="${k}" value="${price}" readonly>`:`<input type="number" min="0" data-price="${k}" data-field="price" value="${Number(c.prices?.[k]||0)}" placeholder="가격">`}
+          ${fixed?`<input type="number" class="fixed-price" data-fixed-price="${k}" value="${price}" readonly>`:`<input type="number" min="0" data-price="${k}" data-field="price" data-meso-input="1" value="${Number(c.prices?.[k]||0)}" placeholder="가격">`}
           <div class="money-preview" data-preview-price="${k}" data-fixed="${fixed?1:0}"></div>
         </div>
       </div>`).join('')}</div>
@@ -1691,7 +1879,7 @@ function saveCurrentPreset(showAlert){
   const nameEl=document.querySelector('#presetChars .preset-name');
   if(nameEl){c.name=nameEl.value;p.name=nameEl.value.trim();}
   document.querySelectorAll('#presetChars [data-potion]').forEach(el=>{c.potions[el.dataset.potion]=Number(el.value||0);});
-  document.querySelectorAll('#presetChars [data-price]').forEach(el=>{c.prices[el.dataset.price]=Number(el.value||0);});
+  document.querySelectorAll('#presetChars [data-price]').forEach(el=>{c.prices[el.dataset.price]=mesoInputValue(el);});
   recSave(d);
   updatePotionTotal(c);
   renderBossCards();
@@ -1765,7 +1953,7 @@ function buildBossCard(name,opts,selected,disabled,recorded){
           <span class="difficulty-price">${moneyShort(b[2])}</span>
         </button>`).join('')}
       </div>
-      ${selected?`<div class="boss-card-bottom">${selected.party}인 기준 결정석 <b>${money(Math.floor(selected.price/selected.party))}</b></div>`:''}
+      ${selected?`<div class="boss-card-bottom">${selected.party}인 기준 결정석 <b>${moneyShort(Math.floor(selected.price/selected.party))} 메소</b></div>`:''}
     </div>`;
 }
 
@@ -1810,7 +1998,7 @@ function updateTotalMeso(){
     sum+=Math.floor(v.price/v.party);
   }
   const el=document.getElementById('totalBossMeso');
-  if(el) el.textContent=sum?money(sum):'0 메소';
+  if(el) el.textContent=sum?moneyShort(sum)+' 메소':'0 메소';
 }
 
 // 주간보스 12개 제한 검증 및 커스텀 UI 경고창 발동 로직
@@ -1928,9 +2116,56 @@ renderBossCards();
 updateMoneyPreviews();
 renderProfitSummary();
 
+document.querySelectorAll('[data-meso-input]').forEach(el => {
+  el.addEventListener('blur', () => {
+    const n=mesoInputValue(el);
+    if(String(el.value).trim() && n>0) el.value=String(Math.floor(n));
+    updateMoneyPreviews();
+  });
+});
+
 document.querySelectorAll('input, select').forEach(el => {
   el.addEventListener('input', updateMoneyPreviews);
   el.addEventListener('change', updateMoneyPreviews);
+});
+
+/* ===== 영약값 실시간 반영 ===== */
+function syncPotionTotalLive(){
+  const d = recLoad();
+  const sel = document.getElementById('presetSelect');
+  if(!sel) return;
+  const idx = Number(sel.value || 0);
+  const p = d.presets[idx];
+  if(!p) return;
+
+  const c = p.chars?.[0] || (p.chars[0] = {name:'', potions:{}, prices:{}});
+  c.potions = c.potions || {};
+  c.prices = c.prices || {};
+
+  document.querySelectorAll('#presetChars [data-potion]').forEach(el => {
+    c.potions[el.dataset.potion] = Number(el.value || 0);
+  });
+  document.querySelectorAll('#presetChars [data-price]').forEach(el => {
+    c.prices[el.dataset.price] = Number(el.value || 0);
+  });
+
+  recSave(d);
+  updatePotionTotal(c);
+  updateMoneyPreviews();
+}
+
+document.addEventListener('input', e => {
+  if(e.target.closest('#presetChars') &&
+     (e.target.matches('[data-potion]') || e.target.matches('[data-price]'))){
+    syncPotionTotalLive();
+  }
+});
+
+document.addEventListener('change', e => {
+  if(e.target.closest('#presetChars') &&
+     (e.target.matches('[data-potion]') || e.target.matches('[data-price]'))){
+    syncPotionTotalLive();
+  }
 });
 </script>
 </body>
