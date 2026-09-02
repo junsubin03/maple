@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>메이플 실험실</title>
+<title>타이머 · 숙제 체크</title>
 <style>
 select{padding:11px 14px;border:1px solid #444;border-radius:10px;background:#333;color:#fff;font-size:14px;min-width:180px;white-space:nowrap}
 .choice-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
@@ -92,6 +92,80 @@ body.drawer-open .drawer{transform:translateX(0)}
 .drawer-name{font-size:15px;font-weight:800;margin-bottom:2px;white-space:nowrap}
 .drawer-desc{font-size:12px;color:#888;line-height:1.4;white-space:nowrap}
 .drawer-home{margin-bottom:18px}
+
+/* ===== 도구 / 재획비 손익계산기 ===== */
+.drawer-tools{margin-bottom:18px}
+.drawer-tools-main{justify-content:flex-start}
+.drawer-tools-arrow{margin-left:auto;color:#777;font-size:16px;transition:transform .2s}
+.drawer-tools.open .drawer-tools-arrow{transform:rotate(90deg)}
+.drawer-submenu{display:none;margin:0 0 8px 14px;padding-left:10px;border-left:1px solid #292b31}
+.drawer-tools.open .drawer-submenu{display:block}
+.drawer-subcard{display:flex;align-items:center;gap:9px;width:100%;padding:10px 12px;border:1px solid transparent;border-radius:10px;background:transparent;color:#aaa;cursor:pointer;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
+.drawer-subcard:hover{background:#191b20;color:#fff}
+.drawer-subcard.active{background:#1a232b;border-color:#2a4658;color:#7fd3ff}
+.tool-view{width:min(94vw,1080px);margin:0 auto;text-align:left;padding:88px 0 30px}
+.tool-switch-tabs{
+  position:fixed;top:14px;left:72px;z-index:60;
+  display:none;align-items:center;gap:5px;
+  padding:4px;background:#111317;border:1px solid #292b31;border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.22);
+}
+body.tool-view-open .tool-switch-tabs{display:flex}
+.tool-switch-tab{
+  border:0;border-radius:9px;padding:9px 14px;background:transparent;color:#888;
+  font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap;
+  transition:.15s;
+}
+.tool-switch-tab:hover{background:#191b20;color:#fff}
+.tool-switch-tab.active{background:#1a232b;color:#7fd3ff}
+@media(max-width:600px){
+  .tool-switch-tabs{top:10px;left:58px;right:10px;overflow-x:auto;justify-content:flex-start}
+  .tool-switch-tab{padding:8px 11px;font-size:12px}
+}
+
+.potion-profit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.potion-price-table{display:grid;gap:8px}
+.potion-price-row{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:10px;align-items:center;padding:9px 10px;border:1px solid #292b31;border-radius:10px;background:#101216}
+.potion-price-row label{margin:0;color:#bbb;font-size:13px;white-space:normal}
+.potion-price-input-wrap{position:relative;min-width:0}
+.potion-price-input{padding:10px 34px 10px 11px!important;font-size:13px!important;width:100%!important}
+.potion-clear{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:26px;height:26px;padding:0;background:transparent;color:#777;border-radius:7px;font-size:16px;opacity:0;pointer-events:none}
+.potion-price-input-wrap:hover .potion-clear,.potion-price-input-wrap:focus-within .potion-clear{opacity:1;pointer-events:auto}
+.potion-preview{font-size:10px;color:#777;margin-top:4px;min-height:13px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.potion-profit-results{margin-top:14px}
+.potion-profit-card{background:#15171b;border:1px solid #292b31;border-radius:16px;padding:18px}
+.potion-profit-card.profit-positive{border-color:#31583f}
+.potion-profit-card.profit-negative{border-color:#63343e}
+.potion-profit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.potion-profit-name{font-size:17px;font-weight:800;line-height:1.35}
+.potion-profit-result{font-size:20px;font-weight:900;white-space:nowrap}
+.potion-profit-result.positive{color:#7fd3a0}.potion-profit-result.negative{color:#ff7f91}.potion-profit-result.zero{color:#bbb}
+.potion-profit-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}
+.potion-profit-meta>div{padding:10px;border:1px solid #292b31;border-radius:10px;background:#101216;min-width:0}
+.potion-meta-label{font-size:11px;color:#777;white-space:nowrap}
+.potion-meta-value{font-size:14px;font-weight:800;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.potion-recipe{padding-top:12px;border-top:1px solid #292b31;color:#888;font-size:11px;line-height:1.7;word-break:keep-all}
+.potion-recipe b{color:#bbb}
+.potion-total-box{margin-top:16px;padding:15px 17px;border:1px solid #303238;border-radius:12px;background:#101216}
+.potion-total-box .total-title{font-size:13px;color:#aaa;margin-bottom:7px}
+.potion-total-box .total-value{font-size:23px;font-weight:900;white-space:nowrap}
+.potion-profit-help{font-size:12px;color:#777;line-height:1.6;margin-top:10px;word-break:keep-all}
+.potion-fee-toggle{display:flex;align-items:center;gap:9px;width:100%;box-sizing:border-box;margin:0 0 10px;padding:9px 11px;border:1px solid #292b31;border-radius:10px;background:#101216;cursor:pointer;overflow:hidden}
+.potion-fee-toggle input[type=checkbox]{flex:0 0 17px;width:17px!important;height:17px!important;margin:0;accent-color:#7fd3ff;cursor:pointer}
+.potion-fee-check{display:none}
+.potion-fee-toggle>span:last-child{min-width:0;display:flex;flex-direction:column;line-height:1.35;overflow:hidden}
+.potion-fee-toggle strong{font-size:13px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.potion-fee-toggle small{font-size:11px;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:800px){
+  .potion-profit-grid{grid-template-columns:1fr}
+  .potion-price-row{grid-template-columns:1fr}
+  .potion-profit-meta{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .potion-profit-meta{grid-template-columns:1fr}
+  .potion-profit-head{flex-direction:column}
+}
+
 @media(max-width:600px){.fab-menu{top:12px;left:12px;width:46px;height:46px}}
 .view{display:none}
 .view.active{display:block}
@@ -210,6 +284,13 @@ body.drawer-open .drawer{transform:translateX(0)}
   background:#25282e;border-color:#555;
   transform:translateY(-2px);
 }
+.entry-tool-tab{
+  border-color:#33404a;
+}
+.entry-tool-tab:hover{
+  border-color:#7fd3ff;
+  box-shadow:0 8px 26px rgba(127,211,255,.08);
+}
 .entry-icon{font-size:30px}
 .entry-name{font-size:17px;font-weight:800;white-space:nowrap}
 .entry-desc{font-size:12px;color:#888;white-space:nowrap}
@@ -218,7 +299,8 @@ body.entry-open > .fab-menu,
 body.entry-open > .drawer-overlay,
 body.entry-open > .drawer,
 body.entry-open > #timerView,
-body.entry-open > #homeworkView{display:none!important}
+body.entry-open > #homeworkView,
+body.entry-open > #potionProfitView, body.entry-open > #toolSwitchTabs{display:none!important}
 
 .drawer{display:flex}
 
@@ -436,6 +518,10 @@ body.entry-open > #homeworkView{display:none!important}
 
 .sojaebi-btn-group{display:flex;gap:10px;margin-top:14px;margin-bottom:14px;flex-wrap:wrap}
 .sojaebi-btn-group button{flex:1;min-width:140px}
+
+    .potion-batch-notice{margin:0 0 14px;padding:12px 14px;border:1px solid rgba(99,102,241,.22);background:rgba(99,102,241,.08);border-radius:12px;font-size:13px;line-height:1.55;}
+    .potion-batch-notice strong{font-size:14px;}
+    .potion-batch-notice span{color:var(--muted,#888);}
 </style>
 </head>
 <body class="entry-open">
@@ -523,11 +609,6 @@ body.entry-open > #homeworkView{display:none!important}
     <h1 class="entry-title">무엇을 사용할까요?</h1>
     <p class="entry-subtitle">사용할 기능을 선택하세요.</p>
     <div class="entry-tabs">
-      <button class="entry-tab" data-entry="timer">
-        <span class="entry-icon">⏱️</span>
-        <span class="entry-name">타이머</span>
-        <span class="entry-desc">반복 타이머와 알림</span>
-      </button>
       <button class="entry-tab" data-entry="homework">
         <span class="entry-icon">✓</span>
         <span class="entry-name">체크리스트</span>
@@ -552,6 +633,11 @@ body.entry-open > #homeworkView{display:none!important}
         <span class="entry-icon">🧭</span>
         <span class="entry-name">길라잡이</span>
         <span class="entry-desc">메이플 유틸 사이트 모음</span>
+      </button>
+      <button class="entry-tab entry-tool-tab" data-entry="tools">
+        <span class="entry-icon">🛠️</span>
+        <span class="entry-name">도구</span>
+        <span class="entry-desc">계산기 및 편의 기능</span>
       </button>
     </div>
     <div class="entry-version">v0.0.0.1</div>
@@ -615,7 +701,31 @@ body.entry-open > #homeworkView{display:none!important}
       <span class="drawer-desc">메이플 유틸 사이트 모음</span>
     </span>
   </button>
+
+  <div class="drawer-tools" id="drawerTools">
+    <button type="button" class="drawer-card drawer-tools-main" id="menuTools">
+      <span class="drawer-icon">🛠️</span>
+      <span class="drawer-body">
+        <span class="drawer-name">도구</span>
+        <span class="drawer-desc">계산기 및 편의 기능</span>
+      </span>
+      <span class="drawer-tools-arrow">›</span>
+    </button>
+    <div class="drawer-submenu">
+      <button type="button" class="drawer-subcard" id="menuPotionProfit">
+        <span>🧪</span><span>재획비 손익</span>
+      </button>
+      <button type="button" class="drawer-subcard" id="menuToolsTimer">
+        <span>⏱️</span><span>타이머</span>
+      </button>
+    </div>
+  </div>
 </aside>
+
+<div id="toolSwitchTabs" class="tool-switch-tabs" aria-label="도구 탭">
+  <button type="button" class="tool-switch-tab active" data-tool-view="potionProfit">🧪 재획비 손익</button>
+  <button type="button" class="tool-switch-tab" data-tool-view="timer">⏱️ 타이머</button>
+</div>
 
 <div id="timerView" class="view active wrap">
 <h1>반복 타이머</h1>
@@ -798,6 +908,57 @@ body.entry-open > #homeworkView{display:none!important}
   <div class="record-card">
     <div class="section-title">📋 저장된 보스 기록 <span class="sub">획득한 물욕템은 각 기록 아래에 표시</span></div>
     <div id="bossRecords"></div>
+  </div>
+</div>
+
+
+<div id="potionProfitView" class="view tool-view">
+  <div class="record-header">
+    <div>
+      <h1>재획비 손익</h1>
+      <div class="record-sub">소형 재물 획득의 비약과 제작 재료 시세를 입력하면 손익을 자동 계산합니다.</div>
+    </div>
+  </div>
+
+  <div class="potion-profit-grid">
+    <div class="record-card">
+      <div class="section-title">💰 소형 재물 획득의 비약 재료 시세</div>
+      <div class="potion-price-table">
+        <div class="potion-price-row"><label for="pp_emptyBottle">최고급 포션 빈병</label><div class="potion-price-input-wrap"><input id="pp_emptyBottle" class="potion-price-input fixed-price" type="text" inputmode="numeric" value="768" readonly aria-readonly="true" title="고정 가격: 768 메소"><div class="potion-preview" data-pp-preview="pp_emptyBottle"></div></div></div>
+        <div class="potion-price-row"><label for="pp_juniper">쥬니퍼베리 씨앗 오일</label><div class="potion-price-input-wrap"><input id="pp_juniper" class="potion-price-input" type="text" inputmode="decimal" placeholder="개당 가격"><button class="potion-clear" type="button" data-clear-price="pp_juniper">×</button><div class="potion-preview" data-pp-preview="pp_juniper"></div></div></div>
+        <div class="potion-price-row"><label for="pp_crystal">최상급 아이템 결정</label><div class="potion-price-input-wrap"><input id="pp_crystal" class="potion-price-input" type="text" inputmode="decimal" placeholder="개당 가격"><button class="potion-clear" type="button" data-clear-price="pp_crystal">×</button><div class="potion-preview" data-pp-preview="pp_crystal"></div></div></div>
+        <div class="potion-price-row"><label for="pp_stone">현자의 돌</label><div class="potion-price-input-wrap"><input id="pp_stone" class="potion-price-input" type="text" inputmode="decimal" placeholder="개당 가격"><button class="potion-clear" type="button" data-clear-price="pp_stone">×</button><div class="potion-preview" data-pp-preview="pp_stone"></div></div></div>
+      </div>
+    </div>
+
+    <div class="record-card">
+      <div class="section-title">🧪 소형 재물 획득의 비약 판매가</div>
+      <label class="potion-fee-toggle" for="pp_feeDiscount">
+        <input id="pp_feeDiscount" type="checkbox">
+        <span class="potion-fee-check">✓</span>
+        <span><strong>MVP 실버 · PC방</strong><small>체크 시 경매장 판매 수수료 2%p 감소</small></span>
+      </label>
+      <div class="potion-price-table">
+        <div class="potion-price-row"><label for="pp_sellSmallFortune">소형 재물 획득의 비약</label><div class="potion-price-input-wrap"><input id="pp_sellSmallFortune" class="potion-price-input" type="text" inputmode="decimal" placeholder="개당 판매가"><button class="potion-clear" type="button" data-clear-price="pp_sellSmallFortune">×</button><div class="potion-preview" data-pp-preview="pp_sellSmallFortune"></div></div></div>
+      </div>
+      <div class="potion-profit-help">※ 1회 제작 시 소형 재물 획득의 비약 6개가 만들어집니다. 경매장 기본 수수료는 5%이며, MVP 실버 · PC방 체크 시 3%로 계산합니다.</div>
+      <div id="potionProfitResults" class="potion-profit-results" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="record-card" style="margin-top:16px;">
+    <div class="section-title">🧮 필요한 재료 계산</div>
+    <div class="potion-batch-notice">🧪 <strong>중요: 한 번 제작할 때마다 소형 재물 획득의 비약이 6개씩 만들어집니다.</strong><br><span>원하는 개수보다 실제 제작 횟수에 맞춰 6개 단위로 계산됩니다.</span></div>
+    <div class="potion-profit-help" style="margin-top:0;margin-bottom:12px;">원하는 소형 재물 획득의 비약 개수를 입력하면 필요한 재료 수량을 계산합니다.</div>
+    <div class="potion-price-row" style="margin-bottom:16px;">
+      <label for="pp_targetQty">만들 소형 재물 획득의 비약</label>
+      <div class="potion-price-input-wrap">
+        <input id="pp_targetQty" class="potion-price-input" type="text" inputmode="numeric" placeholder="개수 입력">
+        <button class="potion-clear" type="button" data-clear-price="pp_targetQty">×</button>
+        <div class="potion-preview" data-pp-preview="pp_targetQty"></div>
+      </div>
+    </div>
+    <div id="potionMaterialResults" class="potion-profit-grid"></div>
   </div>
 </div>
 
@@ -1084,7 +1245,22 @@ async function openPip(){
         button{border:0;border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer;background:#fff;color:#111;white-space:nowrap}
         button.secondary{background:#333;color:#fff}
         button:disabled{opacity:.45;cursor:default}
-      </style>
+      
+/* 재획비 판매 수수료 체크 */
+.potion-fee-toggle{display:flex;align-items:center;gap:10px;margin:-4px 0 14px;padding:11px 13px;border:1px solid rgba(127,211,255,.28);background:rgba(127,211,255,.06);border-radius:12px;cursor:pointer;}
+.potion-fee-toggle input{position:absolute;opacity:0;pointer-events:none;}
+.potion-fee-check{width:20px;height:20px;border:2px solid #8b96a8;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex:none;}
+.potion-fee-toggle input:checked + .potion-fee-check{border-color:#7fd3ff;background:#7fd3ff;color:#111;}
+.potion-fee-toggle span:last-child{display:flex;flex-direction:column;gap:2px;}
+.potion-fee-toggle small{color:#98a2b3;font-size:12px;}
+
+/* MVP 실버 · PC방 활성화 강조 */
+.potion-fee-toggle{transition:border-color .18s ease, background .18s ease, box-shadow .18s ease;}
+.potion-fee-toggle.active{border-color:#7fd3ff;background:rgba(127,211,255,.11);box-shadow:0 0 0 1px rgba(127,211,255,.2),0 0 14px rgba(127,211,255,.10);}
+.potion-fee-toggle.active strong{color:#7fd3ff;}
+.potion-fee-toggle.active small{color:#b9c9d8;}
+.potion-price-input.fixed-price{background:rgba(255,255,255,.05);cursor:not-allowed;font-weight:700;}
+</style>
       <div id="pipTime">--:--</div>
       <div id="pipStatus">대기 중</div>
       <div class="pipBtns">
@@ -1300,19 +1476,31 @@ function switchRecordView(viewName) {
 }
 
 function setDrawerActive(viewName) {
-  document.querySelectorAll('.drawer-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.drawer-card, .drawer-subcard').forEach(c => c.classList.remove('active'));
   const btnMap = {
-    'timer': 'menuTimer', 'homework': 'menuHomework', 'profit': 'menuProfit',
-    'hunt': 'menuHunt', 'boss': 'menuBoss', 'links': 'menuLinks'
+    'timer': ['menuTimer','menuToolsTimer'], 'homework': ['menuHomework'], 'profit': ['menuProfit'],
+    'hunt': ['menuHunt'], 'boss': ['menuBoss'], 'links': ['menuLinks'], 'potionProfit': ['menuPotionProfit']
   };
-  const activeBtn = document.getElementById(btnMap[viewName]);
-  if(activeBtn) activeBtn.classList.add('active');
+  (btnMap[viewName] || []).forEach(id => {
+    const btn = document.getElementById(id);
+    if(btn) btn.classList.add('active');
+  });
+}
+
+function updateToolTabs(viewName){
+  const isTool = viewName === 'potionProfit' || viewName === 'timer';
+  document.body.classList.toggle('tool-view-open', isTool);
+  document.querySelectorAll('.tool-switch-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.toolView === viewName);
+  });
 }
 
 function switchView(view){
   switchRecordView(view);
   setDrawerActive(view);
+  updateToolTabs(view);
   if(view==='profit') renderProfitSummary();
+  if(view==='potionProfit') renderPotionProfit();
 }
 
 function openDrawer(){
@@ -1348,6 +1536,13 @@ function enterFromStart(view){
   if(entry) entry.style.display = 'none';
   document.body.classList.remove('entry-open');
 
+  if(view === 'tools'){
+    document.getElementById('drawerTools')?.classList.add('open');
+    switchView('potionProfit');
+    closeDrawer();
+    return;
+  }
+
   switchView(view);
 }
 
@@ -1369,12 +1564,36 @@ menuTab.onclick = (e) => {
 
 drawerOverlay.onclick = closeDrawer;
 
-document.getElementById('menuTimer').onclick = () => { closeDrawer(); switchView('timer'); };
+document.getElementById('menuTimer').onclick = () => { closeDrawer(); document.getElementById('drawerTools')?.classList.add('open'); switchView('timer'); };
 document.getElementById('menuHomework').onclick = () => { closeDrawer(); switchView('homework'); };
 document.getElementById('menuProfit').onclick = () => { closeDrawer(); switchView('profit'); };
 document.getElementById('menuHunt').onclick = () => { closeDrawer(); switchView('hunt'); };
 document.getElementById('menuBoss').onclick = () => { closeDrawer(); switchView('boss'); };
 document.getElementById('menuLinks').onclick = () => { closeDrawer(); switchView('links'); };
+document.getElementById('menuTools').onclick = () => {
+  const tools = document.getElementById('drawerTools');
+  if(!tools) return;
+  const willOpen = !tools.classList.contains('open');
+  tools.classList.toggle('open', willOpen);
+  if(willOpen) switchView('potionProfit');
+};
+document.getElementById('menuPotionProfit').onclick = () => {
+  closeDrawer();
+  document.getElementById('drawerTools')?.classList.add('open');
+  switchView('potionProfit');
+};
+document.getElementById('menuToolsTimer').onclick = () => {
+  closeDrawer();
+  document.getElementById('drawerTools')?.classList.add('open');
+  switchView('timer');
+};
+document.querySelectorAll('.tool-switch-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const view = tab.dataset.toolView;
+    document.getElementById('drawerTools')?.classList.add('open');
+    switchView(view);
+  });
+});
 
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape' && document.body.classList.contains('drawer-open')) closeDrawer();
@@ -2365,6 +2584,191 @@ document.getElementById('presetSelect')?.addEventListener('change',()=>{
   renderPreset();
   renderBossCards();
 });
+
+
+/* ===== 재획비 손익 계산기 ===== */
+const POTION_PROFIT_KEY='simpleTimerPotionProfit';
+
+// 기존 저장 데이터는 건드리지 않고, 현재 화면에서 사용하는 값만 읽습니다.
+const potionProfitFields=[
+  'pp_emptyBottle','pp_juniper','pp_crystal','pp_stone','pp_sellSmallFortune','pp_targetQty'
+];
+const POTION_AUCTION_FEE=0.05;
+const POTION_FEE_DISCOUNT=0.02;
+
+const potionRecipes=[
+  {
+    key:'smallFortune',name:'소형 재물 획득의 비약',result:6,sell:'pp_sellSmallFortune',
+    ingredients:[['pp_emptyBottle',1],['pp_juniper',5],['pp_crystal',2],['pp_stone',1]],
+    recipeText:'최고급 포션 빈병 × 1 · 쥬니퍼베리 씨앗 오일 × 5 · 최상급 아이템 결정 × 2 · 현자의 돌 × 1'
+  }
+];
+
+function ppRead(){
+  try{
+    const d=JSON.parse(localStorage.getItem(POTION_PROFIT_KEY)||'{}');
+    return d && typeof d==='object' ? d : {};
+  }catch(e){return {};}
+}
+function ppNumber(id){
+  const el=document.getElementById(id);
+  if(!el)return 0;
+  const raw=String(el.value||'').replace(/[^\d.]/g,'');
+  const n=Number(raw);
+  return Number.isFinite(n)?n:0;
+}
+function ppFormatInput(el){
+  if(!el)return;
+  const raw=String(el.value||'').replace(/,/g,'').replace(/[^\d.]/g,'');
+  if(!raw){el.value='';return;}
+  const n=Number(raw);
+  if(Number.isFinite(n)) el.value=n.toLocaleString('ko-KR');
+}
+function ppFormatMeso(n){
+  n=Number(n)||0;
+  const sign=n<0?'-':'';
+  n=Math.abs(n);
+  if(n===0)return '0 메소';
+  const units=[[1e16,'경'],[1e12,'조'],[1e8,'억'],[1e4,'만']];
+  for(const [v,u] of units){
+    if(n>=v){
+      const x=n/v;
+      const digits=x>=100?0:x>=10?1:2;
+      const text=x.toFixed(digits).replace(/\.?0+$/,'');
+      return sign+text+u+' 메소';
+    }
+  }
+  return sign+Math.round(n).toLocaleString('ko-KR')+' 메소';
+}
+function ppSave(){
+  const d=ppRead();
+  potionProfitFields.forEach(id=>{d[id]=ppNumber(id);});
+  d.pp_emptyBottle=768;
+  const feeEl=document.getElementById('pp_feeDiscount');
+  if(feeEl) d.pp_feeDiscount=!!feeEl.checked;
+  // 기존에 저장돼 있던 다른 값은 그대로 유지합니다.
+  localStorage.setItem(POTION_PROFIT_KEY,JSON.stringify(d));
+}
+function ppLoad(){
+  const d=ppRead();
+  potionProfitFields.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    if(id==='pp_emptyBottle'){ el.value='768'; return; }
+    const n=Number(d[id]||0);
+    el.value=n>0?n.toLocaleString('ko-KR'):'';
+  });
+  const feeEl=document.getElementById('pp_feeDiscount');
+  if(feeEl) feeEl.checked=!!d.pp_feeDiscount;
+}
+const ppFeeToggle=document.getElementById('pp_feeDiscount');
+const ppFeeLabel=ppFeeToggle?.closest('.potion-fee-toggle');
+function syncPpFeeToggle(){
+  if(ppFeeLabel) ppFeeLabel.classList.toggle('active', !!ppFeeToggle?.checked);
+}
+if(ppFeeToggle){
+  ppFeeToggle.addEventListener('change',()=>{ syncPpFeeToggle(); updatePotionProfit(); });
+  syncPpFeeToggle();
+}
+
+function renderPotionProfit(){
+  const container=document.getElementById('potionProfitResults');
+  if(!container)return;
+  const results=[];
+  for(const r of potionRecipes){
+    const cost=r.ingredients.reduce((sum,[id,qty])=>sum+ppNumber(id)*qty,0);
+    const grossRevenue=ppNumber(r.sell)*r.result;
+    const feeRate=document.getElementById('pp_feeDiscount')?.checked ? Math.max(0,POTION_AUCTION_FEE-POTION_FEE_DISCOUNT) : POTION_AUCTION_FEE;
+    const fee=grossRevenue*feeRate;
+    const revenue=grossRevenue-fee;
+    const profit=revenue-cost;
+    const margin=cost>0?(profit/cost)*100:0;
+    results.push({...r,cost,grossRevenue,fee,feeRate,revenue,profit,margin});
+  }
+  container.innerHTML=results.map(r=>{
+    const cls=r.profit>0?'positive':r.profit<0?'negative':'zero';
+    const cardCls=r.profit>0?'profit-positive':r.profit<0?'profit-negative':'';
+    return `
+      <div class="potion-profit-card ${cardCls}">
+        <div class="potion-profit-head">
+          <div><div class="potion-profit-name">${r.name} <span class="sub">× ${r.result}개</span></div></div>
+          <div class="potion-profit-result ${cls}">${r.profit>=0?'+':''}${ppFormatMeso(r.profit)}</div>
+        </div>
+        <div class="potion-profit-meta">
+          <div><div class="potion-meta-label">제작원가</div><div class="potion-meta-value">${ppFormatMeso(r.cost)}</div></div>
+          <div><div class="potion-meta-label">총 판매금액</div><div class="potion-meta-value">${ppFormatMeso(r.grossRevenue)}</div></div>
+          <div><div class="potion-meta-label">판매 수수료 (${(r.feeRate*100).toFixed(0)}%)</div><div class="potion-meta-value">-${ppFormatMeso(r.fee)}</div></div>
+          <div><div class="potion-meta-label">수수료 차감 후 수령액</div><div class="potion-meta-value">${ppFormatMeso(r.revenue)}</div></div>
+          <div><div class="potion-meta-label">이익률</div><div class="potion-meta-value">${r.cost>0?r.margin.toFixed(1):'0.0'}%</div></div>
+        </div>
+        <div class="potion-recipe"><b>제작식</b> · ${r.recipeText}</div>
+      </div>`;
+  }).join('');
+}
+
+function renderPotionMaterials(){
+  const container=document.getElementById('potionMaterialResults');
+  if(!container)return;
+  const target=Math.max(0,Math.floor(ppNumber('pp_targetQty')));
+  if(!target){
+    container.innerHTML='<div class="potion-profit-card"><div class="potion-profit-name">만들 개수를 입력해 주세요</div><div class="potion-profit-help">예: 100개 입력 → 실제 제작은 17회, 총 102개가 만들어집니다.</div></div>';
+    return;
+  }
+  const recipe=potionRecipes[0];
+  const craftCount=Math.ceil(target/recipe.result);
+  const actual=craftCount*recipe.result;
+  const rows=recipe.ingredients.map(([id,qty])=>{
+    const label=document.querySelector(`label[for="${id}"]`)?.textContent || id;
+    return {label, qty:qty*craftCount};
+  });
+  container.innerHTML=`
+    <div class="potion-profit-card">
+      <div class="potion-profit-head">
+        <div><div class="potion-profit-name">제작 횟수</div><div class="potion-profit-help">1회 제작 = ${recipe.result}개</div></div>
+        <div class="potion-profit-result zero">${craftCount.toLocaleString('ko-KR')}회</div>
+      </div>
+      <div class="potion-profit-meta">
+        <div><div class="potion-meta-label">입력한 개수</div><div class="potion-meta-value">${target.toLocaleString('ko-KR')}개</div></div>
+        <div><div class="potion-meta-label">실제 제작 수량</div><div class="potion-meta-value">${actual.toLocaleString('ko-KR')}개</div></div>
+        <div><div class="potion-meta-label">남는 수량</div><div class="potion-meta-value">${(actual-target).toLocaleString('ko-KR')}개</div></div>
+      </div>
+      <div class="potion-recipe"><b>필요 재료</b></div>
+      <div class="potion-profit-meta" style="margin-top:10px;">${rows.map(r=>`<div><div class="potion-meta-label">${r.label}</div><div class="potion-meta-value">${r.qty.toLocaleString('ko-KR')}개</div></div>`).join('')}</div>
+    </div>`;
+}
+function updatePotionProfit(){
+  potionProfitFields.forEach(id=>{
+    const pv=document.querySelector(`[data-pp-preview="${id}"]`);
+    if(pv){
+      const n=ppNumber(id);
+      pv.textContent = n ? (id === 'pp_targetQty' ? n.toLocaleString('ko-KR') + '개' : ppFormatMeso(n)) : '';
+    }
+  });
+  ppSave();
+  renderPotionProfit();
+  renderPotionMaterials();
+}
+
+potionProfitFields.forEach(id=>{
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.addEventListener('input',()=>{
+    ppFormatInput(el);
+    updatePotionProfit();
+    try{el.setSelectionRange(el.value.length,el.value.length);}catch(e){}
+  });
+  el.addEventListener('blur',()=>{ppFormatInput(el);updatePotionProfit();});
+});
+document.querySelectorAll('[data-clear-price]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const el=document.getElementById(btn.dataset.clearPrice);
+    if(el){el.value='';updatePotionProfit();el.focus();}
+  });
+});
+document.getElementById('pp_feeDiscount')?.addEventListener('change',updatePotionProfit);
+ppLoad();
+updatePotionProfit();
+renderPotionMaterials();
 
 // 저장 목록은 페이지 진입/초기화 시에도 항상 복원
 renderHuntRecords();
