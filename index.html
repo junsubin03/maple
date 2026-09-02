@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>메이플 실험실</title>
+<title>타이머 · 숙제 체크</title>
 <style>
 select{padding:11px 14px;border:1px solid #444;border-radius:10px;background:#333;color:#fff;font-size:14px;min-width:180px;white-space:nowrap}
 .choice-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
@@ -532,6 +532,13 @@ body.entry-open > #potionProfitView, body.entry-open > #toolSwitchTabs{display:n
     .potion-batch-notice{margin:0 0 14px;padding:12px 14px;border:1px solid rgba(99,102,241,.22);background:rgba(99,102,241,.08);border-radius:12px;font-size:13px;line-height:1.55;}
     .potion-batch-notice strong{font-size:14px;}
     .potion-batch-notice span{color:var(--muted,#888);}
+
+    .potion-green-profit-stack{display:grid;gap:8px;margin-bottom:12px;}
+    .potion-green-profit-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid #31583f;border-radius:12px;background:#151d18;min-width:0;}
+    .potion-green-profit-row .label{font-size:12px;color:#8fa895;font-weight:800;white-space:nowrap;}
+    .potion-green-profit-row .value{font-size:20px;font-weight:900;color:#7fd3a0;line-height:1.2;white-space:nowrap;min-width:0;flex:1;text-align:right;font-variant-numeric:tabular-nums;}
+    .potion-green-profit-row .value.negative{color:#ff7f91;}
+    @media(max-width:560px){.potion-green-profit-row .value{font-size:17px;}}
 </style>
 </head>
 <body class="entry-open">
@@ -2703,7 +2710,7 @@ if(ppFeeToggle){
 function renderPotionProfit(){
   const container=document.getElementById('potionProfitResults');
   if(!container)return;
-  const craftCount=Math.max(1,Math.floor(ppNumber('pp_targetQty'))||1);
+  const craftCount=1;
   const results=[];
   for(const r of potionRecipes){
     const costPerCraft=r.ingredients.reduce((sum,[id,qty])=>sum+ppNumber(id)*qty,0);
@@ -2726,18 +2733,23 @@ function renderPotionProfit(){
     return `
       <div class="potion-profit-card ${cardCls}">
         <div class="potion-profit-head">
-          <div><div class="potion-profit-name">${r.name} <span class="sub">× ${r.result}개 · ${r.craftCount}회 제작</span></div></div>
-          <div class="potion-profit-result ${cls}">${r.profit>=0?'+':''}${ppFormatMeso(r.profit)}</div>
+          <div><div class="potion-profit-name">${r.name} <span class="sub">× ${r.result}개 · 1회 제작</span></div></div>
+        </div>
+        <div class="potion-green-profit-stack">
+          <div class="potion-green-profit-row">
+            <span class="label">총 손익</span>
+            <span class="value ${cls==='negative'?'negative':''}">${r.profit>=0?'+':''}${ppFormatMeso(r.profit)}</span>
+          </div>
+        <div class="potion-unit-profit-row">
+          <span>개당 손익</span>
+          <strong class="${cls}">${r.profit>=0?'+':''}${ppFormatMeso(r.profit/r.result)}</strong>
+        </div>
         </div>
         <div class="potion-profit-meta">
           <div><div class="potion-meta-label">총 제작원가</div><div class="potion-meta-value">${ppFormatMeso(r.cost)}</div></div>
           <div><div class="potion-meta-label">총 판매금액</div><div class="potion-meta-value">${ppFormatMeso(r.grossRevenue)}</div></div>
-          <div><div class="potion-meta-label">판매 수수료 (${(r.feeRate*100).toFixed(0)}%)</div><div class="potion-meta-value">-${ppFormatMeso(r.fee)}</div></div>
           <div><div class="potion-meta-label">수수료 차감 후 수령액</div><div class="potion-meta-value">${ppFormatMeso(r.revenue)}</div></div>
-          <div><div class="potion-meta-label">${r.craftCount}회 총 순이익</div><div class="potion-meta-value">${r.profit>=0?'+':''}${ppFormatMeso(r.profit)}</div></div>
-          <div><div class="potion-meta-label">이익률</div><div class="potion-meta-value">${r.cost>0?r.margin.toFixed(1):'0.0'}%</div></div>
         </div>
-        <div class="potion-unit-profit-row"><span>개당 손익</span><strong class="${cls}">${r.profit>=0?'+':''}${ppFormatMeso(r.profit/r.result)}</strong></div>
         <div class="potion-recipe"><b>제작식</b> · ${r.recipeText}</div>
       </div>`;
   }).join('');
@@ -2779,15 +2791,20 @@ function renderPotionMaterials(){
         </div>
         <div class="potion-batch-summary">
           <div class="potion-batch-summary-title">${craftCount}회 제작 손익</div>
-          <div class="potion-batch-summary-total">
-            <div class="label">총 손익</div>
-            <div class="value">${totalProfit>=0?'+':''}${ppFormatMeso(totalProfit)}</div>
+          <div class="potion-green-profit-stack">
+            <div class="potion-green-profit-row">
+              <span class="label">총 손익</span>
+              <span class="value ${cls==='negative'?'negative':''}">${totalProfit>=0?'+':''}${ppFormatMeso(totalProfit)}</span>
+            </div>
+          </div>
+          <div class="potion-unit-profit-row">
+            <span>개당 손익</span>
+            <strong class="${cls}">${unitProfit>=0?'+':''}${ppFormatMeso(unitProfit)}</strong>
           </div>
           <div class="potion-batch-summary-grid">
             <div class="summary-item"><div class="summary-label">총 제작원가</div><div class="summary-value">${ppFormatMeso(totalCost)}</div></div>
             <div class="summary-item"><div class="summary-label">총 판매금액</div><div class="summary-value">${ppFormatMeso(totalSales)}</div></div>
             <div class="summary-item"><div class="summary-label">수수료 차감 후 수령액</div><div class="summary-value">${ppFormatMeso(totalRevenue)}</div></div>
-            <div class="summary-item"><div class="summary-label">개당 손익</div><div class="summary-value ${cls}">${unitProfit>=0?'+':''}${ppFormatMeso(unitProfit)}</div></div>
           </div>
         </div>
       </div>
