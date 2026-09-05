@@ -1646,6 +1646,43 @@ function switchView(view){
   if(view==='juniperProfit') renderJuniperProfit();
 }
 
+/* ===== 브라우저 뒤로가기/앞으로가기 연동 =====
+   기존 localStorage 기록은 전혀 건드리지 않고, 현재 화면 상태만 History에 저장한다. */
+const VIEW_HISTORY_KEY = '__simpleTimerView';
+
+function currentViewFromState(){
+  const view = history.state?.[VIEW_HISTORY_KEY];
+  return view || null;
+}
+
+function showViewFromHistory(view){
+  if(!view || view === 'home'){
+    showMainHome({fromHistory:true});
+    return;
+  }
+  const entry = document.getElementById('entryView');
+  if(entry) entry.style.display = 'none';
+  document.body.classList.remove('entry-open');
+  if(view === 'timer' || view === 'potionProfit' || view === 'juniperProfit'){
+    document.getElementById('drawerTools')?.classList.add('open');
+  }
+  switchView(view);
+}
+
+if(!history.state || !(VIEW_HISTORY_KEY in history.state)){
+  history.replaceState({...history.state, [VIEW_HISTORY_KEY]:'home'}, '', location.href);
+}
+
+window.addEventListener('popstate', () => {
+  showViewFromHistory(currentViewFromState());
+});
+
+function navigateView(view){
+  if(currentViewFromState() === view) return;
+  history.pushState({...history.state, [VIEW_HISTORY_KEY]:view}, '', location.href);
+  showViewFromHistory(view);
+}
+
 function openDrawer(){
   document.body.classList.add('drawer-open');
   menuTab.setAttribute('aria-expanded','true');
@@ -1675,18 +1712,10 @@ setInterval(() => {
 
 /* ===== 입장 화면 ===== */
 function enterFromStart(view){
-  const entry = document.getElementById('entryView');
-  if(entry) entry.style.display = 'none';
-  document.body.classList.remove('entry-open');
-
-  if(view === 'tools'){
-    document.getElementById('drawerTools')?.classList.add('open');
-    switchView('potionProfit');
-    closeDrawer();
-    return;
-  }
-
-  switchView(view);
+  const targetView = view === 'tools' ? 'potionProfit' : view;
+  document.getElementById('drawerTools')?.classList.toggle('open', targetView === 'timer' || targetView === 'potionProfit' || targetView === 'juniperProfit');
+  navigateView(targetView);
+  closeDrawer();
 }
 
 document.querySelectorAll('.entry-tab').forEach(tab => {
@@ -1707,39 +1736,39 @@ menuTab.onclick = (e) => {
 
 drawerOverlay.onclick = closeDrawer;
 
-document.getElementById('menuTimer').onclick = () => { closeDrawer(); document.getElementById('drawerTools')?.classList.add('open'); switchView('timer'); };
-document.getElementById('menuHomework').onclick = () => { closeDrawer(); switchView('homework'); };
-document.getElementById('menuProfit').onclick = () => { closeDrawer(); switchView('profit'); };
-document.getElementById('menuHunt').onclick = () => { closeDrawer(); switchView('hunt'); };
-document.getElementById('menuBoss').onclick = () => { closeDrawer(); switchView('boss'); };
-document.getElementById('menuLinks').onclick = () => { closeDrawer(); switchView('links'); };
+document.getElementById('menuTimer').onclick = () => { closeDrawer(); document.getElementById('drawerTools')?.classList.add('open'); navigateView('timer'); };
+document.getElementById('menuHomework').onclick = () => { closeDrawer(); navigateView('homework'); };
+document.getElementById('menuProfit').onclick = () => { closeDrawer(); navigateView('profit'); };
+document.getElementById('menuHunt').onclick = () => { closeDrawer(); navigateView('hunt'); };
+document.getElementById('menuBoss').onclick = () => { closeDrawer(); navigateView('boss'); };
+document.getElementById('menuLinks').onclick = () => { closeDrawer(); navigateView('links'); };
 document.getElementById('menuTools').onclick = () => {
   const tools = document.getElementById('drawerTools');
   if(!tools) return;
   const willOpen = !tools.classList.contains('open');
   tools.classList.toggle('open', willOpen);
-  if(willOpen) switchView('potionProfit');
+  if(willOpen) navigateView('potionProfit');
 };
 document.getElementById('menuPotionProfit').onclick = () => {
   closeDrawer();
   document.getElementById('drawerTools')?.classList.add('open');
-  switchView('potionProfit');
+  navigateView('potionProfit');
 };
 document.getElementById('menuToolsTimer').onclick = () => {
   closeDrawer();
   document.getElementById('drawerTools')?.classList.add('open');
-  switchView('timer');
+  navigateView('timer');
 };
 document.getElementById('menuJuniperProfit').onclick = () => {
   closeDrawer();
   document.getElementById('drawerTools')?.classList.add('open');
-  switchView('juniperProfit');
+  navigateView('juniperProfit');
 };
 document.querySelectorAll('.tool-switch-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     const view = tab.dataset.toolView;
     document.getElementById('drawerTools')?.classList.add('open');
-    switchView(view);
+    navigateView(view);
   });
 });
 
@@ -1747,16 +1776,19 @@ document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape' && document.body.classList.contains('drawer-open')) closeDrawer();
 });
 
-function showMainHome(){
+function showMainHome(options = {}){
   closeDrawer();
   let entry = document.getElementById('entryView');
   if(entry){
     entry.style.display = 'flex';
   }
   document.body.classList.add('entry-open');
+  if(!options.fromHistory && currentViewFromState() !== 'home'){
+    history.pushState({...history.state, [VIEW_HISTORY_KEY]:'home'}, '', location.href);
+  }
 }
 
-document.getElementById('menuHome').onclick = showMainHome;
+document.getElementById('menuHome').onclick = () => showMainHome();
 
 /* ===== 보스 정보 데이터 ===== */
 const bossData=[
