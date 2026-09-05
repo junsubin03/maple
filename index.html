@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>메이플 실험실</title>
+<title>타이머 · 숙제 체크</title>
 <style>
 select{padding:11px 14px;border:1px solid #444;border-radius:10px;background:#333;color:#fff;font-size:14px;min-width:180px;white-space:nowrap}
 .choice-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
@@ -297,7 +297,7 @@ body.entry-open > .drawer-overlay,
 body.entry-open > .drawer,
 body.entry-open > #timerView,
 body.entry-open > #homeworkView,
-body.entry-open > #potionProfitView, body.entry-open > #toolSwitchTabs{display:none!important}
+body.entry-open > #potionProfitView, body.entry-open > #juniperProfitView, body.entry-open > #toolSwitchTabs{display:none!important}
 
 .drawer{display:flex}
 
@@ -539,6 +539,50 @@ body.entry-open > #potionProfitView, body.entry-open > #toolSwitchTabs{display:n
     .potion-green-profit-row .value{font-size:20px;font-weight:900;color:#7fd3a0;line-height:1.2;white-space:nowrap;min-width:0;flex:1;text-align:right;font-variant-numeric:tabular-nums;}
     .potion-green-profit-row .value.negative{color:#ff7f91;}
     @media(max-width:560px){.potion-green-profit-row .value{font-size:17px;}}
+
+/* ===== 쥬니퍼베리 씨앗 오일 기대값 계산기 ===== */
+.juniper-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.juniper-price-table{display:grid;gap:8px}
+.juniper-price-row{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:10px;align-items:center;padding:10px;border:1px solid #292b31;border-radius:10px;background:#101216}
+.juniper-price-row label{margin:0;color:#bbb;font-size:13px;white-space:normal}
+.juniper-input-wrap{position:relative;min-width:0}
+.juniper-input{padding:10px 34px 10px 11px!important;font-size:13px!important;width:100%!important}
+.juniper-input.fixed-price{background:#1b1d21!important;color:#8e9299!important;border-color:#35383e!important;cursor:not-allowed!important;font-weight:700}
+.juniper-preview{font-size:10px;color:#777;margin-top:4px;min-height:13px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.juniper-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.juniper-summary-item{padding:13px;border:1px solid #292b31;border-radius:11px;background:#101216;min-width:0}
+.juniper-summary-label{font-size:11px;color:#777;margin-bottom:5px}
+.juniper-summary-value{font-size:17px;font-weight:900;font-variant-numeric:tabular-nums;white-space:normal;overflow-wrap:anywhere}
+.juniper-result{margin-top:12px;padding:16px;border:1px solid #31583f;border-radius:13px;background:#151d18}
+.juniper-result.negative{border-color:#63343e;background:#211518}
+.juniper-result-title{font-size:12px;color:#8fa895;font-weight:800}
+.juniper-result.negative .juniper-result-title{color:#c9929d}
+.juniper-result-value{font-size:25px;font-weight:900;margin-top:5px;color:#7fd3a0}
+.juniper-result.negative .juniper-result-value{color:#ff7f91}
+.juniper-verdict{margin-top:8px;font-size:13px;color:#bbb;line-height:1.55}
+.juniper-formula{margin-top:12px;padding-top:12px;border-top:1px solid #292b31;color:#888;font-size:12px;line-height:1.7;word-break:keep-all}
+@media(max-width:800px){.juniper-grid{grid-template-columns:1fr}.juniper-price-row{grid-template-columns:1fr}}
+@media(max-width:560px){.juniper-summary{grid-template-columns:1fr}}
+.juniper-fixed-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 14px}
+.juniper-fixed-item{padding:11px;border:1px solid #292b31;border-radius:10px;background:#101216}
+.juniper-fixed-label{font-size:11px;color:#777;margin-bottom:5px}
+.juniper-fixed-value{font-size:15px;font-weight:900;color:#b8bcc4}
+.juniper-linked-note{margin-top:10px;padding:10px 12px;border:1px solid #2d3540;border-radius:10px;background:#11151b;color:#8d96a3;font-size:12px;line-height:1.6}
+.juniper-compare{margin-top:16px}
+.juniper-compare-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:10px}
+.juniper-compare-card{padding:13px;border:1px solid #292b31;border-radius:11px;background:#101216;min-width:0}
+.juniper-compare-card .label{font-size:11px;color:#777;margin-bottom:6px}
+.juniper-compare-card .value{font-size:17px;font-weight:900;overflow-wrap:anywhere}
+.juniper-compare-main{margin-top:12px;padding:16px;border:1px solid #31583f;border-radius:13px;background:#151d18}
+.juniper-compare-main.bad{border-color:#63343e;background:#211518}
+.juniper-compare-main .title{font-size:12px;color:#8fa895;font-weight:800}
+.juniper-compare-main.bad .title{color:#c9929d}
+.juniper-compare-main .value{font-size:24px;font-weight:900;margin-top:5px;color:#7fd3a0}
+.juniper-compare-main.bad .value{color:#ff7f91}
+.juniper-compare-main .desc{margin-top:8px;font-size:13px;color:#bbb;line-height:1.55}
+@media(max-width:760px){.juniper-fixed-grid,.juniper-compare-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.juniper-fixed-grid,.juniper-compare-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body class="entry-open">
@@ -732,6 +776,9 @@ body.entry-open > #potionProfitView, body.entry-open > #toolSwitchTabs{display:n
       <button type="button" class="drawer-subcard" id="menuPotionProfit">
         <span>🧪</span><span>재획비 손익</span>
       </button>
+      <button type="button" class="drawer-subcard" id="menuJuniperProfit">
+        <span>🌿</span><span>쥬니퍼베리 손익</span>
+      </button>
       <button type="button" class="drawer-subcard" id="menuToolsTimer">
         <span>⏱️</span><span>타이머</span>
       </button>
@@ -741,6 +788,7 @@ body.entry-open > #potionProfitView, body.entry-open > #toolSwitchTabs{display:n
 
 <div id="toolSwitchTabs" class="tool-switch-tabs" aria-label="도구 탭">
   <button type="button" class="tool-switch-tab active" data-tool-view="potionProfit">🧪 재획비 손익</button>
+  <button type="button" class="tool-switch-tab" data-tool-view="juniperProfit">🌿 쥬니퍼베리 손익</button>
   <button type="button" class="tool-switch-tab" data-tool-view="timer">⏱️ 타이머</button>
 </div>
 
@@ -979,6 +1027,83 @@ body.entry-open > #potionProfitView, body.entry-open > #toolSwitchTabs{display:n
   </div>
 </div>
 
+
+<div id="juniperProfitView" class="view tool-view">
+  <div class="record-header">
+    <div>
+      <h1>쥬니퍼베리 씨앗 오일 손익</h1>
+      <div class="record-sub">씨앗부터 오일 제작 기대값을 계산하고, 만든 오일을 소형 재물 획득의 비약으로 가공하는 편이 더 이득인지까지 비교합니다.</div>
+    </div>
+  </div>
+
+  <div class="record-card" style="margin-bottom:16px;">
+    <div class="section-title">🔒 고정 제작 정보</div>
+    <div class="juniper-fixed-grid">
+      <div class="juniper-fixed-item"><div class="juniper-fixed-label">필요 씨앗 수량</div><div class="juniper-fixed-value">6개</div></div>
+      <div class="juniper-fixed-item"><div class="juniper-fixed-label">필요 오일병 수량</div><div class="juniper-fixed-value">1개</div></div>
+      <div class="juniper-fixed-item"><div class="juniper-fixed-label">오일 성공확률</div><div class="juniper-fixed-value">90%</div></div>
+      <div class="juniper-fixed-item"><div class="juniper-fixed-label">마법의 가루 확률</div><div class="juniper-fixed-value">10%</div></div>
+    </div>
+    <div class="potion-profit-help">※ 위 수량과 확률은 레시피 고정값이라 변경할 수 없습니다. 최고급 허브 오일병 가격도 NPC 상점가 <b>960 메소</b>로 고정됩니다.</div>
+  </div>
+
+  <div class="juniper-grid">
+    <div class="record-card">
+      <div class="section-title">🌿 변경 가능한 시세 3개</div>
+      <div class="juniper-price-table">
+        <div class="juniper-price-row">
+          <label for="jp_seedPrice">쥬니퍼베리 씨앗 <span class="sub">경매장 유동가</span></label>
+          <div class="juniper-input-wrap"><input id="jp_seedPrice" class="juniper-input" type="text" inputmode="decimal" value="940000" placeholder="개당 가격"><div class="juniper-preview" id="jp_seedPreview"></div></div>
+        </div>
+        <div class="juniper-price-row">
+          <label for="jp_oilPrice">쥬니퍼베리 씨앗 오일 판매가격 <span class="sub">경매장 유동가</span></label>
+          <div class="juniper-input-wrap"><input id="jp_oilPrice" class="juniper-input" type="text" inputmode="decimal" value="6600000" placeholder="개당 판매가"><div class="juniper-preview" id="jp_oilPreview"></div></div>
+        </div>
+        <div class="juniper-price-row">
+          <label for="jp_powderPrice">마법의 가루(보라) 가격 <span class="sub">경매장 유동가</span></label>
+          <div class="juniper-input-wrap"><input id="jp_powderPrice" class="juniper-input" type="text" inputmode="decimal" value="78000" placeholder="개당 가격"><div class="juniper-preview" id="jp_powderPreview"></div></div>
+        </div>
+      </div>
+      <div class="potion-profit-help">※ 이 탭에서 직접 수정할 수 있는 값은 위 3개뿐입니다.</div>
+    </div>
+
+    <div class="record-card">
+      <div class="section-title">🧮 오일 제작 기대값</div>
+      <div class="juniper-summary">
+        <div class="juniper-summary-item"><div class="juniper-summary-label">1회 제작비</div><div class="juniper-summary-value" id="jp_totalCost">-</div></div>
+        <div class="juniper-summary-item"><div class="juniper-summary-label">기대 판매금액</div><div class="juniper-summary-value" id="jp_expectedRevenue">-</div></div>
+        <div class="juniper-summary-item"><div class="juniper-summary-label">기대 수익률</div><div class="juniper-summary-value" id="jp_roi">-</div></div>
+        <div class="juniper-summary-item"><div class="juniper-summary-label">손익분기 오일 가격</div><div class="juniper-summary-value" id="jp_breakEvenOil">-</div></div>
+      </div>
+      <div class="juniper-result" id="jp_resultBox">
+        <div class="juniper-result-title">1회 제작 기대 순이익</div>
+        <div class="juniper-result-value" id="jp_profit">-</div>
+        <div class="juniper-verdict" id="jp_verdict"></div>
+      </div>
+      <div class="juniper-formula" id="jp_formula"></div>
+    </div>
+  </div>
+
+  <div class="record-card juniper-compare">
+    <div class="section-title">🧪 만든 오일 → 소형 재물 획득의 비약 비교</div>
+    <div class="record-sub">기존 <b>재획비 손익</b> 탭의 최상급 아이템 결정·현자의 돌·비약 판매가·수수료 설정을 자동으로 불러옵니다.</div>
+    <div class="juniper-linked-note" id="jp_linkedPotionInfo">연동값 확인 중...</div>
+    <div class="juniper-compare-grid">
+      <div class="juniper-compare-card"><div class="label">오일 1개 기대 실질 제작원가</div><div class="value" id="jp_effectiveOilCost">-</div></div>
+      <div class="juniper-compare-card"><div class="label">비약 1회(6개) 총 기대원가</div><div class="value" id="jp_potionExpectedCost">-</div></div>
+      <div class="juniper-compare-card"><div class="label">비약 6개 수수료 후 수령액</div><div class="value" id="jp_potionNetRevenue">-</div></div>
+      <div class="juniper-compare-card"><div class="label">씨앗부터 비약까지 기대 순이익</div><div class="value" id="jp_potionProfitFromSeeds">-</div></div>
+      <div class="juniper-compare-card"><div class="label">오일 5개를 그냥 팔 때 수령액</div><div class="value" id="jp_sellFiveOilNet">-</div></div>
+      <div class="juniper-compare-card"><div class="label">비약 가공 추가이익</div><div class="value" id="jp_potionValueAdd">-</div></div>
+    </div>
+    <div class="juniper-compare-main" id="jp_compareBox">
+      <div class="title">추천</div>
+      <div class="value" id="jp_compareValue">-</div>
+      <div class="desc" id="jp_compareVerdict"></div>
+    </div>
+    <div class="juniper-formula" id="jp_potionFormula"></div>
+  </div>
+</div>
 <div id="linksView" class="view record-view">
   <div class="record-header">
     <div>
@@ -1496,7 +1621,7 @@ function setDrawerActive(viewName) {
   document.querySelectorAll('.drawer-card, .drawer-subcard').forEach(c => c.classList.remove('active'));
   const btnMap = {
     'timer': ['menuTimer','menuToolsTimer'], 'homework': ['menuHomework'], 'profit': ['menuProfit'],
-    'hunt': ['menuHunt'], 'boss': ['menuBoss'], 'links': ['menuLinks'], 'potionProfit': ['menuPotionProfit']
+    'hunt': ['menuHunt'], 'boss': ['menuBoss'], 'links': ['menuLinks'], 'potionProfit': ['menuPotionProfit'], 'juniperProfit': ['menuJuniperProfit']
   };
   (btnMap[viewName] || []).forEach(id => {
     const btn = document.getElementById(id);
@@ -1505,7 +1630,7 @@ function setDrawerActive(viewName) {
 }
 
 function updateToolTabs(viewName){
-  const isTool = viewName === 'potionProfit' || viewName === 'timer';
+  const isTool = viewName === 'potionProfit' || viewName === 'timer' || viewName === 'juniperProfit';
   document.body.classList.toggle('tool-view-open', isTool);
   document.querySelectorAll('.tool-switch-tab').forEach(tab => {
     tab.classList.toggle('active', tab.dataset.toolView === viewName);
@@ -1518,6 +1643,7 @@ function switchView(view){
   updateToolTabs(view);
   if(view==='profit') renderProfitSummary();
   if(view==='potionProfit') renderPotionProfit();
+  if(view==='juniperProfit') renderJuniperProfit();
 }
 
 function openDrawer(){
@@ -1603,6 +1729,11 @@ document.getElementById('menuToolsTimer').onclick = () => {
   closeDrawer();
   document.getElementById('drawerTools')?.classList.add('open');
   switchView('timer');
+};
+document.getElementById('menuJuniperProfit').onclick = () => {
+  closeDrawer();
+  document.getElementById('drawerTools')?.classList.add('open');
+  switchView('juniperProfit');
 };
 document.querySelectorAll('.tool-switch-tab').forEach(tab => {
   tab.addEventListener('click', () => {
@@ -2603,6 +2734,167 @@ document.getElementById('presetSelect')?.addEventListener('change',()=>{
 });
 
 
+
+/* ===== 쥬니퍼베리 씨앗 오일 기대값 계산기 ===== */
+const JUNIPER_PROFIT_KEY='simpleTimerJuniperProfit';
+const JUNIPER_SEED_QTY=6;
+const JUNIPER_BOTTLE_QTY=1;
+const JUNIPER_BOTTLE_PRICE=960;
+const JUNIPER_OIL_RATE=0.90;
+const JUNIPER_POWDER_RATE=0.10;
+const JUNIPER_POTION_OIL_QTY=5;
+const JUNIPER_POTION_EMPTY_BOTTLE_QTY=1;
+const JUNIPER_POTION_CRYSTAL_QTY=2;
+const JUNIPER_POTION_STONE_QTY=1;
+const JUNIPER_POTION_RESULT_QTY=6;
+
+function jpReadValue(id){
+  const el=document.getElementById(id);
+  return el ? parseKoreanNumber(el.value) : 0;
+}
+function jpFormatField(el){
+  if(!el) return;
+  const raw=String(el.value||'').replace(/,/g,'').trim();
+  if(!raw || /[만억조경]/.test(raw)) return;
+  const n=Number(raw.replace(/[^\d.]/g,''));
+  if(Number.isFinite(n)) el.value=Math.floor(n).toLocaleString('ko-KR');
+}
+function jpSave(){
+  const data={seedPrice:jpReadValue('jp_seedPrice'),oilPrice:jpReadValue('jp_oilPrice'),powderPrice:jpReadValue('jp_powderPrice')};
+  localStorage.setItem(JUNIPER_PROFIT_KEY,JSON.stringify(data));
+}
+function jpLoad(){
+  try{
+    const d=JSON.parse(localStorage.getItem(JUNIPER_PROFIT_KEY)||'{}');
+    if(d.seedPrice!=null) document.getElementById('jp_seedPrice').value=Number(d.seedPrice).toLocaleString('ko-KR');
+    if(d.oilPrice!=null) document.getElementById('jp_oilPrice').value=Number(d.oilPrice).toLocaleString('ko-KR');
+    if(d.powderPrice!=null) document.getElementById('jp_powderPrice').value=Number(d.powderPrice).toLocaleString('ko-KR');
+  }catch(e){}
+}
+function jpReadPotionLinked(){
+  let d={};
+  try{ d=JSON.parse(localStorage.getItem('simpleTimerPotionProfit')||'{}')||{}; }catch(e){}
+  const num=(key,fallback=0)=>{
+    const screen=document.getElementById(key);
+    if(screen && String(screen.value||'').trim()!=='') return ppNumber(key);
+    const n=Number(d[key]);
+    return Number.isFinite(n)?n:fallback;
+  };
+  const feeScreen=document.getElementById('pp_feeDiscount');
+  const discounted=feeScreen ? !!feeScreen.checked : !!d.pp_feeDiscount;
+  return {
+    emptyBottle:768,
+    crystal:num('pp_crystal'),
+    stone:num('pp_stone'),
+    potionSell:num('pp_sellSmallFortune'),
+    feeRate:discounted ? 0.03 : 0.05,
+    discounted
+  };
+}
+function renderJuniperProfit(){
+  const seed=jpReadValue('jp_seedPrice');
+  const oil=jpReadValue('jp_oilPrice');
+  const powder=jpReadValue('jp_powderPrice');
+  const cost=seed*JUNIPER_SEED_QTY+JUNIPER_BOTTLE_PRICE*JUNIPER_BOTTLE_QTY;
+  const oilEv=oil*JUNIPER_OIL_RATE;
+  const powderEv=powder*JUNIPER_POWDER_RATE;
+  const revenue=oilEv+powderEv;
+  const profit=revenue-cost;
+  const roi=cost>0 ? profit/cost*100 : 0;
+  const breakEvenOil=JUNIPER_OIL_RATE>0 ? (cost-powderEv)/JUNIPER_OIL_RATE : 0;
+
+  const set=(id,text)=>{const el=document.getElementById(id);if(el)el.textContent=text;};
+  set('jp_seedPreview',seed?ppFormatMeso(seed):'');
+  set('jp_oilPreview',oil?ppFormatMeso(oil):'');
+  set('jp_powderPreview',powder?ppFormatMeso(powder):'');
+  set('jp_totalCost',ppFormatMeso(cost));
+  set('jp_expectedRevenue',ppFormatMeso(revenue));
+  set('jp_oilEv',ppFormatMeso(oilEv));
+  set('jp_powderEv',ppFormatMeso(powderEv));
+  set('jp_roi',(profit>=0?'+':'')+roi.toFixed(2)+'%');
+  set('jp_breakEvenOil',ppFormatMeso(breakEvenOil));
+  set('jp_profit',(profit>=0?'+':'')+ppFormatMeso(profit));
+
+  const result=document.getElementById('jp_resultBox');
+  if(result) result.classList.toggle('negative',profit<0);
+  const verdict=document.getElementById('jp_verdict');
+  if(verdict){
+    verdict.textContent=profit>0?'기대값 기준으로 오일 제작이 이득입니다.':profit<0?'기대값 기준으로 오일 제작이 손해입니다.':'현재 시세가 기대값 기준 손익분기점입니다.';
+  }
+  const formula=document.getElementById('jp_formula');
+  if(formula){
+    formula.innerHTML=`제작비 = 씨앗 ${ppFormatMeso(seed)} × ${JUNIPER_SEED_QTY} + 오일병 ${JUNIPER_BOTTLE_PRICE.toLocaleString('ko-KR')} 메소 × ${JUNIPER_BOTTLE_QTY} = <b>${ppFormatMeso(cost)}</b><br>`+
+      `기대값 = 오일 ${ppFormatMeso(oil)} × 90% + 가루 ${ppFormatMeso(powder)} × 10% = <b>${ppFormatMeso(revenue)}</b>`;
+  }
+
+  renderJuniperPotionCompare({seed,oil,powder,cost});
+  jpSave();
+}
+function renderJuniperPotionCompare(base){
+  const linked=jpReadPotionLinked();
+  const set=(id,text)=>{const el=document.getElementById(id);if(el)el.textContent=text;};
+  const effectiveOilCost=JUNIPER_OIL_RATE>0 ? (base.cost-(base.powder*JUNIPER_POWDER_RATE))/JUNIPER_OIL_RATE : 0;
+  const oilCostForPotion=effectiveOilCost*JUNIPER_POTION_OIL_QTY;
+  const otherCost=linked.emptyBottle*JUNIPER_POTION_EMPTY_BOTTLE_QTY + linked.crystal*JUNIPER_POTION_CRYSTAL_QTY + linked.stone*JUNIPER_POTION_STONE_QTY;
+  const potionExpectedCost=oilCostForPotion+otherCost;
+  const potionGross=linked.potionSell*JUNIPER_POTION_RESULT_QTY;
+  const potionNet=potionGross*(1-linked.feeRate);
+  const potionProfitFromSeeds=potionNet-potionExpectedCost;
+  const sellFiveOilNet=base.oil*JUNIPER_POTION_OIL_QTY*(1-linked.feeRate);
+  const potionValueAdd=potionNet-otherCost-sellFiveOilNet;
+
+  set('jp_effectiveOilCost',ppFormatMeso(effectiveOilCost));
+  set('jp_potionExpectedCost',ppFormatMeso(potionExpectedCost));
+  set('jp_potionNetRevenue',ppFormatMeso(potionNet));
+  set('jp_potionProfitFromSeeds',(potionProfitFromSeeds>=0?'+':'')+ppFormatMeso(potionProfitFromSeeds));
+  set('jp_sellFiveOilNet',ppFormatMeso(sellFiveOilNet));
+  set('jp_potionValueAdd',(potionValueAdd>=0?'+':'')+ppFormatMeso(potionValueAdd));
+
+  const info=document.getElementById('jp_linkedPotionInfo');
+  if(info){
+    info.innerHTML=`연동값 · 최고급 포션 빈병 <b>${ppFormatMeso(linked.emptyBottle)}</b> · 최상급 아이템 결정 <b>${ppFormatMeso(linked.crystal)}</b> · 현자의 돌 <b>${ppFormatMeso(linked.stone)}</b> · 소형 재물 획득의 비약 판매가 <b>${ppFormatMeso(linked.potionSell)}</b> · 경매장 수수료 <b>${Math.round(linked.feeRate*100)}%</b>`;
+  }
+
+  const missing=[];
+  if(!(linked.crystal>0)) missing.push('최상급 아이템 결정');
+  if(!(linked.stone>0)) missing.push('현자의 돌');
+  if(!(linked.potionSell>0)) missing.push('소형 재물 획득의 비약 판매가');
+  const compareBox=document.getElementById('jp_compareBox');
+  const compareValue=document.getElementById('jp_compareValue');
+  const compareVerdict=document.getElementById('jp_compareVerdict');
+
+  if(missing.length){
+    if(compareBox) compareBox.classList.add('bad');
+    if(compareValue) compareValue.textContent='연동 시세 입력 필요';
+    if(compareVerdict) compareVerdict.textContent=`기존 재획비 손익 탭에서 ${missing.join(' · ')} 값을 입력하면 정확한 비교가 표시됩니다.`;
+  }else{
+    const potionBetter=potionValueAdd>0;
+    if(compareBox) compareBox.classList.toggle('bad',!potionBetter);
+    if(compareValue) compareValue.textContent=potionBetter?'비약으로 가공해서 판매':'오일 그대로 판매';
+    if(compareVerdict){
+      compareVerdict.textContent=potionBetter
+        ? `오일 5개를 바로 파는 것보다 비약으로 가공하면 1회 제작 기준 약 ${ppFormatMeso(potionValueAdd)} 더 유리합니다. 씨앗부터 시작한 비약 기대 순이익은 ${(potionProfitFromSeeds>=0?'+':'')+ppFormatMeso(potionProfitFromSeeds)}입니다.`
+        : `오일 5개를 비약으로 가공하면 바로 파는 것보다 1회 제작 기준 약 ${ppFormatMeso(Math.abs(potionValueAdd))} 불리합니다. 현재 시세에서는 오일 그대로 판매하는 편이 낫습니다.`;
+    }
+  }
+
+  const pf=document.getElementById('jp_potionFormula');
+  if(pf){
+    pf.innerHTML=`오일 1개 기대 실질 제작원가 = (1회 제작비 ${ppFormatMeso(base.cost)} − 실패 가루 기대회수 ${ppFormatMeso(base.powder*JUNIPER_POWDER_RATE)}) ÷ 90% = <b>${ppFormatMeso(effectiveOilCost)}</b><br>`+
+      `비약 1회 기대원가 = 오일 기대원가 × 5 + 빈병 × 1 + 최상급 결정 × 2 + 현자의 돌 × 1 = <b>${ppFormatMeso(potionExpectedCost)}</b><br>`+
+      `비약 가공 추가이익 = 비약 6개 수수료 후 수령액 − 기타 재료비 − 오일 5개 수수료 후 판매액 = <b>${(potionValueAdd>=0?'+':'')+ppFormatMeso(potionValueAdd)}</b>`;
+  }
+}
+['jp_seedPrice','jp_oilPrice','jp_powderPrice'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.addEventListener('input',renderJuniperProfit);
+  el.addEventListener('blur',()=>{jpFormatField(el);renderJuniperProfit();});
+});
+['pp_crystal','pp_stone','pp_sellSmallFortune'].forEach(id=>document.getElementById(id)?.addEventListener('input',()=>renderJuniperProfit()));
+document.getElementById('pp_feeDiscount')?.addEventListener('change',()=>renderJuniperProfit());
+jpLoad();
+renderJuniperProfit();
 /* ===== 재획비 손익 계산기 ===== */
 const POTION_PROFIT_KEY='simpleTimerPotionProfit';
 
